@@ -23,6 +23,16 @@ vector<string> *cmd::splitCmd(string &str) {
 	return tokens;
 }
 
+Client	*cmd::serachClient(int sock)
+{
+	for (vector<Client *>::iterator it = _clilist.begin(); i != _clilist.end(); i++)
+	{
+		if ((*it)->_clntSock == sock)
+			return (*it);
+	}
+	return (NULL);
+}
+
 int cmd::parsecommand() {
 	vector<string> *tokens;
 	
@@ -32,6 +42,12 @@ int cmd::parsecommand() {
 		if ((*tokens)[0] == "JOIN")
 			;
 		else if ((*tokens)[0] == "MODE")
+			;
+		else if ((*tokens)[0] == "USER")
+			;
+		else if ((*tokens)[0] == "PASS")
+			;
+		else if ((*tokens)[0] == "NICK")
 			;
 		else ;
 	}

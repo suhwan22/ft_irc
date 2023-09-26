@@ -22,12 +22,21 @@ class cmd {
 	cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist);
 	~cmd();
 	std::vector<string> *splitCmd(string &str);
-	void printCmdVector(const vector<string>& cmdVector);
-	int parsecommand();
+	void	printCmdVector(const vector<string>& cmdVector);
+	int		parsecommand();
+	Client	*serachClient(int sock);
 
-	void privmsg(vector<string> tokens);
-	void privmsgToChannel(vector<string> tokens);
-	void privmsgToClient(vector<string> tokens);
+	/* privmsg.cpp */
+	void	privmsg(vector<string> tokens);
+	void	privmsgToChannel(vector<string> tokens);
+	void	privmsgToClient(vector<string> tokens);
+
+	/* user.cpp */
+	void	user(
+
+	/* nick.cpp */
+
+	/* pass.cpp */
 
 	const vector<string>& getCommand() const;
 };
