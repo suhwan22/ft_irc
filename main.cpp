@@ -33,21 +33,25 @@ int main(int argc, char **argv)
 		std::cout << "Usage: " << argv[0] << " <port>" << std::endl;
 		exit(1);
 	}
+
 	servSock = socket(PF_INET, SOCK_STREAM, 0);
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servAddr.sin_port = htons(atoi(argv[1]));
+
 	if (bind(servSock, (struct sockaddr *) &servAddr, sizeof(servAddr)) == -1)
 	{
 		std::cout << "Error: bind()" << std::endl;
 		exit(1);
 	}
+
 	if (listen(servSock, 5) == -1)
 	{
 		std::cout << "Error: listen()" << std::endl;
 		exit(1);
 	}
+
 	epfd = epoll_create(EPOLL_SIZE);
 	//epEvents = malloc(sizeof(struct epoll_event) * EPOLL_SIZE);
 	epEvents = new epoll_event[EPOLL_SIZE];

@@ -4,6 +4,11 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <arpa/inet.h>
+# include <sys/epoll.h>
+
+# define BUF_SIZE 100
+# define EPOLL_SIZE 50
 
 class Client;
 class Channel;
@@ -11,6 +16,7 @@ class Channel;
 class Server
 {
 	private:
+		int						_servSock;
 		int						_port;
 		std::string				_passWord;
 		std::vector<Channel *>	_channelList;
@@ -22,14 +28,17 @@ class Server
 
 		//Server& operator=(const Server& obj);
 
-		void	serverInit(int port, std::string pass);
+		void	serverInit(int port);
 		void	serverStart();
-
-		int	getPort();
-		std::string	getPass();
 
 		void	addChannel();
 		void	addClient();
+		void	setClientInfo();
+
+		int		getPort() const;
+		const std::string&	getPass() const;
+
+		void	setPass(const std::string pass);
 };
 
 #endif

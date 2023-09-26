@@ -14,10 +14,11 @@ class Channel
 		std::string				_passWord;
 		std::vector<Client *>	_users;
 
-		int						userLimit;
+		int						_userLimit;
 
 	public:
 		Channel(std::string channelName);
+		Channel(std::string channelName, std::string password);
 		~Channel();
 
 		void	setPassWord(const std::string passWord);
