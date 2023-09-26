@@ -33,7 +33,7 @@ class Server
 		void	serverInit();
 		void	serverStart();
 
-		void	addChannel(std:;string name);
+		void	addChannel(std::string name);
 		void	addClient(int sock);
 
 		int		getSock() const;
