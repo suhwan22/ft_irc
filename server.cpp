@@ -1,6 +1,7 @@
 #include "server.hpp"
 #include "client.hpp"
 #include "channel.hpp"
+#include "cmd.hpp"
 
 Server::Server(int port, std::string pass) : _port(port), _passWord(pass) 
 {
@@ -85,20 +86,10 @@ void	Server::serverStart()
 					std::cout << "Error: serverStart(): recv()" << std::endl;
 				}
 
-				std::string receivedstring(buf, strlen);
-				char *str = strtok((char *)receivedstring.c_str(), " ");
-				std::vector<std::string> _cmd;
-				while (str != NULL)
-				{
-				//	std::cout << "1" << std::endl;
-					_cmd.push_back(std::string(str));
-					str = strtok(NULL, "");
-				}
+				cmd command(buf, strlen, _clntList, _channelList);
+				command.parsecommand();
+				command.printCmdVector(command);
 
-				std::cout << "CMD= " << _cmd[0] << std::endl;
-				//for (auto it = _cmd.begin(); it != _cmd.end(); ++it) {
-				//	std::cout << *it << std::endl;
-				//}
 				if (strlen == 0)
 				{
 					epoll_ctl(epfd, EPOLL_CTL_DEL, epEvents[i].data.fd, NULL);
