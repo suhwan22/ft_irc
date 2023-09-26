@@ -2,7 +2,9 @@
 # define SERVER_HPP
 
 # include <iostream>
+# include <unistd.h>
 # include <string>
+# include <cstring>
 # include <vector>
 # include <arpa/inet.h>
 # include <sys/epoll.h>
@@ -28,12 +30,13 @@ class Server
 
 		//Server& operator=(const Server& obj);
 
-		void	serverInit(int port);
+		void	serverInit();
 		void	serverStart();
 
-		void	addChannel();
-		void	addClient();
+		void	addChannel(std:;string name);
+		void	addClient(int sock);
 
+		int		getSock() const;
 		int		getPort() const;
 		const std::string&	getPass() const;
 

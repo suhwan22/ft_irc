@@ -24,4 +24,17 @@ void	Channel::setUserLimit(const int limit)
 	_userLimit = limit;
 }
 
+const std::string&	Channel::getChannelName() const
+{
+	return (_channelName);
+}
 
+const std::string&	Channel::getPassWord() const
+{
+	return (_passWord);
+}
+
+const int	Channel::getUserLimit() const
+{
+	return (_userLimit);
+}

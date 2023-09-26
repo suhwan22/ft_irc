@@ -24,9 +24,9 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 
-		const std::string&	getChannelName();
-		const std::string&	getPassWord();
-		const int			getUserLimit();
+		const std::string&	getChannelName() const;
+		const std::string&	getPassWord() const;
+		const int			getUserLimit() const;
 		
 };
 

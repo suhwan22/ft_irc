@@ -1,10 +1,16 @@
 #include "server.hpp"
+#include "client.hpp"
+#include "channel.hpp"
 
-Server::Server(int port, std::string pass) : _port(port), _passWord(pass) {}
+Server::Server(int port, std::string pass) : _port(port), _passWord(pass) 
+{
+	_channelList = std::vector<Channel *>();
+	_clntList = std::vector<Client *>();
+}
 
 Server::~Server() {}
 
-void	Server::serverInit(int port)
+void	Server::serverInit()
 {
 	struct sockaddr_in	servAddr;
 
@@ -12,7 +18,7 @@ void	Server::serverInit(int port)
 	memset(&servAddr, 0, sizeof(servAddr));
 	servAddr.sin_family = AF_INET;
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
-	servAddr.sin_port = htons(port);
+	servAddr.sin_port = htons(_port);
 
 	if (bind(_servSock, (struct sockaddr *) &servAddr, sizeof(servAddr)) == -1)
 	{
@@ -30,6 +36,8 @@ void	Server::serverInit(int port)
 void	Server::serverStart()
 {
 	int	epfd, eventCnt;
+	struct epoll_event	*epEvents;
+	struct epoll_event	event;
 
 	epfd = epoll_create(EPOLL_SIZE);
 	//epEvents = malloc(sizeof(struct epoll_event) * EPOLL_SIZE);
@@ -44,6 +52,7 @@ void	Server::serverStart()
 
 	char	buf[BUF_SIZE];
 	int		strlen;
+	int		i;
 
 	while (1)
 	{
@@ -65,7 +74,8 @@ void	Server::serverStart()
 				epoll_ctl(epfd, EPOLL_CTL_ADD, clntSock, &event);
 				
 				addClient(clntSock);
-				std::cout << "connected client: " << (_clntList.at(_clntList.size()))->getSock() << std::endl;
+				//std::cout << "connected client: " << (_clntList.at(_clntList.size()))->getSock() << std::endl;
+				std::cout << "connected client: " << clntSock << std::endl;
 			}
 			else
 			{
@@ -104,8 +114,8 @@ void	Server::serverStart()
 					}
 					else if (strstr(buf, "MODE"))
 					{
-						send(clntSock, ":suhkim!root@127.0.0.1 MODE <input nick name> :+i\n", \
-								sizeof(":suhkim!root@127.0.0.1 MODE <input nick name> :+i"), 0);
+						send(clntSock, ":suhkim!root@127.0.0.1 MODE suhkim :+i\n", \
+								sizeof(":suhkim!root@127.0.0.1 MODE suhkim :+i"), 0);
 					}
 					else if (strstr(buf, "PING"))
 					{
@@ -121,14 +131,29 @@ void	Server::serverStart()
 	close(epfd);
 }
 
-void	addChannel(std::string name)
+void	Server::addChannel(std::string name)
 {
-	_channelList.pushback(Channel(name));
+	Channel *newChannel = new Channel(name);
+	if (!newChannel)
+	{
+		std::cout << "Error: Server::addChannel: new Channel()" << std::endl;
+	}
+	_channelList.push_back(newChannel);
 }
 
-void	addClient(int sock)
+void	Server::addClient(int sock)
 {
-	_clntList.pushback(Client(sock));
+	Client *newClient = new Client(sock);
+	if (!newClient)
+	{
+		std::cout << "Error: Server::addClient: new Client()" << std::endl;
+	}
+	_clntList.push_back(newClient);
+}
+
+int	Server::getSock() const
+{
+	return (_servSock);
 }
 
 int	Server::getPort() const
