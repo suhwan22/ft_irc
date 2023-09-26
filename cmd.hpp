@@ -13,12 +13,13 @@ using namespace std;
 
 class cmd {
  private:
-	vector<string> _command;
-	vector<Client *>& _clilist;
-	vector<Channel *>& _chlist;
+	int					_clntSock;
+	vector<string>		_command;
+	vector<Client *>&	_clilist;
+	vector<Channel *>&	_chlist;
 
  public:
-	cmd(char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist);
+	cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist);
 	~cmd();
 	std::vector<string> *splitCmd(string &str);
 	void printCmdVector(const vector<string>& cmdVector);

@@ -1,6 +1,6 @@
 #include "cmd.hpp"
 
-cmd::cmd(char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist) : _clilist(clilist), _chlist(chlist)
+cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist)
 {
 	string receivedstring(buf, strlen);
 	istringstream ss(receivedstring);
@@ -29,7 +29,6 @@ int cmd::parsecommand() {
 	for (vector<string>::iterator it = _command.begin(); it != _command.end(); ++it)
 	{
 		tokens = splitCmd(*it);
-		cout << tokens[1][0] << endl;
 		if ((*tokens)[0] == "JOIN")
 			;
 		else if ((*tokens)[0] == "MODE")
