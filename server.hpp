@@ -33,7 +33,6 @@ class Server
 
 		void	addChannel();
 		void	addClient();
-		void	setClientInfo();
 
 		int		getPort() const;
 		const std::string&	getPass() const;

@@ -11,19 +11,22 @@ class Client
 {
 	private:
 		/* client socket info */
-		int			_ClntSock;
+		int						_clntSock;
+
 		/* 아이피랑 포트 어떤식으로 들어오는지 봐야함 */
-		std::string	_ip;
-		int			_port;
+		std::string				_ip;
+		int						_port;
 
 		/* user information */
-		std::string	_nickname;
-		std::string	_userName;
+		std::string				_nickname;
+		std::string				_userName;
 		std::vector<Channel *>	_joinChannels;
 
 	public:
 		Client(int ClntSock);
 		~Client();
+
+		void	clientInit(std::string ip, int port, std::string nick, std::string user);
 
 		void	joinChannel(Channel *channel);
 		void	exitChannel(const std::string channelName);
@@ -36,6 +39,7 @@ class Client
 		const std::string&	getUserName() const;
 		const std::string&	getIP() const;
 		int					getSock() const;
+		int					getPort() const;
 };
 
 #endif

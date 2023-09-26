@@ -37,6 +37,14 @@ void	Server::serverStart()
 	event.events = EPOLLIN;
 	event.data.fd = _servSock;
 	epoll_ctl(epfd, EPOLL_CTL_ADD, _servSock, &event);
+
+	socklen_t	addrSize;
+	struct sockaddr_in	clntAddr;
+	int	clntSock;
+
+	char	buf[BUF_SIZE];
+	int		strlen;
+
 	while (1)
 	{
 		eventCnt = epoll_wait(epfd, epEvents, EPOLL_SIZE, -1);
@@ -55,11 +63,18 @@ void	Server::serverStart()
 				event.events = EPOLLIN;
 				event.data.fd = clntSock;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, clntSock, &event);
-				std::cout << "connected client: " << clntSock << std::endl;
+				
+				addClient(clntSock);
+				std::cout << "connected client: " << (_clntList.at(_clntList.size()))->getSock() << std::endl;
 			}
 			else
 			{
 				strlen = recv(epEvents[i].data.fd, buf, BUF_SIZE, 0);
+				if (strlen == -1)
+				{
+					std::cout << "Error: serverStart(): recv()" << std::endl;
+				}
+
 				std::string receivedstring(buf, strlen);
 				char *str = strtok((char *)receivedstring.c_str(), " ");
 				std::vector<std::string> _cmd;
@@ -69,6 +84,7 @@ void	Server::serverStart()
 					_cmd.push_back(std::string(str));
 					str = strtok(NULL, "");
 				}
+
 				std::cout << "CMD= " << _cmd[0] << std::endl;
 				//for (auto it = _cmd.begin(); it != _cmd.end(); ++it) {
 				//	std::cout << *it << std::endl;
@@ -101,7 +117,7 @@ void	Server::serverStart()
 			}
 		}
 	}
-	close(servSock);
+	close(_servSock);
 	close(epfd);
 }
 
@@ -110,9 +126,9 @@ void	addChannel(std::string name)
 	_channelList.pushback(Channel(name));
 }
 
-void	addClient(std::string nickname)
+void	addClient(int sock)
 {
-	_clntList.pushback(Client(nickname));
+	_clntList.pushback(Client(sock));
 }
 
 int	Server::getPort() const

@@ -1,7 +1,7 @@
 #include "client.hpp"
 #include "channel.hpp"
 
-Client::Client(int ClntSock) : _ClntSock(ClntSock), 
+Client::Client(int clntSock) : _clntSock(clntSock), 
 							   _nickname(""), 
 							   _userName("")
 {
@@ -9,6 +9,15 @@ Client::Client(int ClntSock) : _ClntSock(ClntSock),
 }
 
 Client::~Client() {}
+
+void	Client::clientInit(std::string ip, int port, std::string nick, std::string user)
+{
+	/* userName dup check */
+	_ip = ip;
+	_port = port;
+	_nickname = nick;
+	_userName = user;
+}
 
 void	Client::joinChannel(Channel *channel)
 {
@@ -62,7 +71,12 @@ const std::string&	Client::getIP() const
 	return (_ip);
 }
 
-int	Client::getSock() const
+int	Client::getPort() const
 {
 	return (_port);
+}
+
+int	Client::getSock() const
+{
+	return (_clntSock);
 }
