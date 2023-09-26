@@ -7,7 +7,8 @@ cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<
 	string tmp;
 	while (getline(ss, tmp, '\n'))
 	{
-		_command.push_back(tmp);
+		tmp >> _command;
+		_arg.push_back(tmp);
 	}
 }
 
@@ -36,18 +37,20 @@ Client	*cmd::serachClient(int sock)
 int cmd::parsecommand() {
 	vector<string> *tokens;
 	
-	for (vector<string>::iterator it = _command.begin(); it != _command.end(); ++it)
+	for (vector<string>::iterator it = _arg.begin(); it != _arg.end(); ++it)
 	{
-		tokens = splitCmd(*it);
-		if ((*tokens)[0] == "JOIN")
+		//tokens = splitCmd(*it);
+		if (_command == "JOIN")
 			;
-		else if ((*tokens)[0] == "MODE")
+		else if (_command == "MODE")
 			;
-		else if ((*tokens)[0] == "USER")
+		else if (_command == "PRIVMSG")
 			;
-		else if ((*tokens)[0] == "PASS")
+		else if (_command == "USER")
 			;
-		else if ((*tokens)[0] == "NICK")
+		else if (_command == "PASS")
+			;
+		else if (_command == "NICK")
 			;
 		else ;
 	}

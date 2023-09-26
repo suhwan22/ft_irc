@@ -14,7 +14,8 @@ using namespace std;
 class cmd {
  private:
 	int					_clntSock;
-	vector<string>		_command;
+	string				_command;
+	vector<string>		_arg;
 	vector<Client *>&	_clilist;
 	vector<Channel *>&	_chlist;
 
