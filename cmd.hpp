@@ -11,11 +11,16 @@
 
 using namespace std;
 
+struct content
+{
+	string	cmd;
+	string	arg;
+};
+
 class cmd {
  private:
 	int					_clntSock;
-	vector<string>		_command;
-	vector<string>		_arg;
+	vector<content>		_content;
 	vector<Client *>&	_clilist;
 	vector<Channel *>&	_chlist;
 
@@ -23,7 +28,7 @@ class cmd {
 	cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist);
 	~cmd();
 	std::vector<string> *splitCmd(string &str);
-	void	printCmdVector(const vector<string>& cmdVector, const vector<string>& argVector);
+	void	printContent(const vector<content>& content);
 	int		parsecommand();
 	Client	*searchClient(int sock);
 
@@ -39,8 +44,7 @@ class cmd {
 
 	/* pass.cpp */
 
-	const vector<string> getCommand() const;
-	const vector<string> getArgument() const;
+	const	vector<content>& getContent() const;
 };
 
 #endif

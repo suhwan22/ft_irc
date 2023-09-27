@@ -6,15 +6,16 @@ cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<
 	stringstream	ss(receivedstring);
 	stringstream	tmp;
 	string			line;
+	content			content;
 
 	while (getline(ss, line, '\n'))
 	{
 		tmp = stringstream(line);
-		//getline(tmp, line, ' ');
 		tmp >> line;
-		_command.push_back(line);
+		content.cmd = line;
 		getline(tmp, line, static_cast<char>(EOF));
-		_arg.push_back(line);
+		content.arg = line;
+		_content.push_back(content);
 	}
 }
 
@@ -41,47 +42,35 @@ Client	*cmd::searchClient(int sock)
 }
 
 int cmd::parsecommand() {
-	vector<string> *tokens;
-	
-	for (vector<string>::iterator it = _arg.begin(); it != _arg.end(); ++it)
+	for (vector<content>::iterator it = _content.begin(); it != _content.end(); it++)
 	{
 		//tokens = splitCmd(*it);
-		if ((*it) == "JOIN")
+		if ((*it).cmd == "JOIN")
 			;
-		else if ((*it) == "MODE")
+		else if ((*it).cmd == "MODE")
 			;
-		else if ((*it) == "PRIVMSG")
+		else if ((*it).cmd == "PRIVMSG")
 			;
-		else if ((*it) == "USER")
+		else if ((*it).cmd == "USER")
 			;
-		else if ((*it) == "PASS")
+		else if ((*it).cmd == "PASS")
 			;
-		else if ((*it) == "NICK")
+		else if ((*it).cmd == "NICK")
 			;
-		else ;
+		else
+			;
 	}
 	// printCmdVector(*tokens);
 	return 0;
 }
 
-void cmd::printCmdVector(const vector<string>& cmdVector, const vector<string>& argVector)
+void	cmd::printContent(const vector<content>& contents)
 {
-//	for (vector<string>::const_iterator it = cmdVector.begin(); it != cmdVector.end(); ++it) {
-//        cout << "CMD : " << *it << ", ARG : " << << endl;
-//			cout << *arg << " "
-//	}
-	int i;
-	
-	for (i = 0; i < cmdVector.size(); i++)
-		cout << "CMD : " << cmdVector[i] << ", ARG : " << argVector[i] << endl;
+	for (vector<content>::const_iterator it = contents.begin(); it != contents.end(); it++)
+		cout << "CMD : " << (*it).cmd << ", ARG : " << (*it).arg << endl;
 }
 
-const vector<string> cmd::getCommand() const
+const vector<content>& cmd::getContent() const
 {
-	return (_command);
-}
-
-const vector<string> cmd::getArgument() const
-{
-	return (_arg);
+	return (_content);
 }

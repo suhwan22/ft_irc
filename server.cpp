@@ -88,7 +88,7 @@ void	Server::serverStart()
 
 				cmd command(epEvents[i].data.fd, buf, strlen, _clntList, _channelList);
 				command.parsecommand();
-				command.printCmdVector(command.getCommand(), command.getArgument());
+				command.printContent(command.getContent());
 
 				if (strlen == 0)
 				{
