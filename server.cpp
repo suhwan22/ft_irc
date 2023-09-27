@@ -86,7 +86,7 @@ void	Server::serverStart()
 					std::cout << "Error: serverStart(): recv()" << std::endl;
 				}
 
-				cmd command(epEvents[i].data.fd, buf, strlen, _servPass, _clntList, _channelList);
+				cmd command(epEvents[i].data.fd, buf, strlen, _passWord, _clntList, _channelList);
 				command.parsecommand();
 				command.printContent(command.getContent());
 
