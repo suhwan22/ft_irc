@@ -33,9 +33,9 @@ class cmd {
 	Client	*searchClient(int sock);
 
 	/* privmsg.cpp */
-	void	privmsg(vector<string> tokens);
-	void	privmsgToChannel(vector<string> tokens, string inputmsg);
-	void	privmsgToClient(vector<string> tokens, string inputmsg);
+	void	privmsg(string arg);
+	void	privmsgToChannel(string arg, string inputmsg);
+	void	privmsgToClient(string arg, string inputmsg);
 
 	/* user.cpp */
 	//void	user(
