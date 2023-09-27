@@ -1,4 +1,5 @@
 #include "channel.hpp"
+#include "client.hpp"
 
 Channel::Channel(std::string channelName) :
 	_channelName(channelName),
@@ -13,6 +14,14 @@ Channel::Channel(std::string channelName, std::string password) :
 {}
 
 Channel::~Channel() {}
+
+bool	Channel::isClientInChannel(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+		if ((*it)->getNickname() == client->getNickname())
+			return (true);
+	return (false);
+}
 
 void	Channel::setPassWord(const std::string passWord)
 {
@@ -37,4 +46,9 @@ const std::string&	Channel::getPassWord() const
 const int	Channel::getUserLimit() const
 {
 	return (_userLimit);
+}
+
+const std::vector<Client *>	Channel::getUsers() const
+{
+	return (_users);
 }
