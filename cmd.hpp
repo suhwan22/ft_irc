@@ -34,8 +34,8 @@ class cmd {
 
 	/* privmsg.cpp */
 	void	privmsg(vector<string> tokens);
-	void	privmsgToChannel(vector<string> tokens);
-	void	privmsgToClient(vector<string> tokens);
+	void	privmsgToChannel(vector<string> tokens, string inputmsg);
+	void	privmsgToClient(vector<string> tokens, string inputmsg);
 
 	/* user.cpp */
 	//void	user(
@@ -44,6 +44,10 @@ class cmd {
 
 	/* pass.cpp */
 
+	/* util.cpp */
+	void noSuchNick(string wrongnick);
+	void noSuchNick(string wrongchannel);
+	bool isFirstCharacterHash(const std::string& str);
 	const	vector<content>& getContent() const;
 };
 

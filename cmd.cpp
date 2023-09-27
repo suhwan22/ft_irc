@@ -46,8 +46,8 @@ int cmd::parsecommand() {
 	for (vector<content>::iterator it = _content.begin(); it != _content.end(); it++)
 	{
 		//tokens = splitCmd(*it);
-		if ((*it).cmd == "JOIN")
-			;
+		if ((*it).cmd == "PRIVMSG")
+			privmsg((*it).arg);
 		else if ((*it).cmd == "MODE")
 			;
 		else if ((*it).cmd == "PRIVMSG")
