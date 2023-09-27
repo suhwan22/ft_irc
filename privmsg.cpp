@@ -1,18 +1,16 @@
 #include "cmd.hpp"
 
-void cmd::privmsgToChannel(vector<string> tokens, string inputmsg) {
+void cmd::privmsgToChannel(string arg, string inputmsg) {
 	vector<Channel *>::iterator	iter;
 	string						msg;
-	string 						gotchannel;
 	Client 						*me = searchClient(_clntSock);
 
-	gotchannel = tokens[1];
 	for (iter == _chlist.begin(); iter != _chlist.end(); iter++)	{
-		if ((*iter)->getChannelName() == gotchannel) {
+		if ((*iter)->getChannelName() == arg) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->isClientInChannel(me)))
 			{
-				msg = ":irc.local 404 " + me->getNickname() + " " + gotchannel + " :You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.\n";
+				msg = ":irc.local 404 " + me->getNickname() + " " + arg + " :You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.\n";
 				if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
 					cerr << "Error: send error" << endl;
 			}
@@ -20,45 +18,43 @@ void cmd::privmsgToChannel(vector<string> tokens, string inputmsg) {
 			{
 				for (int i = 0; i < (int)members.size(); i++)
 				{
-					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP + " PRIVMSG " + gotchannel + " " + inputmsg;
-					if (send(members[i]->getSock, msg.c_str(), msg.length(), 0) == -1)
+					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PRIVMSG " + arg + " " + inputmsg;
+					if (send(members[i]->getSock(), msg.c_str(), msg.length(), 0) == -1)
 						cerr << "Error: send error" << endl;
 				}
 			}
 			return ;
 		}
 	}
-	noSuchChannel(gotchannel);
+	noSuchChannel(arg);
 }
 
-void cmd::privmsgToClient(vector<string> tokens, string inputmsg)
+void cmd::privmsgToClient(string arg, string inputmsg)
 {
 	vector<Client *>::iterator	iter;
 	string						msg;
-	string						gotclient;
 	Client						*me = searchClient(_clntSock);
 
-	gotclient = tokens[1];
 	for (iter == _clilist.begin(); iter != _clilist.end(); iter++) {
-		if ((*iter)->getNickname() == gotclient){
-			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PRIVMSG " + gotclient + " " + inputmsg;
+		if ((*iter)->getNickname() == arg){
+			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PRIVMSG " + arg + " " + inputmsg;
 			if (send((*iter)->getSock(), msg.c_str(), msg.length(), 0) == -1)
 				cerr << "Error: send error" << endl;
 			return ;
 		}
 	}
-	noSuchNick(gotclient);
+	noSuchNick(arg);
 }
 
 void cmd::privmsg(string arg) {
 	string line;
 	stringstream tmp;
-	if (!isFirstCharacterHash(arg))
-		privmsgToChannel(tokens);
 	tmp = stringstream(arg);
 	tmp >> arg;
-	getline(tmp, arg, static_cast<char>(EOF));
-	arg.erase(0, 1);
+	getline(tmp, line, static_cast<char>(EOF));
+	line.erase(0, 1);
+	if (!isFirstCharacterHash(arg))
+		privmsgToChannel(arg, line);
 	else
-		privmsgToClient(tokens);
+		privmsgToClient(arg, line);
 }
