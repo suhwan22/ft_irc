@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <unistd.h>
+#include <arpa/inet.h>
 
 using namespace std;
 
