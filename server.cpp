@@ -70,10 +70,10 @@ void	Server::serverStart()
 				linger optval;
      			optval.l_onoff = 1;
      			optval.l_linger = 1;
-				if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1)
+				if (setsockopt(clntSock, SOL_SOCKET, SO_LINGER, &optval, sizeof(optval)) == -1)
 				{
 					std::cout << "Error: serverStart(): setsockopt()" << std::endl;
-			        close(sockfd);
+			        close(clntSock);
 			        exit(1);
 			    }
 
