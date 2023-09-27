@@ -14,6 +14,7 @@ cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<
 		tmp >> line;
 		content.cmd = line;
 		getline(tmp, line, static_cast<char>(EOF));
+		line.erase(0, 1);
 		content.arg = line;
 		_content.push_back(content);
 	}
