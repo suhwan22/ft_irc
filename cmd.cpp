@@ -2,13 +2,19 @@
 
 cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist)
 {
-	string receivedstring(buf, strlen);
-	istringstream ss(receivedstring);
-	string tmp;
-	while (getline(ss, tmp, '\n'))
+	string			receivedstring(buf, strlen);
+	stringstream	ss(receivedstring);
+	stringstream	tmp;
+	string			line;
+
+	while (getline(ss, line, '\n'))
 	{
-		tmp >> _command;
-		_arg.push_back(tmp);
+		tmp = stringstream(line);
+		//getline(tmp, line, ' ');
+		tmp >> line;
+		_command.push_back(line);
+		getline(tmp, line, static_cast<char>(EOF));
+		_arg.push_back(line);
 	}
 }
 
@@ -24,11 +30,11 @@ vector<string> *cmd::splitCmd(string &str) {
 	return tokens;
 }
 
-Client	*cmd::serachClient(int sock)
+Client	*cmd::searchClient(int sock)
 {
-	for (vector<Client *>::iterator it = _clilist.begin(); i != _clilist.end(); i++)
+	for (vector<Client *>::iterator it = _clilist.begin(); it != _clilist.end(); it++)
 	{
-		if ((*it)->_clntSock == sock)
+		if ((*it)->getSock() == sock)
 			return (*it);
 	}
 	return (NULL);
@@ -40,17 +46,17 @@ int cmd::parsecommand() {
 	for (vector<string>::iterator it = _arg.begin(); it != _arg.end(); ++it)
 	{
 		//tokens = splitCmd(*it);
-		if (_command == "JOIN")
+		if ((*it) == "JOIN")
 			;
-		else if (_command == "MODE")
+		else if ((*it) == "MODE")
 			;
-		else if (_command == "PRIVMSG")
+		else if ((*it) == "PRIVMSG")
 			;
-		else if (_command == "USER")
+		else if ((*it) == "USER")
 			;
-		else if (_command == "PASS")
+		else if ((*it) == "PASS")
 			;
-		else if (_command == "NICK")
+		else if ((*it) == "NICK")
 			;
 		else ;
 	}
@@ -58,13 +64,24 @@ int cmd::parsecommand() {
 	return 0;
 }
 
-void cmd::printCmdVector(const vector<string>& cmdVector) {
-        for (vector<string>::const_iterator it = cmdVector.begin(); it != cmdVector.end(); ++it) {
-        	cout << *it << endl;
-	}
+void cmd::printCmdVector(const vector<string>& cmdVector, const vector<string>& argVector)
+{
+//	for (vector<string>::const_iterator it = cmdVector.begin(); it != cmdVector.end(); ++it) {
+//        cout << "CMD : " << *it << ", ARG : " << << endl;
+//			cout << *arg << " "
+//	}
+	int i;
+	
+	for (i = 0; i < cmdVector.size(); i++)
+		cout << "CMD : " << cmdVector[i] << ", ARG : " << argVector[i] << endl;
 }
 
-const vector<string>& cmd::getCommand() const
+const vector<string> cmd::getCommand() const
 {
 	return (_command);
+}
+
+const vector<string> cmd::getArgument() const
+{
+	return (_arg);
 }
