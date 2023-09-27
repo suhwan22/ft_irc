@@ -23,12 +23,12 @@ void printCmdVector(const std::vector<std::string>& cmdVector) {
 
 int main(int argc, char **argv)
 {
-	if (argc != 2)
+	if (argc != 3)
 	{
-		std::cout << "Usage: " << argv[0] << " <port>" << std::endl;
+		std::cout << "Usage: " << argv[0] << " <port> <pass>" << std::endl;
 		exit(1);
 	}
-	Server _server(atoi(argv[1]), "1234");
+	Server _server(atoi(argv[1]), atoi(argv[2]));
 	_server.serverInit();
 	_server.serverStart();
 	//close(_server.getSock());

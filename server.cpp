@@ -3,11 +3,7 @@
 #include "channel.hpp"
 #include "cmd.hpp"
 
-Server::Server(int port, std::string pass) : _port(port), _passWord(pass) 
-{
-	_channelList = std::vector<Channel *>();
-	_clntList = std::vector<Client *>();
-}
+Server::Server(int port, std::string pass) : _port(port), _passWord(pass) {}
 
 Server::~Server() {}
 
@@ -70,12 +66,22 @@ void	Server::serverStart()
 				/* Add Client!! */
 				addrSize = sizeof(clntAddr);
 				clntSock = accept(_servSock, (struct sockaddr *)&clntAddr, &addrSize);
+
+				linger optval;
+     			optval.l_onoff = 1;
+     			optval.l_linger = 1;
+				if (setsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1)
+				{
+					std::cout << "Error: serverStart(): setsockopt()" << std::endl;
+			        close(sockfd);
+			        exit(1);
+			    }
+
 				event.events = EPOLLIN;
 				event.data.fd = clntSock;
 				epoll_ctl(epfd, EPOLL_CTL_ADD, clntSock, &event);
 				
 				addClient(clntSock);
-				//std::cout << "connected client: " << (_clntList.at(_clntList.size()))->getSock() << std::endl;
 				std::cout << "connected client: " << clntSock << std::endl;
 			}
 			else
@@ -94,7 +100,8 @@ void	Server::serverStart()
 				{
 					epoll_ctl(epfd, EPOLL_CTL_DEL, epEvents[i].data.fd, NULL);
 					std::cout << "closed client: " << epEvents[i].data.fd << std::endl;
-					shutdown(epEvents[i].data.fd, SHUT_RDWR);
+					//shutdown(epEvents[i].data.fd, SHUT_RDWR);
+					close(epEvents[i].data.fd);
 				}
 				else
 				{
@@ -156,5 +163,4 @@ const std::string&	Server::getPass() const
 {
 	return (_passWord);
 }
-
 
