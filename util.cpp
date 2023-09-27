@@ -1,4 +1,7 @@
 #include "cmd.hpp"
+#include "client.hpp"
+#include "channel.hpp"
+
 
 void cmd::noSuchNick(string wrongnick) {
 	string	msg;

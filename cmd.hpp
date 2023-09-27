@@ -1,8 +1,6 @@
 #ifndef CMD_HPP
 # define CMD_HPP
 
-#include "client.hpp"
-#include "server.hpp"
 #include <iostream>
 #include <vector>
 #include <cstring>
@@ -11,11 +9,16 @@
 
 using namespace std;
 
+class Client;
+class Channel;
+
 struct content
 {
 	string	cmd;
 	string	arg;
 };
+
+
 
 class cmd {
  private:

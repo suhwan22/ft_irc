@@ -1,4 +1,7 @@
 #include "cmd.hpp"
+#include "client.hpp"
+#include "channel.hpp"
+
 
 cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist)
 {

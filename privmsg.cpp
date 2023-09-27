@@ -1,4 +1,6 @@
 #include "cmd.hpp"
+#include "client.hpp"
+#include "channel.hpp"
 
 void cmd::privmsgToChannel(string arg, string inputmsg) {
 	vector<Channel *>::iterator	iter;
