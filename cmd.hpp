@@ -46,7 +46,7 @@ class cmd {
 
 	/* util.cpp */
 	void noSuchNick(string wrongnick);
-	void noSuchNick(string wrongchannel);
+	void noSuchChannel(string wrongchannel);
 	bool isFirstCharacterHash(const std::string& str);
 	const	vector<content>& getContent() const;
 };

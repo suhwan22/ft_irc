@@ -4,13 +4,13 @@ void cmd::privmsgToChannel(vector<string> tokens, string inputmsg) {
 	vector<Channel *>::iterator	iter;
 	string						msg;
 	string 						gotchannel;
-	Client 						*me = serachClient(_clntSock);
+	Client 						*me = searchClient(_clntSock);
 
 	gotchannel = tokens[1];
 	for (iter == _chlist.begin(); iter != _chlist.end(); iter++)	{
 		if ((*iter)->getChannelName() == gotchannel) {
 			vector<Client *> members = (*iter)->getUsers();
-			if (!((*iter)->amimember(_clntSock)))
+			if (!((*iter)->isClientInChannel(me)))
 			{
 				msg = ":irc.local 404 " + me->getNickname() + " " + gotchannel + " :You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.\n";
 				if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
@@ -36,7 +36,7 @@ void cmd::privmsgToClient(vector<string> tokens, string inputmsg)
 	vector<Client *>::iterator	iter;
 	string						msg;
 	string						gotclient;
-	Client						*me = serachClient(_clntSock);
+	Client						*me = searchClient(_clntSock);
 
 	gotclient = tokens[1];
 	for (iter == _clilist.begin(); iter != _clilist.end(); iter++) {
