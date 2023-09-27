@@ -28,9 +28,10 @@ class cmd {
 	vector<content>		_content;
 	vector<Client *>&	_clilist;
 	vector<Channel *>&	_chlist;
+	string				_servPass;
 
  public:
-	cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist);
+	cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist);
 	~cmd();
 	std::vector<string> *splitCmd(string &str);
 	void	printContent(const vector<content>& content);
@@ -53,6 +54,9 @@ class cmd {
 	void noSuchNick(string wrongnick);
 	void noSuchChannel(string wrongchannel);
 	bool isFirstCharacterHash(const std::string& str);
+
+	/* ping.cpp */
+	void ping(string arg);
 	const	vector<content>& getContent() const;
 };
 

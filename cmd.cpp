@@ -3,7 +3,7 @@
 #include "channel.hpp"
 
 
-cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist)
+cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist), _servPass(servpass)
 {
 	string			receivedstring(buf, strlen);
 	stringstream	ss(receivedstring);
@@ -51,8 +51,8 @@ int cmd::parsecommand() {
 		//tokens = splitCmd(*it);
 		if ((*it).cmd == "PRIVMSG")
 			privmsg((*it).arg);
-		else if ((*it).cmd == "MODE")
-			;
+		else if ((*it).cmd == "PING")
+			ping((*it).arg);
 		else if ((*it).cmd == "PRIVMSG")
 			;
 		else if ((*it).cmd == "USER")
