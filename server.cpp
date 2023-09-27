@@ -92,8 +92,7 @@ void	Server::serverStart()
 					std::cout << "Error: serverStart(): recv()" << std::endl;
 				}
 
-				cmd command(epEvents[i].data.fd, buf, strlen, _clntList, _channelList);
-				command.parsecommand();
+				cmd command(epEvents[i].data.fd, buf, strlen, _passWord, _clntList, _channelList);
 				command.printContent(command.getContent());
 
 				if (strlen == 0)
@@ -104,24 +103,7 @@ void	Server::serverStart()
 					close(epEvents[i].data.fd);
 				}
 				else
-				{
-					if (strstr(buf, "USER"))
-					{
-						send(clntSock, ":irc.local 001 suhkim :Welcome to the Localnet IRC Network suhkim!root@127.0.0.1\n", \
-								sizeof(":irc.local 001 suhkim :Welcome to the Localnet IRC Network suhkim!root@127.0.0.1"), 0);
-					}
-					else if (strstr(buf, "MODE"))
-					{
-						send(clntSock, ":suhkim!root@127.0.0.1 MODE suhkim :+i\n", \
-								sizeof(":suhkim!root@127.0.0.1 MODE suhkim :+i"), 0);
-					}
-					else if (strstr(buf, "PING"))
-					{
-						send(clntSock, ":irc.local PONG irc.local :irc.local\n", \
-								sizeof(":irc.local PONG irc.local :irc.local"), 0);
-					}
-					memset(buf, 0, BUF_SIZE);
-				}
+					command.parsecommand();
 			}
 		}
 	}

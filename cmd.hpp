@@ -1,15 +1,17 @@
 #ifndef CMD_HPP
 # define CMD_HPP
 
-#include "client.hpp"
-#include "server.hpp"
 #include <iostream>
 #include <vector>
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <arpa/inet.h>
 
 using namespace std;
+
+class Channel;
+class Client;
 
 struct content
 {
@@ -23,9 +25,10 @@ class cmd {
 	vector<content>		_content;
 	vector<Client *>&	_clilist;
 	vector<Channel *>&	_chlist;
+	string				_servPass;
 
  public:
-	cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist);
+	cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist);
 	~cmd();
 	std::vector<string> *splitCmd(string &str);
 	void	printContent(const vector<content>& content);
@@ -38,11 +41,13 @@ class cmd {
 	void	privmsgToClient(vector<string> tokens);
 
 	/* user.cpp */
-	//void	user(
+	void	user(string arg);
 
 	/* nick.cpp */
+	void	nick(string nick);
 
 	/* pass.cpp */
+	void	pass(string pass);
 
 	const	vector<content>& getContent() const;
 };

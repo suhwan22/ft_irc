@@ -2,22 +2,12 @@
 #include "channel.hpp"
 
 Client::Client(int clntSock) : _clntSock(clntSock), 
-							   _nickname(""), 
-							   _userName("")
+							   _isCreated(false)
 {
 	/* something  */
 }
 
 Client::~Client() {}
-
-void	Client::clientInit(std::string ip, int port, std::string nick, std::string user)
-{
-	/* userName dup check */
-	_ip = ip;
-	_port = port;
-	_nickname = nick;
-	_userName = user;
-}
 
 void	Client::joinChannel(Channel *channel)
 {
@@ -47,6 +37,26 @@ void	Client::cleanChannel()
 	_joinChannels.clear();
 }
 
+void	Client::setCreated(const bool val)
+{
+	_isCreated = val;
+}
+
+void	Client::setPort(const int port)
+{
+	_port = port;
+}
+
+void	Client::setIP(const std::string ip)
+{
+	_ip = ip;
+}
+
+void	Client::setPass(const std::string pass)
+{
+	_pass = pass;
+}
+
 void	Client::setNickname(const std::string nickname)
 {
 	_nickname = nickname;
@@ -55,6 +65,11 @@ void	Client::setNickname(const std::string nickname)
 void	Client::setUserName(const std::string userName)
 {
 	_userName = userName;
+}
+
+void	Client::setRealName(const std::string realname)
+{
+	_realName = realname;
 }
 
 const std::string&	Client::getNickname() const
@@ -66,9 +81,24 @@ const std::string&	Client::getUserName() const
 	return (_userName);
 }
 
+const std::string&	Client::getRealName() const
+{
+	return (_realName);
+}
+
 const std::string&	Client::getIP() const
 {
 	return (_ip);
+}
+
+const std::string&	Client::getPass() const
+{
+	return (_pass);
+}
+
+bool	Client::getCreated() const
+{
+	return (_isCreated);
 }
 
 int	Client::getPort() const

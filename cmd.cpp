@@ -1,6 +1,8 @@
 #include "cmd.hpp"
+#include "client.hpp"
+#include "channel.hpp"
 
-cmd::cmd(int clntSock, char *buf, int strlen, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist)
+cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist), _servPass(servpass)
 {
 	string			receivedstring(buf, strlen);
 	stringstream	ss(receivedstring);
@@ -52,11 +54,11 @@ int cmd::parsecommand() {
 			;
 		else if ((*it).cmd == "PRIVMSG")
 			;
-		else if ((*it).cmd == "USER")
-			;
 		else if ((*it).cmd == "PASS")
 			;
 		else if ((*it).cmd == "NICK")
+			;
+		else if ((*it).cmd == "USER")
 			;
 		else
 			;
