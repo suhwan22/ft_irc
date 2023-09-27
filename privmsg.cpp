@@ -9,7 +9,7 @@ void cmd::privmsgToChannel(vector<string> tokens, string inputmsg) {
 	gotchannel = tokens[1];
 	for (iter == _chlist.begin(); iter != _chlist.end(); iter++)	{
 		if ((*iter)->getChannelName() == gotchannel) {
-			vector<Client *> members = (*iter)->getclientlist();
+			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->amimember(_clntSock)))
 			{
 				msg = ":irc.local 404 " + me->getNickname() + " " + gotchannel + " :You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.\n";
