@@ -108,11 +108,6 @@ void	Server::serverStart()
 						send(clntSock, ":suhkim!root@127.0.0.1 MODE suhkim :+i\n", \
 								sizeof(":suhkim!root@127.0.0.1 MODE suhkim :+i"), 0);
 					}
-					else if (strstr(buf, "PING"))
-					{
-						send(clntSock, ":irc.local PONG irc.local :irc.local\n", \
-								sizeof(":irc.local PONG irc.local :irc.local"), 0);
-					}
 					memset(buf, 0, BUF_SIZE);
 				}
 			}
