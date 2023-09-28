@@ -14,7 +14,7 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 			if (!((*iter)->isClientInChannel(me)))
 			{
 				msg = ":irc.local 404 " + me->getNickname() + " " + arg + " :You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.\n";
-				if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 					cerr << "Error: send error" << endl;
 			}
 			else
@@ -22,7 +22,7 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 				for (int i = 0; i < (int)members.size(); i++)
 				{
 					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PRIVMSG " + arg + " " + inputmsg;
-					if (send(members[i]->getSock(), msg.c_str(), msg.length(), 0) == -1)
+					if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 						cerr << "Error: send error" << endl;
 				}
 			}
@@ -41,7 +41,7 @@ void cmd::privmsgToClient(string arg, string inputmsg)
 	for (iter == _clilist.begin(); iter != _clilist.end(); iter++) {
 		if ((*iter)->getNickname() == arg){
 			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PRIVMSG " + arg + " " + inputmsg;
-			if (send((*iter)->getSock(), msg.c_str(), msg.length(), 0) == -1)
+			if (send((*iter)->getSock(), msg.c_str(), msg.size(), 0) == -1)
 				cerr << "Error: send error" << endl;
 			return ;
 		}
@@ -56,7 +56,7 @@ void cmd::privmsg(string arg) {
 	tmp >> arg;
 	getline(tmp, line, static_cast<char>(EOF));
 	line.erase(0, 1);
-	if (!isFirstCharacterHash(arg))
+	if (isFirstCharacterHash(arg) == true)
 		privmsgToChannel(arg, line);
 	else
 		privmsgToClient(arg, line);
