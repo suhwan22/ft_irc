@@ -18,7 +18,7 @@ cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> 
 		getline(tmp, line, static_cast<char>(EOF));
 		line.erase(0, 1);
 		line.erase(line.size() - 1, 1);
-		content.arg = line;
+		content.= line;
 		_content.push_back(content);
 	}
 }
