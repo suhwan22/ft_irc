@@ -45,9 +45,10 @@ Client	*cmd::searchClient(int sock)
 }
 
 int cmd::parsecommand() {
+	int	cnt = 0;
 	for (vector<content>::iterator it = _content.begin(); it != _content.end(); it++)
 	{
-		//tokens = splitCmd(*it);
+		cout << cnt++ << std::endl;
 		if ((*it).cmd == "JOIN")
 			;
 		else if ((*it).cmd == "MODE")
@@ -55,11 +56,11 @@ int cmd::parsecommand() {
 		else if ((*it).cmd == "PRIVMSG")
 			;
 		else if ((*it).cmd == "PASS")
-			;
+			pass((*it).arg);
 		else if ((*it).cmd == "NICK")
-			;
+			nick((*it).arg);
 		else if ((*it).cmd == "USER")
-			;
+			user((*it).arg);
 		else
 			;
 	}
