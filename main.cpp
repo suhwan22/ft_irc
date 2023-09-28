@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 {
 	if (argc != 3)
 	{
-		std::cout << "Usage: " << argv[0] << " <port> <pass>" << std::endl;
+		std::cout << "Usage: " << v[0] << " <port> <pass>" << std::endl;
 		exit(1);
 	}
 	Server _server(atoi(argv[1]), argv[2]);
