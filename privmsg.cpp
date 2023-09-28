@@ -56,7 +56,7 @@ void cmd::privmsg(string arg) {
 	tmp >> arg;
 	getline(tmp, line, static_cast<char>(EOF));
 	line.erase(0, 1);
-	if (isFirstCharacterHash(arg) == true)
+	if (arg[0] == '#')
 		privmsgToChannel(arg, line);
 	else
 		privmsgToClient(arg, line);
