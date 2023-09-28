@@ -64,6 +64,7 @@ class cmd {
 
 	/* topic.cpp */
 	void topic(string arg);
+	void settingtopic(string arg, string inputmsg);
 
 	const	vector<content>& getContent() const;
 };
