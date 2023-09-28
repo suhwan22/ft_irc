@@ -44,7 +44,7 @@ class cmd {
 	void	user(string arg);
 
 	/* nick.cpp */
-	// void	nick(string nick);
+	void	nick(string nick);
 
 	/* pass.cpp */
 	void	pass(string pass);
