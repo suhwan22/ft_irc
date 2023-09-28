@@ -62,6 +62,9 @@ class cmd {
 	void privmsgToClient(string arg, string inputmsg);
 	void privmsgToChannel(string arg, string inputmsg);
 
+	/* topic.cpp */
+	void topic(string arg);
+
 	const	vector<content>& getContent() const;
 };
 

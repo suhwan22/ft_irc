@@ -13,7 +13,7 @@ class Channel
 		std::string				_channelName;
 		std::string				_passWord;
 		std::vector<Client *>	_users;
-
+		std::string				_topic;
 		int						_userLimit;
 
 	public:
@@ -25,7 +25,7 @@ class Channel
 
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
-
+		void	setTopic(const std::string topic);
 		const std::string&	getChannelName() const;
 		const std::string&	getPassWord() const;
 		const int			getUserLimit() const;
