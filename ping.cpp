@@ -6,7 +6,7 @@ void cmd::ping(string arg)
 {
 	string msg;
 
-	msg = ":" + arg + " PONG " + arg + " :" + arg + "\n";
+	msg = ":irc.local PONG irc.local :irc.local\n";
 	if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
 		cerr << "Error: send error" << endl;
 	return ;
