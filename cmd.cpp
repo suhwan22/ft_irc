@@ -58,7 +58,8 @@ int cmd::parsecommand() {
 		else if ((*it).cmd == "PASS")
 			pass((*it).arg);
 		else if ((*it).cmd == "NICK")
-			nick((*it).arg);
+			// nick((*it).arg);
+			;
 		else if ((*it).cmd == "USER")
 			user((*it).arg);
 		else
