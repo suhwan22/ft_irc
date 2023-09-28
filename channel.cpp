@@ -33,6 +33,11 @@ void	Channel::setUserLimit(const int limit)
 	_userLimit = limit;
 }
 
+void	Channel::setTopic(const std::string topic)
+{
+	_topic = topic;
+}
+
 const std::string&	Channel::getChannelName() const
 {
 	return (_channelName);
