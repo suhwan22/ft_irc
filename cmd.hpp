@@ -50,7 +50,7 @@ class cmd {
 	void	pass(string pass);
 
 	/* ping.cpp */
-	void	ping(string arg);
+	void	ping();
 
 	/* util.cpp */
 	void noSuchNick(string wrongnick);

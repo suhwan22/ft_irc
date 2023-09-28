@@ -2,7 +2,7 @@
 #include "client.hpp"
 #include "channel.hpp"
 
-void cmd::ping(string arg)
+void cmd::ping()
 {
 	string msg;
 

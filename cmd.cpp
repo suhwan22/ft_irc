@@ -51,10 +51,10 @@ int cmd::parsecommand() {
 		cout << cnt++ << std::endl;
 		if ((*it).cmd == "JOIN")
 			;
-		else if ((*it).cmd == "MODE")
-			;
+		else if ((*it).cmd == "PING")
+			ping();
 		else if ((*it).cmd == "PRIVMSG")
-			;
+			privmsg((*it).arg);
 		else if ((*it).cmd == "PASS")
 			pass((*it).arg);
 		else if ((*it).cmd == "NICK")
