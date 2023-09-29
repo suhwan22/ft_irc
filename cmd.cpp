@@ -17,6 +17,7 @@ cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> 
 		content.cmd = line;
 		getline(tmp, line, static_cast<char>(EOF));
 		line.erase(0, 1);
+		line.erase(line.size() - 1, 1);
 		content.arg = line;
 		_content.push_back(content);
 	}
@@ -51,10 +52,10 @@ int cmd::parsecommand() {
 		cout << cnt++ << std::endl;
 		if ((*it).cmd == "JOIN")
 			;
-		else if ((*it).cmd == "MODE")
-			;
+		else if ((*it).cmd == "PING")
+			ping();
 		else if ((*it).cmd == "PRIVMSG")
-			;
+			privmsg((*it).arg);
 		else if ((*it).cmd == "PASS")
 			pass((*it).arg);
 		else if ((*it).cmd == "NICK")

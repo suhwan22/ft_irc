@@ -29,7 +29,7 @@ void	cmd::user(string arg)
 	else
 	{
 		client->setCreated(true);
-		msg = ":irc.local 001 jaeywon :Welcome to the Localnet IRC Network jaeywon!jaeywon@127.0.0.1";
+		msg = ":irc.local 001 jaeywon :Welcome to the Localnet IRC Network jaeywon!jaeywon@127.0.0.1\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
 	}
 }
