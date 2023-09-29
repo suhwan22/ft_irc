@@ -16,7 +16,7 @@ void	cmd::nick(string nick)
 	}
 	else
 	{
-		if (((!(isalpha(nick[0]))) && nick[0] != '_') || nick.find_first_of("!@#$%^&*()+-=[]{}|;:'\",.<>?"))
+		if (((!(isalpha(nick[0]))) || nick[0] != '_') || hasSpecialCharacter(nick))
 		{
 			msg = ":irc.local 432 " + me->getNickname() + " " + nick + " :Erroneous Nickname\n";
 			if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)

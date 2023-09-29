@@ -55,7 +55,7 @@ class cmd {
 	/* util.cpp */
 	void noSuchNick(string wrongnick);
 	void noSuchChannel(string wrongchannel);
-	bool isFirstCharacterHash(const std::string& str);
+	bool hasSpecialCharacter(const std::string& str);
 
 	/* privmsg.cpp */
 	void privmsg(string arg);
