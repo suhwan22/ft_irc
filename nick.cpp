@@ -16,7 +16,7 @@ void	cmd::nick(string nick)
 	}
 	else
 	{
-		if (((!(isalpha(nick[0]))) || nick[0] != '_') || hasSpecialCharacter(nick))
+		if (((!(isalpha(nick[0]))) && nick[0] != '_'))
 		{
 			msg = ":irc.local 432 " + me->getNickname() + " " + nick + " :Erroneous Nickname\n";
 			if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
@@ -38,23 +38,21 @@ void	cmd::nick(string nick)
 			vector<Channel *>::iterator iter;
 			for (iter = _chlist.begin(); iter != _chlist.end(); iter++)
 			{
-				vector<Client *> members = (*iter)->getUsers();
 				if ((*iter)->isClientInChannel(me))
 				{
+					vector<Client *> members = (*iter)->getUsers();
 					for (int i = 0; i < (int)members.size(); i++)
 					{
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\n";
-						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+						if (members[i]->getSock() != me->getSock() && \
+						 send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
 				}
-				else {
-						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\n";
-						if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
-				}
-				return ;
 			}
+			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\n";
+			if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+				cerr << "Error: send error" << endl;
 		}
 	}
 }
