@@ -49,6 +49,23 @@ class cmd {
 	/* pass.cpp */
 	void	pass(string pass);
 
+	/* ping.cpp */
+	void	ping();
+
+	/* util.cpp */
+	void noSuchNick(string wrongnick);
+	void noSuchChannel(string wrongchannel);
+	bool isFirstCharacterHash(const std::string& str);
+
+	/* privmsg.cpp */
+	void privmsg(string arg);
+	void privmsgToClient(string arg, string inputmsg);
+	void privmsgToChannel(string arg, string inputmsg);
+
+	/* topic.cpp */
+	void topic(string arg);
+	void settingtopic(string arg, string inputmsg);
+
 	const	vector<content>& getContent() const;
 };
 
