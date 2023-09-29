@@ -17,18 +17,18 @@ void cmd::settingtopic(string arg, string inputmsg) {
 				return ;
 			}
 			else {
-				if (!((*iter)->isChennelOp(me))) {
-					topic = ":irc.local 482 " + me->getNickname() + " " + arg + " :You do not have access to change the topic on this channel\n";
-					if (send(_clntSock, topic.c_str(), topic.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
-				}
-				else {
+				// if (!((*iter)->isChennelOp(me))) {
+				// 	topic = ":irc.local 482 " + me->getNickname() + " " + arg + " :You do not have access to change the topic on this channel\n";
+				// 	if (send(_clntSock, topic.c_str(), topic.size(), 0) == -1)
+				// 		cerr << "Error: send error" << endl;
+				// }
+				// else {
 					for (int i = 0; i < (int)members.size(); i++) {
 						topic = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " TOPIC " + arg + " " + inputmsg;
 						if (send(members[i]->getSock(), topic.c_str(), topic.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
-				}
+				// }
 				return ;
 			}
 		}
@@ -38,6 +38,14 @@ void cmd::settingtopic(string arg, string inputmsg) {
 
 void cmd::topic(string arg)
 {
+	string	msg;
+	Client	*me = searchClient(_clntSock);
+	if (arg.empty()) {
+		msg = ":irc.local 461 " + me->getNickname() + " TOPIC " + ":Not enough parameters.\n";
+		if (send(_clntSock, msg.c_str(), msg.size(), 0) == 1)
+			cerr << "Error: send error" << endl;
+		return ;
+	}
 	string line;
 	stringstream tmp;
 	tmp = stringstream(arg);
