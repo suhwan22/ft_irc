@@ -72,7 +72,7 @@ class cmd {
 	/* mode.cpp */
 	void mode(string arg);
 	void modeToChannel(string arg, string line);
-	void modeToClient(string arg, string line);
+	void modeToClient(string line);
 	void mode_k(string channel, string option, string pass);
 	void plusOption_k(string channel, string option, string pass);
 	void minusOption_k(string channel, string option, string pass);

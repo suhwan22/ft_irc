@@ -47,8 +47,7 @@ void cmd::topic(string arg)
 		return ;
 	}
 	string line;
-	stringstream tmp;
-	tmp = stringstream(arg);
+	stringstream tmp(arg);
 	tmp >> arg;
 	getline(tmp, line, static_cast<char>(EOF));
 	line.erase(0, 1);
