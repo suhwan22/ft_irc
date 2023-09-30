@@ -2,22 +2,42 @@
 #include "client.hpp"
 #include "channel.hpp"
 
+void cmd::mode_l(string channel, string option, string num) {
+	string msg;
+	Client *me = searchClient(_clntSock);
+	if (num.empty()){
+		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l * :You must specify a parameter for the limit mode. Syntax: <limit>.\r\n";
+		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+			cerr << "Error: send error" << endl;
+		return ;
+	}
+	else if (strtod(num.c_str(), NULL) < 0)
+	{
+		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l " + num + " :Invalid limit mode parameter. Syntax: <limit>.\r\n";
+		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+			cerr << "Error: send error" << endl;
+		return ;
+	}
+	else if ()
+
+}
+
 void cmd::mode_k(string channel, string option, string pass) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	if (pass.empty()){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " k * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
-		if (send(me->getSock(), msg.c_str(), msg.size(), 0) == -1)
+		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
 		return ;
 	}
 	if (option[0] == '+')
-		plusOption_k(channel, option, pass);
+		plusOption_k(channel, pass);
 	else if (option[0] == '-')
-		minusOption_k(channel, option, pass);
+		minusOption_k(channel, pass);
 }
 
-void cmd::plusOption_k(string channel, string option, string pass)
+void cmd::plusOption_k(string channel, string pass)
 {
 	string msg;
 	vector<Channel *>::iterator iter;
@@ -25,14 +45,14 @@ void cmd::plusOption_k(string channel, string option, string pass)
 	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
 		if ((*iter)->getChannelName() == channel) {
 			vector<Client *> members = (*iter)->getUsers();
-			// if (!(*iter)->isChannelOp(me)) {
-			// 	msg = ":irc.local 482 " + me->getNickname() + " " + channel + " :You must have channel op access or above to set channel mode k\r\n";
-			// 	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			// 		cerr << "Error: send error" << endl;
-			// 	return ;
-			// }
-			// else {
-				if (_kflag == 1)
+			if (!(*iter)->isClientOp(me)) {
+				msg = ":irc.local 482 " + me->getNickname() + " " + channel + " :You must have channel op access or above to set channel mode k\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
+				return ;
+			}
+			else {
+				if ((*iter)->getChPassFlag() == true)
 					return ;
 				else {
 					_chpass = pass;
@@ -41,14 +61,14 @@ void cmd::plusOption_k(string channel, string option, string pass)
 						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
+					(*iter)->setChPassFlag(true);
 				}
-			// }
+			}
 		}
 	}
-	_kflag = 1;
 }
 
-void cmd::minusOption_k(string channel, string option, string pass)
+void cmd::minusOption_k(string channel, string pass)
 {
 	string msg;
 	vector<Channel *>::iterator iter;
@@ -56,14 +76,14 @@ void cmd::minusOption_k(string channel, string option, string pass)
 	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
 		if ((*iter)->getChannelName() == channel) {
 			vector<Client *> members = (*iter)->getUsers();
-			// if (!(*iter)->isChannelOp(me)) {
-			// 	msg = ":irc.local 482 " + me->getNickname() + " " + channel + " :You must have channel op access or above to set channel mode k\r\n";
-			// 	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			// 		cerr << "Error: send error" << endl;
-			// 	return ;
-			// }
-			// else {
-				if (_kflag == 0)
+			if (!(*iter)->isClientOp(me)) {
+				msg = ":irc.local 482 " + me->getNickname() + " " + channel + " :You must have channel op access or above to set channel mode k\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
+				return ;
+			}
+			else {
+				if ((*iter)->getChPassFlag() == false)
 					return ;
 				else {
 					_chpass = "";
@@ -72,11 +92,11 @@ void cmd::minusOption_k(string channel, string option, string pass)
 						if (send(members[i]->getSock(), msg.c_str(), msg.length(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
+					(*iter)->setChPassFlag(false);
 				}
-			// }
+			}
 		}
 	}
-	_kflag = 0;
 }
 
 
@@ -93,7 +113,7 @@ void cmd::modeToChannel(string arg, string line)
 		mode_k(arg, line, line_two);
 }
 
-void cmd::modeToClient(string arg, string line)
+void cmd::modeToClient(string line)
 {
 	string			line_two;
 	stringstream	tmp;
@@ -129,5 +149,5 @@ void cmd::mode(string arg)
 		modeToChannel(arg, line);
 	
 	else
-		modeToClient(arg, line);
+		modeToClient(line);
 }

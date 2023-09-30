@@ -16,6 +16,9 @@ class Channel
 		std::vector<Client *>	_opUsers;
 		std::string				_topic;
 		int						_userLimit;
+		bool						_kflag;
+		bool						_iflag;
+		bool						_tflag;
 
 	public:
 		Channel(std::string channelName);
@@ -34,11 +37,17 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
+		void	setInviteOnlyFlag(bool flag);
+		void	setChPassFlag(bool flag);
+		void	setChTopicFlag(bool flag);
 
 		const std::string&			getChannelName() const;
 		const std::string&			getPassWord() const;
 		int							getUserLimit() const;
 		const std::vector<Client *>	getUsers() const;
+		bool						getInviteOnlyFlag() const;
+		bool						getChPassFlag() const;
+		bool						getChTopicFlag() const;
 };
 
 #endif
