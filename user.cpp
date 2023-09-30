@@ -8,7 +8,7 @@ void	cmd::user(string arg)
 	string			realname;
 	string			username;
 	string			ip;
-		string	msg;
+	string			msg;
 
 	temp >> username;
 	temp >> username;
@@ -29,7 +29,8 @@ void	cmd::user(string arg)
 	else
 	{
 		client->setCreated(true);
-		msg = ":irc.local 001 jaeywon :Welcome to the Localnet IRC Network jaeywon!jaeywon@127.0.0.1\n";
+		msg = ":irc.local 001 " + client->getNickname() + " :Welcome to the Localnet IRC Network " \
+			   + client->getNickname() + "!" + client->getUserName() + "@127.0.0.1\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
 	}
 }
