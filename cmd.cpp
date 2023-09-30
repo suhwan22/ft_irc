@@ -13,9 +13,10 @@ cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> 
 
 	while ((pos = input.find("\r\n", start)) != string::npos)
 	{
-		if (pos == input.size() - 1)
+		if (pos + 2== input.size() - 1)
 			break ;
 		line = input.substr(start, pos - start);
+		start = pos + 2;
 		tmp = stringstream(line);
 		tmp >> line;
 		content.cmd = line;
