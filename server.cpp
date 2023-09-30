@@ -121,7 +121,7 @@ void	Server::addChannel(std::string name)
 	_channelList.push_back(newChannel);
 }
 
-void	delChannel(Channel *channel)
+void	Server::delChannel(Channel *channel)
 {
 	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
 	{
@@ -143,7 +143,7 @@ void	Server::addClient(int sock)
 	_clntList.push_back(newClient);
 }
 
-void	delClient(Client *client)
+void	Server::delClient(Client *client)
 {
 	for (std::vector<Client *>::iterator it = _clientList.begin(); it != _clientList.end(); it++)
 	{
