@@ -66,6 +66,11 @@ class cmd {
 	void topic(string arg);
 	void settingtopic(string arg, string inputmsg);
 
+	/* mode.cpp */
+	void mode(string arg);
+	void modeToChannel(string arg, string line);
+	void modeToClient(string arg, string line);
+
 	const	vector<content>& getContent() const;
 };
 
