@@ -145,11 +145,11 @@ void	Server::addClient(int sock)
 
 void	Server::delClient(Client *client)
 {
-	for (std::vector<Client *>::iterator it = _clientList.begin(); it != _clientList.end(); it++)
+	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 	{
 		if (client == (*it))
 		{
-			_clientList.erase(it);
+			_clntList.erase(it);
 			break ;
 		}
 	}
