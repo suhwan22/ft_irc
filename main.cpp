@@ -14,13 +14,6 @@
 #include "server.hpp"
 #include "client.hpp"
 
-
-void printCmdVector(const std::vector<std::string>& cmdVector) {
-    for (auto it = cmdVector.begin(); it != cmdVector.end(); ++it) {
-        std::cout << *it << std::endl;
-    }
-}
-
 int main(int argc, char **argv)
 {
 	if (argc != 3)
