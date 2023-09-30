@@ -62,6 +62,8 @@ int cmd::parsecommand() {
 			nick((*it).arg);
 		else if ((*it).cmd == "USER")
 			user((*it).arg);
+		else if ((*it).cmd == "MODE")
+			mode((*it).arg);
 		else
 			;
 	}
