@@ -13,6 +13,7 @@ class Channel
 		std::string				_channelName;
 		std::string				_passWord;
 		std::vector<Client *>	_users;
+		std::vector<Client *>	_opUsers;
 		std::string				_topic;
 		int						_userLimit;
 
@@ -21,6 +22,13 @@ class Channel
 		Channel(std::string channelName, std::string password);
 		~Channel();
 
+		void	addUser(Client *client);
+		void	delUser(Client *client);
+
+		void	addOpUser(Client *client);
+		void	delOpUser(Client *client);
+
+		bool	isClientOp(Client *client);
 		bool	isClientInChannel(Client *client);
 
 		void	setPassWord(const std::string passWord);
