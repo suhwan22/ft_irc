@@ -67,6 +67,8 @@ int cmd::parsecommand() {
 			user((*it).arg);
 		else if ((*it).cmd == "TOPIC")
 			topic((*it).arg);
+		else if ((*it).cmd == "TOPIC")
+			quit((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;

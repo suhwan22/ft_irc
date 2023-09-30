@@ -16,7 +16,6 @@ class Client
 
 		/* 아이피랑 포트 어떤식으로 들어오는지 봐야함 */
 		std::string				_ip;
-		int						_port;
 
 		/* user information */
 		bool					_isCreated;
@@ -36,7 +35,6 @@ class Client
 
 		/* setter func */
 		void	setCreated(const bool val);
-		void	setPort(const int port);
 		void	setIP(const std::string ip);
 		void	setPass(const std::string pass);
 		void	setNickname(const std::string nickname);
@@ -51,7 +49,6 @@ class Client
 		const std::string&	getPass() const;
 		bool				getCreated() const;
 		int					getSock() const;
-		int					getPort() const;
 };
 
 #endif

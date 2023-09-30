@@ -55,6 +55,9 @@ class cmd {
 	/* ping.cpp */
 	void	ping();
 
+	/* quit.cpp */
+	void	quit(string arg);
+
 	/* util.cpp */
 	void noSuchNick(string wrongnick);
 	void noSuchChannel(string wrongchannel);
