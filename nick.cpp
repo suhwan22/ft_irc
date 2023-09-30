@@ -47,12 +47,19 @@ void	cmd::nick(string nick)
 						if (members[i]->getSock() != me->getSock() && \
 						 send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
+						else
+							me->setNickname(nick);
+							
+						
+						
 					}
 				}
 			}
 			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\r\n";
 			if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 				cerr << "Error: send error" << endl;
+			else
+				me->setNickname(nick);
 		}
 	}
 }
