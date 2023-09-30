@@ -5,6 +5,8 @@
 # include <unistd.h>
 # include <string>
 # include <cstring>
+# include <cstdlib>
+# include <cstdio>
 # include <vector>
 # include <arpa/inet.h>
 # include <sys/epoll.h>

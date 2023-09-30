@@ -5,7 +5,6 @@
 cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist), _servPass(servpass)
 {
 	string			input(buf, strlen);
-	stringstream	tmp;
 	string			line;
 	size_t			start = 0;
 	size_t			pos;
@@ -17,7 +16,7 @@ cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> 
 			break ;
 		line = input.substr(start, pos - start);
 		start = pos + 2;
-		tmp = stringstream(line);
+		stringstream	tmp(line);
 		tmp >> line;
 		content.cmd = line;
 		getline(tmp, line, static_cast<char>(EOF));
@@ -66,8 +65,6 @@ int cmd::parsecommand() {
 			nick((*it).arg);
 		else if ((*it).cmd == "USER")
 			user((*it).arg);
-		else
-			;
 	}
 	// printCmdVector(*tokens);
 	return 0;

@@ -26,9 +26,10 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
-		const std::string&	getChannelName() const;
-		const std::string&	getPassWord() const;
-		const int			getUserLimit() const;
+
+		const std::string&			getChannelName() const;
+		const std::string&			getPassWord() const;
+		int							getUserLimit() const;
 		const std::vector<Client *>	getUsers() const;
 };
 
