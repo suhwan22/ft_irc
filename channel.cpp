@@ -15,10 +15,62 @@ Channel::Channel(std::string channelName, std::string password) :
 
 Channel::~Channel() {}
 
+void	Channel::addUser(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+	{
+		if (client == *(it))
+			return ;
+	}
+	_users.push_back(client);
+}
+
+void	Channel::delUser(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+	{
+		if ((*it) == client)
+		{
+			_users.erase(it);
+			break ;
+		}
+	}
+}
+
+void	Channel::addOpUser(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
+	{
+		if (client == *(it))
+			return ;
+	}
+	_opUsers.push_back(client);
+}
+
+void	Channel::delOpUser(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
+	{
+		if ((*it) == client)
+		{
+			_opUsers.erase(it);
+			break ;
+		}
+	}
+}
+
 bool	Channel::isClientInChannel(Client *client)
 {
 	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
-		if ((*it)->getNickname() == client->getNickname())
+		if ((*it) == client)
+			return (true);
+	return (false);
+}
+
+bool	Channel::isClientOp(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
+		if ((*it) == client)
 			return (true);
 	return (false);
 }
