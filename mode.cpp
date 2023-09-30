@@ -84,8 +84,7 @@ void cmd::minusOption_k(string channel, string option, string pass)
 void cmd::modeToChannel(string arg, string line)
 {
 	string line_two;
-	stringstream tmp;
-	tmp = stringstream(line);
+	stringstream tmp(line);
 	tmp >> line;
 	getline(tmp, line_two, static_cast<char>(EOF));
 	line_two.erase(0, 1);
@@ -93,13 +92,12 @@ void cmd::modeToChannel(string arg, string line)
 		mode_k(arg, line, line_two);
 }
 
-void cmd::modeToClient(string arg, string line)
+void cmd::modeToClient(string line)
 {
 	string			line_two;
-	stringstream	tmp;
+	stringstream	tmp(line);
 	string			msg;
 	Client			*me = searchClient(_clntSock);
-	tmp = stringstream(line);
 	tmp >> line;
 	getline(tmp, line_two, static_cast<char>(EOF));
 	line_two.erase(0, 1);
@@ -120,8 +118,7 @@ void cmd::mode(string arg)
 {
 	string msg;
 	string line;
-	stringstream tmp;
-	tmp = stringstream(arg);
+	stringstream tmp(arg);
 	tmp >> arg;
 	line.erase(0, 1);
 	getline(tmp, line, static_cast<char>(EOF));
@@ -129,5 +126,5 @@ void cmd::mode(string arg)
 		modeToChannel(arg, line);
 	
 	else
-		modeToClient(arg, line);
+		modeToClient(line);
 }
