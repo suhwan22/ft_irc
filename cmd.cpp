@@ -4,20 +4,24 @@
 
 cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist), _servPass(servpass)
 {
-	string			receivedstring(buf, strlen);
-	stringstream	ss(receivedstring);
+	string			input(buf, strlen);
 	stringstream	tmp;
 	string			line;
+	size_t			start = 0;
+	size_t			pos;
 	content			content;
 
-	while (getline(ss, line, '\n'))
+	while ((pos = input.find("\r\n", start)) != string::npos)
 	{
+		if (pos + 2== input.size() - 1)
+			break ;
+		line = input.substr(start, pos - start);
+		start = pos + 2;
 		tmp = stringstream(line);
 		tmp >> line;
 		content.cmd = line;
 		getline(tmp, line, static_cast<char>(EOF));
 		line.erase(0, 1);
-		line.erase(line.size() - 1, 1);
 		content.arg = line;
 		_content.push_back(content);
 	}
@@ -64,6 +68,8 @@ int cmd::parsecommand() {
 			user((*it).arg);
 		else if ((*it).cmd == "MODE")
 			mode((*it).arg);
+		else if ((*it).cmd == "TOPIC")
+			topic((*it).arg);
 		else
 			;
 	}

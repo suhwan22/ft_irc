@@ -18,7 +18,7 @@ void	cmd::nick(string nick)
 	{
 		if (((!(isalpha(nick[0]))) && nick[0] != '_') || hasSpecialCharacter(nick) || nick.size() > 9)
 		{
-			msg = ":irc.local 432 " + me->getNickname() + " " + nick + " :Erroneous Nickname\n";
+			msg = ":irc.local 432 " + me->getNickname() + " " + nick + " :Erroneous Nickname\r\n";
 			if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 				cerr << "Error: send error" << endl;
 			return ;
@@ -28,7 +28,7 @@ void	cmd::nick(string nick)
 			vector<Client *>::iterator cliit;
 			for(cliit = _clilist.begin(); cliit != _clilist.end(); cliit++) {
 				if ((*cliit)->getNickname() == nick) {
-					msg = ":irc.local 433 " + me->getNickname() + " " + nick + " :Nickname is already in use.\n";
+					msg = ":irc.local 433 " + me->getNickname() + " " + nick + " :Nickname is already in use.\r\n";
 					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 						cerr << "Error: send error" << std::endl;
 					return ;
@@ -43,16 +43,14 @@ void	cmd::nick(string nick)
 					vector<Client *> members = (*iter)->getUsers();
 					for (int i = 0; i < (int)members.size(); i++)
 					{
-						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\n";
+						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\r\n";
 						if (members[i]->getSock() != me->getSock() && \
 						 send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
 				}
 			}
-			if (nick.size() > 9)
-
-			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\n";
+			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " NICK :" + nick + "\r\n";
 			if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 				cerr << "Error: send error" << endl;
 		}

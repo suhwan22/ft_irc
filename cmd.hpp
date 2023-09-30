@@ -26,6 +26,8 @@ class cmd {
 	vector<Client *>&	_clilist;
 	vector<Channel *>&	_chlist;
 	string				_servPass;
+	string				_chpass;
+	int					_kflag;
 
  public:
 	cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist);
@@ -69,7 +71,10 @@ class cmd {
 	/* mode.cpp */
 	void mode(string arg);
 	void modeToChannel(string arg, string line);
-	// void modeToClient(string arg, string line);
+	void modeToClient(string arg, string line);
+	void mode_k(string channel, string option, string pass);
+	void plusOption_k(string channel, string option, string pass);
+	void minusOption_k(string channel, string option, string pass);
 
 	const	vector<content>& getContent() const;
 };
