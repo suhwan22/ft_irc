@@ -22,10 +22,9 @@ void cmd::noSuchChannel(string wrongchannel) {
 		cerr << "Error: send err" << endl;
 }
 
-bool cmd::isFirstCharacterHash(const std::string& str) {
-    if (!str.empty() && str[0] == '#') {
-        return true;
-    } else {
-        return false;
-    }
+bool cmd::hasSpecialCharacter(const std::string& str) {
+    std::string specialCharacters = "!@#$%^&*()+-=[]{}|;:'\",.<>?";
+
+    size_t found = str.find_first_of(specialCharacters);
+    return found != std::string::npos;
 }
