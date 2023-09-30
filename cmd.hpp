@@ -1,12 +1,13 @@
 #ifndef CMD_HPP
 # define CMD_HPP
 
-#include <iostream>
-#include <vector>
-#include <cstring>
-#include <string>
-#include <sstream>
-#include <arpa/inet.h>
+# include <iostream>
+# include <vector>
+# include <cstring>
+# include <cstdio>
+# include <string>
+# include <sstream>
+# include <arpa/inet.h>
 
 using namespace std;
 

@@ -48,7 +48,7 @@ const std::string&	Channel::getPassWord() const
 	return (_passWord);
 }
 
-const int	Channel::getUserLimit() const
+int	Channel::getUserLimit() const
 {
 	return (_userLimit);
 }
