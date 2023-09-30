@@ -8,7 +8,7 @@ void	cmd::user(string arg)
 	string			realname;
 	string			username;
 	string			ip;
-		string	msg;
+	string			msg;
 
 	temp >> username;
 	temp >> username;
