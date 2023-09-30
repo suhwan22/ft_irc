@@ -121,6 +121,18 @@ void	Server::addChannel(std::string name)
 	_channelList.push_back(newChannel);
 }
 
+void	delChannel(Channel *channel)
+{
+	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+	{
+		if (channel == (*it))
+		{
+			_channelList.erase(it);
+			break ;
+		}
+	}
+}
+
 void	Server::addClient(int sock)
 {
 	Client *newClient = new Client(sock);
@@ -129,6 +141,18 @@ void	Server::addClient(int sock)
 		std::cout << "Error: Server::addClient: new Client()" << std::endl;
 	}
 	_clntList.push_back(newClient);
+}
+
+void	delClient(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _clientList.begin(); it != _clientList.end(); it++)
+	{
+		if (client == (*it))
+		{
+			_clientList.erase(it);
+			break ;
+		}
+	}
 }
 
 int	Server::getSock() const

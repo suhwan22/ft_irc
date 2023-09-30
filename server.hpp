@@ -30,19 +30,21 @@ class Server
 		Server(int port, std::string pass);
 		~Server();
 
-		//Server& operator=(const Server& obj);
-
 		void	serverInit();
 		void	serverStart();
 
 		void	addChannel(std::string name);
-		void	addClient(int sock);
+		void	delChannel(Channel *channel);
 
-		int		getSock() const;
-		int		getPort() const;
+		void	addClient(int sock);
+		void	delClient(Client *client);
+
+		/* get set func */
+		int					getSock() const;
+		int					getPort() const;
 		const std::string&	getPass() const;
 
-		void	setPass(const std::string pass);
+		void				setPass(const std::string pass);
 };
 
 #endif
