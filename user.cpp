@@ -23,7 +23,7 @@ void	cmd::user(string arg)
 	{
 		msg = ":irc.local ";
 		//msg = "NOTICE SEOUL :*** Could not resolve your hostname: Request timed out; using your IP address (127.0.0.1) instead.\n";
-		msg = msg + "ERROR :Closing link: (" + client->getUserName() + "@" + client->getIP() + ") [Access denied by configuration]\n";
+		msg = msg + "ERROR :Closing link: (" + client->getUserName() + "@127.0.0.1) [Access denied by configuration]\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
 	}
 	else
