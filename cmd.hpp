@@ -86,6 +86,7 @@ class cmd {
 	void plusOption_o(string ch_name, string nick);
 	void minusOption_o(string ch_name, string nick);
 	void mode_t(string ch_name, string option);
+	void mode_i(string ch_name, string option);
 
 	const	vector<content>& getContent() const;
 };
