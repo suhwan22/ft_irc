@@ -92,6 +92,10 @@ class cmd {
 	void part(string arg);
 	void execPart(string ch_name, string inputmsg);
 
+	/* kick.cpp */
+	void kick(string arg);
+	void execKick(string ch_name, string inputmsg);
+
 	const	vector<content>& getContent() const;
 };
 
