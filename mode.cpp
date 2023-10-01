@@ -403,6 +403,12 @@ void cmd::modeToChannel(string arg, string line)
 		mode_k(arg, line, line_two);
 	else if (line[1] == 'l')
 		mode_l(arg, line, line_two);
+	else if (line[1] == 'i')
+		mode_i(arg, line);
+	else if (line[1] == 't')
+		mode_t(arg, line);
+	else if (line[1] == 'o')
+		mode_o(arg, line, line_two);
 	else if (line.empty())
 		onlyChannel(arg);
 	else if (line[0] == 'b')
