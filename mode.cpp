@@ -2,18 +2,116 @@
 #include "client.hpp"
 #include "channel.hpp"
 
+void cmd::mode_i(string ch_name, string option) {
+	string	msg;
+	Client	*me = searchClient(_clntSock);
+	vector<Channel *>::iterator iter;
+
+	if (option[0] == '+') {
+		for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+			if ((*iter)->getChannelName() == ch_name) {
+				vector<Client *> members = (*iter)->getUsers();
+				if (!(*iter)->isClientOp(me)){
+					sendNotOpMsg(ch_name, "i", false);
+					return ;
+				}
+				else {
+					if (!(*iter)->getInviteOnlyFlag() == true)
+						return ;
+					else {
+						for (int i = 0; (int)members.size(); i++) {
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+i\r\n";
+							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+								cerr << "Error: send error" << endl;
+						}
+					}
+					(*iter)->setInviteOnlyFlag(true);
+				}
+			}
+		}
+		noSuchChannel(ch_name);
+	}
+	else if (option[0] == '-') {
+		for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+			if ((*iter)->getChannelName() == ch_name) {
+				vector<Client *> members = (*iter)->getUsers();
+				if (!(*iter)->isClientOp(me)){
+					sendNotOpMsg(ch_name, "i", false);
+					return ;
+				}
+				else {
+					if (!(*iter)->getInviteOnlyFlag() == false)
+						return ;
+					else {
+						for (int i = 0; (int)members.size(); i++) {
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-i\r\n";
+							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+								cerr << "Error: send error" << endl;
+						}
+					}
+					(*iter)->setInviteOnlyFlag(false);
+				}
+			}
+		}
+		noSuchChannel(ch_name);
+	}
+}
+
 void cmd::mode_t(string ch_name, string option) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
-	if (option[0] == '+')
+	if (option[0] == '+') {
 		for (iter = _chlist.begin(); iter != _chlist.end(); iter++){
-			if ((*iter)->getChannelName() == ch_name)
+			if ((*iter)->getChannelName() == ch_name) {
+				vector<Client *> members = (*iter)->getUsers();
+				if (!(*iter)->isClientOp(me)) {
+					sendNotOpMsg(ch_name, "t", false);
+					return ;
+				}
+				else {
+					if ((*iter)->getChTopicFlag() == true)
+						return ;
+					else {
+						for (int i = 0; (int)members.size(); i++){
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+t\r\n";
+							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+								cerr << "Error: send error" << endl;
+						}
+					}
+					(*iter)->setChTopicFlag(true);
+				}
+			}
 		}
-	else if (option[0] == '-')
-		minusOption_o(channel, nick);
+		noSuchChannel(ch_name);
+	}
+	else if (option[0] == '-') {
+		for (iter = _chlist.begin(); iter != _chlist.end(); iter++){
+			if ((*iter)->getChannelName() == ch_name) {
+				vector<Client *> members = (*iter)->getUsers();
+				if (!(*iter)->isClientOp(me)) {
+					sendNotOpMsg(ch_name, "t", true);
+					return ;
+				}
+				else {
+					if ((*iter)->getChTopicFlag() == false)
+						return ;
+					else {
+						for (int i = 0; (int)members.size(); i++){
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-t\r\n";
+							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+								cerr << "Error: send error" << endl;
+						}
+					}
+					(*iter)->setChTopicFlag(false);
+				}
+			}
+		}
+		noSuchChannel(ch_name);
+	}
 }
+
 
 void cmd::mode_o(string channel, string option, string nick) {
 	string	msg;
