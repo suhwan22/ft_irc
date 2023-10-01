@@ -4,13 +4,13 @@
 Channel::Channel(std::string channelName) :
 	_channelName(channelName),
 	_passWord(""),
-	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(false)
+	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(false), _lflag(false)
 {}
 
 Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
 	_passWord(password),
-	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(false)
+	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(false), _lflag(false)
 {}
 
 Channel::~Channel() {}
@@ -90,6 +90,11 @@ void	Channel::setChTopicFlag(bool flag)
 	_tflag = flag;
 }
 
+void	Channel::setChLimitFlag(bool flag)
+{
+	_lflag = flag;
+}
+
 void	Channel::setPassWord(const std::string passWord)
 {
 	_passWord = passWord;
@@ -136,4 +141,9 @@ bool Channel::getChPassFlag() const
 bool Channel::getChTopicFlag() const
 {
 	return (_tflag);
+}
+
+bool Channel::getChLimitFlag() const
+{
+	return (_lflag);
 }
