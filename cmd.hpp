@@ -88,6 +88,10 @@ class cmd {
 	void mode_t(string ch_name, string option);
 	void mode_i(string ch_name, string option);
 
+	/* part.cpp */
+	void part(string arg);
+	void execPart(string ch_name, string inputmsg);
+
 	const	vector<content>& getContent() const;
 };
 
