@@ -19,7 +19,7 @@ void cmd::execPart(string ch_name, string inputmsg)
 			}
 			else {
 				for (int i = 0; i < (int)members.size(); i++){
-					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PART " + ch_name + " :" + inputmsg + "\r\n";
+					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PART " + ch_name + " " + inputmsg + "\r\n";
 					if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 						cerr << "Error: send error" << endl;
 					
