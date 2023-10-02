@@ -104,18 +104,13 @@ int cmd::parsecommand() {
 
 void	cmd::emptyChannelClear()
 {
-	for (vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
+	vector<Channel *>::iterator it = _chList.begin();
+	while (it != _chList.end())
 	{
 		if ((*it)->getUsers().size() == 0)
-		{
-			if (_chList.size() == 1)
-			{
-				_chList.erase(it);
-				_chList = vector<Channel *>();
-			}
-			else
-				_chList.erase(it);
-		}
+			_chList.erase(it);
+		else
+			it++;
 	}
 }
 
