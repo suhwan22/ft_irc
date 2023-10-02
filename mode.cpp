@@ -20,7 +20,7 @@ void cmd::mode_i(string ch_name, string option) {
 					return ;
 				}
 				else {
-					if (!(*iter)->getInviteOnlyFlag() == true)
+					if ((*iter)->getInviteOnlyFlag() == true)
 						return ;
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
@@ -48,7 +48,7 @@ void cmd::mode_i(string ch_name, string option) {
 					return ;
 				}
 				else {
-					if (!(*iter)->getInviteOnlyFlag() == false)
+					if ((*iter)->getInviteOnlyFlag() == false)
 						return ;
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
@@ -233,7 +233,7 @@ void cmd::plusOption_o(string ch_name, string nick)
 void cmd::mode_l(string channel, string option, string num) {
 	string msg;
 	Client *me = searchClient(_clntSock);
-	if (num.empty()){
+	if (num.empty() && option[0] == '+'){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l * :You must specify a parameter for the limit mode. Syntax: <limit>.\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
