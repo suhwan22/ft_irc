@@ -105,7 +105,7 @@ void	Server::serverStart()
 				{
 					std::cout << (*it)->getChannelName() << " : ";
 					for (std::vector<Client *>::iterator clnt = (*it)->getUsers().begin(); clnt != (*it)->getUsers.end(); clnt++)
-						std::cout << (*clnt)->getNickname(); << " ";
+						std::cout << (*clnt)->getNickname() << " ";
 					std::cout << std::endl;
 				}
 			}
