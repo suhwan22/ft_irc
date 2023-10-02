@@ -21,6 +21,7 @@ struct content
 };
 
 class cmd {
+
 	private:
 		int					_clntSock;
 		vector<content>		_content;
