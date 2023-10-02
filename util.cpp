@@ -7,7 +7,7 @@ void cmd::noSuchNick(string wrongnick) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 
-	msg = ":irc.local 401 " + me->getNickname() + " " + wrongnick + " :No such nick\n";
+	msg = ":irc.local 401 " + me->getNickname() + " " + wrongnick + " :No such nick\r\n";
 	if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
 		cerr << "Error: send err" << endl;
 }
@@ -17,7 +17,7 @@ void cmd::noSuchChannel(string wrongchannel) {
 	Client	*me = searchClient(_clntSock);
 
 	
-	msg = ":irc.local 403 " + me->getNickname() + " " + wrongchannel + " :No such channel\n";
+	msg = ":irc.local 403 " + me->getNickname() + " " + wrongchannel + " :No such channel\r\n";
 	if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
 		cerr << "Error: send err" << endl;
 }
