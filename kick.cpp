@@ -33,6 +33,7 @@ void cmd::execKick(string ch_name, string nick)
 								cout << "Error: send error" << endl; 
 						}
 						(*chiter)->delUser(*cliter);
+						(*cliter)->exitChannel(ch_name);
 					}
 					return ;
 				}
