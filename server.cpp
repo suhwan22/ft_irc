@@ -114,12 +114,12 @@ void	Server::serverStart()
 				}
 
 				std::cout << "\ncurrent channel(" << _channelList.size() << ") : ";
-				for (std::vector<Client *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+				for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
 					std::cout << (*it)->getChannelName() << " ";
 				std::cout << std::endl;
 
 				std::cout << "current each channel user" << std::endl;
-				for (std::vector<Client *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+				for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
 				{
 					std::cout << (*it)->getChannelName() << std::endl;
 					(*it)->printUsers();
