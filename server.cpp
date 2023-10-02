@@ -139,7 +139,7 @@ void	Server::delChannel(Channel *channel)
 
 void	Server::delEmptyChannel()
 {
-	if (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
 		if ((*it)->getUsers().size() == 0)
 			_channelList.erase(it);
 }
