@@ -14,9 +14,9 @@ class Client
 		/* client socket info */
 		int						_clntSock;
 
-		/* 아이피랑 포트 어떤식으로 들어오는지 봐야함 */
+		/* 아이피  어떤식으로 들어오는지 봐야함 -> 들어오는 ip는 서버 ip였다,, */
+		/* 실제로 client의 ip는 없고 서버가 할당해준다 host name을 못찾아서? 인듯 */
 		std::string				_ip;
-		int						_port;
 
 		/* user information */
 		bool					_isCreated;
@@ -25,18 +25,24 @@ class Client
 		std::string				_realName;
 		std::string				_userName;
 		std::vector<Channel *>	_joinChannels;
+		std::vector<Channel *>	_inviteChannels;
 
 	public:
 		Client(int ClntSock);
 		~Client();
 
+		/* Channel func */
 		void	joinChannel(Channel *channel);
 		void	exitChannel(const std::string channelName);
 		void	cleanChannel();
 
+		/* inviteChannel func */
+		void	addInviteChannel(Channel *channel);
+		void	delInviteChannel(Channel *channel);
+		bool	isInviteChannel(Channel *channel);
+
 		/* setter func */
 		void	setCreated(const bool val);
-		void	setPort(const int port);
 		void	setIP(const std::string ip);
 		void	setPass(const std::string pass);
 		void	setNickname(const std::string nickname);
@@ -51,7 +57,6 @@ class Client
 		const std::string&	getPass() const;
 		bool				getCreated() const;
 		int					getSock() const;
-		int					getPort() const;
 };
 
 #endif

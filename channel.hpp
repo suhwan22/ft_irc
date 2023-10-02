@@ -21,6 +21,12 @@ class Channel
 		bool					_tflag;
 		bool					_lflag;
 
+		/* option flag */
+		bool					_kflag;
+		bool					_iflag;
+		bool					_tflag;
+		bool					_lflag;
+
 	public:
 		Channel(std::string channelName);
 		Channel(std::string channelName, std::string password);
@@ -35,22 +41,26 @@ class Channel
 		bool	isClientOp(Client *client);
 		bool	isClientInChannel(Client *client);
 
+		/* setter func */
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
-		void	setInviteOnlyFlag(bool flag);
-		void	setChPassFlag(bool flag);
-		void	setChTopicFlag(bool flag);
-		void	setChLimitFlag(bool flag);
 
-		const std::string&			getChannelName() const;
-		const std::string&			getPassWord() const;
-		int							getUserLimit() const;
-		const std::vector<Client *>	getUsers() const;
-		bool						getInviteOnlyFlag() const;
-		bool						getChPassFlag() const;
-		bool						getChTopicFlag() const;
-		bool						getChLimitFlag() const;
+		void	setInviteOnlyFlag(const bool flag);
+		void	setChPassFlag(const bool flag);
+		void	setChTopicFlag(const bool flag);
+		void	setChLimitFlag(const bool flag);
+
+		/* getter func */
+		std::string						getUsersName();
+		const std::vector<Client *>&	getUsers() const;
+		const std::string&				getChannelName() const;
+		const std::string&				getPassWord() const;
+		int								getUserLimit() const;
+		bool							getInviteOnlyFlag() const;
+		bool							getChPassFlag() const;
+		bool							getChTopicFlag() const;
+		bool							getChLimitFlag() const;
 };
 
 #endif
