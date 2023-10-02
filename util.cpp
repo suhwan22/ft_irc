@@ -28,23 +28,3 @@ bool cmd::hasSpecialCharacter(const std::string& str) {
     size_t found = str.find_first_of(specialCharacters);
     return found != std::string::npos;
 }
-
-void cmd::sendNotOpMsg(string channel, string mode, bool flag)
-{
-	string	msg;
-	Client	*me = searchClient(_clntSock);
-	if (flag == true)
-	{
-		msg = ":irc.local 482 " + me->getNickname() + " " + channel + \
-			" :You must have channel op access or above to set channel mode " + mode + "\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
-	}
-	else if (flag == true)
-	{
-		msg = ":irc.local 482 " + me->getNickname() + " " + channel + \
-			" :You must have channel op access or above to unset channel mode " + mode + "\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
-	}
-}

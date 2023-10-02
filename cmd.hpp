@@ -76,7 +76,6 @@ class cmd {
 	void noSuchNick(string wrongnick);
 	void noSuchChannel(string wrongchannel);
 	bool hasSpecialCharacter(const std::string& str);
-	void sendNotOpMsg(string channel, string mode, bool flag);
 
 	/* privmsg.cpp */
 	void privmsg(string arg);
