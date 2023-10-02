@@ -67,8 +67,10 @@ Channel	*cmd::searchChannel(string channelName)
 }
 
 int cmd::parsecommand() {
+	int	cnt = 0;
 	for (vector<content>::iterator it = _content.begin(); it != _content.end(); it++)
 	{
+		cout << cnt++ << std::endl;
 		if ((*it).cmd == "JOIN")
 			join((*it).arg);
 		else if ((*it).cmd == "PING")
