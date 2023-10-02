@@ -121,6 +121,7 @@ class cmd {
 		void kick(string arg);
 		void execKick(string ch_name, string inputmsg);
 	
+		void	emptyChannelClear();
 		const	vector<content>& getContent() const;
 };
 
