@@ -408,8 +408,21 @@ void cmd::onlyChannel(string ch_name)
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 
+	long long	ltime = static_cast<long long>(time(NULL));
+	string	stime = "";
+	char	c;
+
+	while (ltime / 10)
+	{
+		c = '0' + ltime % 10;
+		stime.insert(0, 1, c);
+		ltime /= 10;
+	}
+	c = '0' + ltime % 10;
+	stime.insert(0, 1 ,c);
+
 	msg = ":irc.local 324 " + me->getNickname() + " " + ch_name + " :+nt\r\n" + \
-		":irc.local 329 " + me->getNickname() + " " + ch_name + " \r\n"; //채널고유번호가 들어가는곳
+		":irc.local 329 " + me->getNickname() + " " + ch_name + " :" + stime + "\r\n"; //채널고유번호가 들어가는곳
 	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 		cerr << "Error: send error" << endl;
 }

@@ -34,7 +34,7 @@ void	cmd::user(string arg)
 		string	msg2 = ":irc.local 002 " + client->getNickname() \
 						+ " :Your host is irc.local, running version InspIRCd-3\r\n";
 		string	msg3 = ":irc.local 003 " + client->getNickname() \
-						+ " :This server was created 09:53:06 Sep 30 2023\r\n";
+						+ " :This server was created 18:29:06 Oct 3 2023\r\n";
 		string	msg4 = ":irc.local 004 " + client->getNickname() \
 						+ " irc.local ircserv iosw biklmnopstv :bklov\r\n";
 		string	msg5 = ":irc.local 005 " + client->getNickname() \

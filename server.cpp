@@ -116,6 +116,23 @@ void	Server::serverStart()
 	close(epfd);
 }
 
+void	Server::delEmptyChannel()
+{
+	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+	{
+		std::vector<Client *> users = (*it)->getUsers();
+		if (users.size() == 0)
+			_channelList.erase(it);
+	}
+//	std::vector<Client *> users;
+//	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+//	{
+//		users = (*it)->getUsers();
+//		if (users.size() == 0)
+//			_channelList.erase(it);
+//	}
+}
+
 void	Server::addChannel(std::string name)
 {
 	Channel *newChannel = new Channel(name);
@@ -135,17 +152,6 @@ void	Server::delChannel(Channel *channel)
 			_channelList.erase(it);
 			break ;
 		}
-	}
-}
-
-void	Server::delEmptyChannel()
-{
-	std::vector<Client *> users;
-	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
-	{
-		users = (*it)->getUsers();
-		if (users.size() == 0)
-			_channelList.erase(it);
 	}
 }
 
