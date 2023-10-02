@@ -35,6 +35,7 @@ class Server
 
 		void	addChannel(std::string name);
 		void	delChannel(Channel *channel);
+		void	delEmptyChannel();
 
 		void	addClient(int sock);
 		void	delClient(Client *client);

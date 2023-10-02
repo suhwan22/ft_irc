@@ -100,8 +100,7 @@ void	Server::serverStart()
 					command.printContent(command.getContent());
 					command.parsecommand();
 				}
-
-
+				delEmptyChannel();
 			}
 		}
 	}
@@ -129,6 +128,11 @@ void	Server::delChannel(Channel *channel)
 			break ;
 		}
 	}
+}
+
+void	Server::delEmptyChannel()
+{
+
 }
 
 void	Server::addClient(int sock)

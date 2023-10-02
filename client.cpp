@@ -34,7 +34,12 @@ void	Client::exitChannel(const std::string channelName)
 void	Client::cleanChannel()
 {
 	/* 그냥 써도 되나? */
-	_joinChannels.clear();
+	for (std::vector<Channel *>::iterator it = _joinChannels.begin(); it != _joinChannels.end(); it++)
+	{
+		if ((*it)->isClientOp(this))
+			(*it)->delOpUser(this);
+		(*it)->delUser(this);
+	}
 }
 
 void	Client::addInviteChannel(Channel *channel)
