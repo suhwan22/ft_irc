@@ -167,11 +167,12 @@ void cmd::minusOption_o(string ch_name, string nick)
 						else {
 							(*iter)->delOpUser(*cliter);
 							for (int i = 0; i < (int)members.size(); i++) {
-								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + "-o :" + nick + "\r\n";
+								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " -o :" + nick + "\r\n";
 								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 									cerr << "Error: send error" << endl;
 							}
 						}
+						return ;
 					}
 				}
 				noSuchNick(nick);
@@ -208,12 +209,13 @@ void cmd::plusOption_o(string ch_name, string nick)
 							return ;
 						else {
 							for (int i = 0; i < (int)members.size(); i++) {
-								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + "+o :" + nick + "\r\n";
+								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +o :" + nick + "\r\n";
 								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 									cerr << "Error: send error" << endl;
 							}
 							(*iter)->addOpUser(*cliter);
 						}
+						return ;
 					}
 				}
 				noSuchNick(nick);
