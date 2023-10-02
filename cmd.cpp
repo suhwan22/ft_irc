@@ -95,6 +95,8 @@ int cmd::parsecommand() {
 			part((*it).arg);
 		else if ((*it).cmd == "INVITE")
 			invite((*it).arg);
+		else if ((*it).cmd == "WHO")
+			who((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;
