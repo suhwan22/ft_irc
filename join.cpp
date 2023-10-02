@@ -48,7 +48,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 			/* channel이 invite only 인 경우 */
 			{
 				/* msg 미완성 */
-				msg = ":irc.local 475 " + me->getNickname() + " " + ch->getChannelName() \
+				msg = ":irc.local 473 " + me->getNickname() + " " + ch->getChannelName() \
 					   + " :Cannot join channel (invite only)\r\n";
 				send(_clntSock, msg.c_str(), msg.size(), 0);
 			}
@@ -58,7 +58,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 				/* 유저제한을 넘는 경우 */
 				{
 					/* msg 미완성 */
-					msg = ":irc.local 475 " + me->getNickname() + " " + ch->getChannelName() \
+					msg = ":irc.local 471 " + me->getNickname() + " " + ch->getChannelName() \
 						   + " :Cannot join channel (channel is full)\r\n";
 					send(_clntSock, msg.c_str(), msg.size(), 0);
 				}
