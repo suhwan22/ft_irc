@@ -123,6 +123,30 @@ bool	Channel::isClientInvite(Client *client)
 	return (false);
 }
 
+void	Channel::printUsers()
+{
+	std::cout << "users : ";
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+		std::cout << (*it)->getNickname() << " ";
+	std::cout << std::endl;
+}
+
+void	Channel::printOpUsers()
+{
+	std::cout << "opUsers : ";
+	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
+		std::cout << (*it)->getNickname() << " ";
+	std::cout << std::endl;
+}
+
+void	Channel::printInviteUsers()
+{
+	std::cout << "inviteUsers : ";
+	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
+		std::cout << (*it)->getNickname() << " ";
+	std::cout << std::endl;
+}
+
 void	Channel::clearClient(Client *client)
 {
 	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)

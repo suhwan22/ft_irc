@@ -100,8 +100,33 @@ void	Server::serverStart()
 					command.printContent(command.getContent());
 					command.parsecommand();
 				}
+				std::cout << "current user(" << _clntList.size() << ") : ";
+				for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+					std::cout << (*it)->getNickname() << " ";
+				std::cout << std::endl;
 
+				std::cout << "current each user Channels" << std::endl;
+				for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+				{
+					std::cout << (*it)->getNickname() << " : ";
+					(*it)->printChannel();
+					std::cout << std::endl;
+				}
 
+				std::cout << "\ncurrent channel(" << _channelList.size() << ") : ";
+				for (std::vector<Client *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+					std::cout << (*it)->getChannelName() << " ";
+				std::cout << std::endl;
+
+				std::cout << "current each channel user" << std::endl;
+				for (std::vector<Client *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+				{
+					std::cout << (*it)->getChannelName() << std::endl;
+					(*it)->printUsers();
+					(*it)->printOpUsers();
+					(*it)->printInviteUsers();
+					std::cout << std::endl;
+				}
 			}
 		}
 	}

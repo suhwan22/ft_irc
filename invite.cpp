@@ -43,7 +43,7 @@ void	cmd::invite(string arg)
 		}
 	else
 	{
-		me->addInviteChannel(ch);
+		ch->addInviteUser(me);
 		channel_users = ch->getUsersName();
 		users = ch->getUsers();
 
