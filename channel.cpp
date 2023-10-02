@@ -31,13 +31,7 @@ void	Channel::delUser(Client *client)
 	{
 		if ((*it) == client)
 		{
-			if (_users.size() == 1)
-			{
-				_users.erase(it);
-				_users = std::vector<Client *>();
-			}
-			else
-				_users.erase(it);
+			_users.erase(it);
 			break ;
 		}
 	}
@@ -67,13 +61,7 @@ void	Channel::delOpUser(Client *client)
 	{
 		if ((*it) == client)
 		{
-			if (_users.size() == 1)
-			{
-				_users.erase(it);
-				_users = std::vector<Client *>();
-			}
-			else
-				_users.erase(it);
+			_opUsers.erase(it);
 			break ;
 		}
 	}
@@ -103,13 +91,7 @@ void	Channel::delInviteUser(Client *client)
 	{
 		if ((*it) == client)
 		{
-			if (_users.size() == 1)
-			{
-				_inviteUsers.erase(it);
-				_inviteUsers = std::vector<Client *>();
-			}
-			else
-				_inviteUsers.erase(it);
+			_inviteUsers.erase(it);
 			break ;
 		}
 	}
@@ -133,7 +115,7 @@ void	Channel::printUsers()
 
 void	Channel::printOpUsers()
 {
-	std::cout << "opUsers(" << _users.size() << ") : ";
+	std::cout << "opUsers(" << _opUsers.size() << ") : ";
 	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
 		std::cout << (*it)->getNickname() << " ";
 	std::cout << std::endl;
@@ -141,7 +123,7 @@ void	Channel::printOpUsers()
 
 void	Channel::printInviteUsers()
 {
-	std::cout << "inviteUsers(" << _users.size() << ") : ";
+	std::cout << "inviteUsers(" << _inviteUsers.size() << ") : ";
 	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
 		std::cout << (*it)->getNickname() << " ";
 	std::cout << std::endl;
@@ -153,39 +135,24 @@ void	Channel::clearClient(Client *client)
 	{
 		if ((*it) == client)
 		{
-			if (_users.size() == 1)
-			{
-				_users.erase(it);
-				_users = std::vector<Client *>();
-			}
-			else
-				_users.erase(it);
+			_users.erase(it);
+			break ;
 		}
 	}
 	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
 	{
 		if ((*it) == client)
 		{
-			if (_users.size() == 1)
-			{
-				_opUsers.erase(it);
-				_opUsers = std::vector<Client *>();
-			}
-			else
-				_opUsers.erase(it);
+			_opUsers.erase(it);
+			break ;
 		}
 	}
 	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
 	{
 		if ((*it) == client)
 		{
-			if (_users.size() == 1)
-			{
-				_inviteUsers.erase(it);
-				_inviteUsers = std::vector<Client *>();
-			}
-			else
-				_inviteUsers.erase(it);
+			_inviteUsers.erase(it);
+			break ;
 		}
 	}
 }
