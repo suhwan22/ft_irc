@@ -1,6 +1,7 @@
 #include "cmd.hpp"
 #include "client.hpp"
 #include "channel.hpp"
+#include <cstdlib>
 
 void cmd::mode_i(string ch_name, string option) {
 	string	msg;
@@ -8,7 +9,7 @@ void cmd::mode_i(string ch_name, string option) {
 	vector<Channel *>::iterator iter;
 
 	if (option[0] == '+') {
-		for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+		for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)){
@@ -32,7 +33,7 @@ void cmd::mode_i(string ch_name, string option) {
 		noSuchChannel(ch_name);
 	}
 	else if (option[0] == '-') {
-		for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+		for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)){
@@ -63,7 +64,7 @@ void cmd::mode_t(string ch_name, string option) {
 	vector<Channel *>::iterator iter;
 
 	if (option[0] == '+') {
-		for (iter = _chlist.begin(); iter != _chlist.end(); iter++){
+		for (iter = _chList.begin(); iter != _chList.end(); iter++){
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)) {
@@ -87,7 +88,7 @@ void cmd::mode_t(string ch_name, string option) {
 		noSuchChannel(ch_name);
 	}
 	else if (option[0] == '-') {
-		for (iter = _chlist.begin(); iter != _chlist.end(); iter++){
+		for (iter = _chList.begin(); iter != _chList.end(); iter++){
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)) {
@@ -134,7 +135,7 @@ void cmd::minusOption_o(string ch_name, string nick)
 	Client						*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++)
+	for (iter = _chList.begin(); iter != _chList.end(); iter++)
 	{
 		if ((*iter)->getChannelName() == ch_name){
 			vector<Client *> members = (*iter)->getUsers();
@@ -144,13 +145,13 @@ void cmd::minusOption_o(string ch_name, string nick)
 				return ;
 			}
 			else {
-				for (cliter = _clilist.begin(); cliter != _clilist.end(); cliter++){
+				for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++){
 					if ((*cliter)->getNickname() == nick){
 						if (!(*iter)->isClientOp(*cliter))
 							return ;
 						else {
 							(*iter)->delOpUser(*cliter);
-							for (int i = 0; (int)i < members.size(); i++) {
+							for (int i = 0; i < (int)members.size(); i++) {
 								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + "-o :" + nick + "\r\n";
 								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 									cerr << "Error: send error" << endl;
@@ -173,7 +174,7 @@ void cmd::plusOption_o(string ch_name, string nick)
 	Client						*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++)
+	for (iter = _chList.begin(); iter != _chList.end(); iter++)
 	{
 		if ((*iter)->getChannelName() == ch_name){
 			vector<Client *> members = (*iter)->getUsers();
@@ -183,17 +184,17 @@ void cmd::plusOption_o(string ch_name, string nick)
 				return ;
 			}
 			else {
-				for (cliter = _clilist.begin(); cliter != _clilist.end(); cliter++){
+				for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++){
 					if ((*cliter)->getNickname() == nick){
 						if ((*iter)->isClientOp(*cliter))
 							return ;
 						else {
-							(*iter)->addOpUser(*cliter);
-							for (int i = 0; (int)i < members.size(); i++) {
+							for (int i = 0; i < (int)members.size(); i++) {
 								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + "+o :" + nick + "\r\n";
 								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 									cerr << "Error: send error" << endl;
 							}
+							(*iter)->addOpUser(*cliter);
 						}
 					}
 				}
@@ -224,7 +225,7 @@ void cmd::mode_l(string channel, string option, string num) {
 	if (option[0] == '+')
 		plusOption_l(channel, num);
 	else if(option[0] == '-')
-		minusOption_l(channel, num);
+		minusOption_l(channel);
 }
 
 void cmd::plusOption_l(string ch_name, string num)
@@ -235,7 +236,7 @@ void cmd::plusOption_l(string ch_name, string num)
 	int							limitnum;
 
 	limitnum = strtod(num.c_str(), NULL);
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++)
+	for (iter = _chList.begin(); iter != _chList.end(); iter++)
 	{
 		vector<Client *> members = (*iter)->getUsers();
 		if ((*iter)->getChannelName() == ch_name){
@@ -248,7 +249,7 @@ void cmd::plusOption_l(string ch_name, string num)
 					return ;
 				else {
 					(*iter)->setUserLimit(limitnum);
-					for (int i = 0; (int)i < members.size(); i++) {
+					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +l :" + num + "\r\n";
 						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
@@ -262,12 +263,12 @@ void cmd::plusOption_l(string ch_name, string num)
 	noSuchChannel(ch_name);
 }
 
-void cmd::minusOption_l(string ch_name, string num)
+void cmd::minusOption_l(string ch_name)
 {
 	string						msg;
 	Client						*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		vector<Client *> members = (*iter)->getUsers();
 		if ((*iter)->getChannelName() == ch_name){
 			if (!(*iter)->isClientOp(me)) {
@@ -279,7 +280,7 @@ void cmd::minusOption_l(string ch_name, string num)
 					return ;
 				else {
 					(*iter)->setUserLimit(2147483647);
-					for (int i = 0; (int)i < members.size(); i++) {
+					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-l\r\n";
 						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
@@ -315,7 +316,7 @@ void cmd::plusOption_k(string ch_name, string pass)
 	Client	*me = searchClient(_clntSock);
 
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
-		if ((*iter)->getChannelName() == channel) {
+		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!(*iter)->isClientOp(me)) {
 				sendNotOpMsg(ch_name, "k", false);
@@ -347,7 +348,7 @@ void cmd::minusOption_k(string ch_name, string pass)
 	Client	*me = searchClient(_clntSock);
 
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
-		if ((*iter)->getChannelName() == channel) {
+		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!(*iter)->isClientOp(me)) {
 				sendNotOpMsg(ch_name, "k", true);

@@ -77,6 +77,14 @@ int cmd::parsecommand() {
 			topic((*it).arg);
 		else if ((*it).cmd == "QUIT")
 			quit((*it).arg);
+		else if ((*it).cmd == "MODE")
+			mode((*it).arg);
+		else if ((*it).cmd == "KICK")
+			kick((*it).arg);
+		else if ((*it).cmd == "PART")
+			part((*it).arg);
+//		else if ((*it).cmd == "INVITE")
+//			inivite((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;

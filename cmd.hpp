@@ -98,7 +98,7 @@ class cmd {
 	void minusOption_k(string ch_name, string pass);
 	void mode_l(string channel, string option, string num);
 	void plusOption_l(string ch_name, string num);
-	void minusOption_l(string ch_name, string num);
+	void minusOption_l(string ch_name);
 	void mode_o(string channel, string option, string nick);
 	void plusOption_o(string ch_name, string nick);
 	void minusOption_o(string ch_name, string nick);

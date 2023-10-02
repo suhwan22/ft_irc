@@ -6,18 +6,18 @@ void cmd::execKick(string ch_name, string nick)
 {
 	string						msg;
 	string 						inputmsg;
-	stringstream 				tmp;
+	stringstream 				tmp(nick);
 	vector<Channel *>::iterator	chiter;
 	vector<Client *>::iterator	cliter;
 	Client						*me = searchClient(_clntSock);
-	tmp = stringstream(nick);
+
 	tmp >> nick;
 	getline(tmp, inputmsg, static_cast<char>(EOF));
 	inputmsg.erase(0, 1);
 
-	for (cliter = _clilist.begin(); cliter != _clilist.end(); cliter++) {
+	for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++) {
 		if ((*cliter)->getNickname() == nick) {
-			for (chiter = _chlist.begin(); chiter != _chlist.end(); chiter++) {
+			for (chiter = _chList.begin(); chiter != _chList.end(); chiter++) {
 				if ((*chiter)->getChannelName() == ch_name) {
 					vector<Client *> members = (*chiter)->getUsers();
 					if (!(*chiter)->isClientOp(me)) {
@@ -46,8 +46,8 @@ void cmd::execKick(string ch_name, string nick)
 void cmd::kick(string arg)
 {
 	string line;
-	stringstream tmp;
-	tmp = stringstream(arg);
+	stringstream tmp(arg);
+
 	tmp >> arg;
 	getline(tmp, line, static_cast<char>(EOF));
 	line.erase(0, 1);
