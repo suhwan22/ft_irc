@@ -14,6 +14,7 @@ class Channel
 		std::string				_passWord;
 		std::vector<Client *>	_users;
 		std::vector<Client *>	_opUsers;
+		std::vector<Client *>	_inviteUsers;
 		std::string				_topic;
 		int						_userLimit;
 
@@ -29,14 +30,20 @@ class Channel
 		Channel(std::string channelName, std::string password);
 		~Channel();
 
+		/* user func */
 		void	addUser(Client *client);
 		void	delUser(Client *client);
+		bool	isClientInChannel(Client *client);
 
+		/* operator user func */
 		void	addOpUser(Client *client);
 		void	delOpUser(Client *client);
-
 		bool	isClientOp(Client *client);
-		bool	isClientInChannel(Client *client);
+
+		/* invite user func */
+		void	addInviteUser(Client *client);
+		void	delInviteUser(Client *client);
+		bool	isClientInvite(Client *client);
 
 		/* setter func */
 		void	setPassWord(const std::string passWord);

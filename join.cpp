@@ -11,12 +11,12 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 	string	channel_users;
 	vector<Client *>	users;
 
-	if (me->isInviteChannel(ch))
+	if (ch->isClientInvite(me))
 	/* invite 받은 client인 경우 */
 	{
 		ch->addUser(me);
 		me->joinChannel(ch);
-		me->delInviteChannel(ch);
+		ch->delInviteUser(me);
 		channel_users = ch->getUsersName();
 		users = ch->getUsers();
 		/* msg 미완성 */

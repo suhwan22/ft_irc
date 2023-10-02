@@ -25,7 +25,6 @@ class Client
 		std::string				_realName;
 		std::string				_userName;
 		std::vector<Channel *>	_joinChannels;
-		std::vector<Channel *>	_inviteChannels;
 
 	public:
 		Client(int ClntSock);
@@ -35,11 +34,6 @@ class Client
 		void	joinChannel(Channel *channel);
 		void	exitChannel(const std::string channelName);
 		void	cleanChannel();
-
-		/* inviteChannel func */
-		void	addInviteChannel(Channel *channel);
-		void	delInviteChannel(Channel *channel);
-		bool	isInviteChannel(Channel *channel);
 
 		/* setter func */
 		void	setCreated(const bool val);

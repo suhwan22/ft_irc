@@ -43,7 +43,7 @@ void	cmd::invite(string arg)
 		}
 	else
 	{
-		me->addInviteChannel(ch);
+		ch->addInviteUser(client);
 		channel_users = ch->getUsersName();
 		users = ch->getUsers();
 
@@ -54,7 +54,7 @@ void	cmd::invite(string arg)
 
 		/* 초대를 받은 client에게 보내는 메세지 */
 		msg = ":irc.local NOTICE " + ch->getChannelName() \
-				+ " :*** " + me->getNickname() + " invited test into the channel\r\n";
+				+ " :*** " + me->getNickname() + " invited " + client->getNickname() + " into the channel\r\n";
 		send(client->getSock(), msg.c_str(), msg.size(), 0);
 
 		/* 초대한 채널에 있는 client들에게 보내는 메세지 */

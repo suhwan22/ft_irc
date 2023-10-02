@@ -37,6 +37,14 @@ void	Channel::delUser(Client *client)
 	}
 }
 
+bool	Channel::isClientInChannel(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+		if ((*it) == client)
+			return (true);
+	return (false);
+}
+
 void	Channel::addOpUser(Client *client)
 {
 	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
@@ -59,17 +67,40 @@ void	Channel::delOpUser(Client *client)
 	}
 }
 
-bool	Channel::isClientInChannel(Client *client)
+bool	Channel::isClientOp(Client *client)
 {
-	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
 		if ((*it) == client)
 			return (true);
 	return (false);
 }
 
-bool	Channel::isClientOp(Client *client)
+void	Channel::addInviteUser(Client *client)
 {
-	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
+	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
+	{
+		if (client == *(it))
+			return ;
+	}
+	_inviteUsers.push_back(client);
+	
+}
+
+void	Channel::delInviteUser(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
+	{
+		if ((*it) == client)
+		{
+			_inviteUsers.erase(it);
+			break ;
+		}
+	}
+}
+
+bool	Channel::isClientInvite(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
 		if ((*it) == client)
 			return (true);
 	return (false);
