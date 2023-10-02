@@ -21,13 +21,17 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 			}
 			else
 			{
-				for (int i = 0; i < (int)members.size(); i++)
-				{
-					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() \
+				msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() \
 						   + " PRIVMSG " + arg + " " + inputmsg;
-					if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
-				}
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
+				// for (int i = 0; i < (int)members.size(); i++)
+				// {
+				// 	msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() \
+				// 		   + " PRIVMSG " + arg + " " + inputmsg;
+				// 	if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+				// 		cerr << "Error: send error" << endl;
+				// }
 			}
 			return ;
 		}
