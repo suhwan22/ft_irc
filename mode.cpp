@@ -23,13 +23,14 @@ void cmd::mode_i(string ch_name, string option) {
 					if (!(*iter)->getInviteOnlyFlag() == true)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++) {
+						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+i\r\n";
 							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setInviteOnlyFlag(true);
+					return ;
 				}
 			}
 		}
@@ -50,13 +51,14 @@ void cmd::mode_i(string ch_name, string option) {
 					if (!(*iter)->getInviteOnlyFlag() == false)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++) {
+						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-i\r\n";
 							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setInviteOnlyFlag(false);
+					return ;
 				}
 			}
 		}
@@ -84,13 +86,14 @@ void cmd::mode_t(string ch_name, string option) {
 					if ((*iter)->getChTopicFlag() == true)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++){
+						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+t\r\n";
 							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setChTopicFlag(true);
+					return ;
 				}
 			}
 		}
@@ -111,13 +114,14 @@ void cmd::mode_t(string ch_name, string option) {
 					if ((*iter)->getChTopicFlag() == false)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++){
+						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-t\r\n";
 							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setChTopicFlag(false);
+					return ;
 				}
 			}
 		}
