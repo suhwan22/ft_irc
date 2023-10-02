@@ -20,16 +20,17 @@ void cmd::mode_i(string ch_name, string option) {
 					return ;
 				}
 				else {
-					if (!(*iter)->getInviteOnlyFlag() == true)
+					if ((*iter)->getInviteOnlyFlag() == true)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++) {
+						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+i\r\n";
 							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setInviteOnlyFlag(true);
+					return ;
 				}
 			}
 		}
@@ -47,16 +48,17 @@ void cmd::mode_i(string ch_name, string option) {
 					return ;
 				}
 				else {
-					if (!(*iter)->getInviteOnlyFlag() == false)
+					if ((*iter)->getInviteOnlyFlag() == false)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++) {
+						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-i\r\n";
 							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setInviteOnlyFlag(false);
+					return ;
 				}
 			}
 		}
@@ -84,13 +86,14 @@ void cmd::mode_t(string ch_name, string option) {
 					if ((*iter)->getChTopicFlag() == true)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++){
+						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+t\r\n";
 							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setChTopicFlag(true);
+					return ;
 				}
 			}
 		}
@@ -111,13 +114,14 @@ void cmd::mode_t(string ch_name, string option) {
 					if ((*iter)->getChTopicFlag() == false)
 						return ;
 					else {
-						for (int i = 0; (int)members.size(); i++){
+						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-t\r\n";
 							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cerr << "Error: send error" << endl;
 						}
 					}
 					(*iter)->setChTopicFlag(false);
+					return ;
 				}
 			}
 		}
@@ -167,11 +171,12 @@ void cmd::minusOption_o(string ch_name, string nick)
 						else {
 							(*iter)->delOpUser(*cliter);
 							for (int i = 0; i < (int)members.size(); i++) {
-								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + "-o :" + nick + "\r\n";
+								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " -o :" + nick + "\r\n";
 								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 									cerr << "Error: send error" << endl;
 							}
 						}
+						return ;
 					}
 				}
 				noSuchNick(nick);
@@ -208,12 +213,13 @@ void cmd::plusOption_o(string ch_name, string nick)
 							return ;
 						else {
 							for (int i = 0; i < (int)members.size(); i++) {
-								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + "+o :" + nick + "\r\n";
+								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +o :" + nick + "\r\n";
 								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 									cerr << "Error: send error" << endl;
 							}
 							(*iter)->addOpUser(*cliter);
 						}
+						return ;
 					}
 				}
 				noSuchNick(nick);
@@ -227,7 +233,7 @@ void cmd::plusOption_o(string ch_name, string nick)
 void cmd::mode_l(string channel, string option, string num) {
 	string msg;
 	Client *me = searchClient(_clntSock);
-	if (num.empty()){
+	if (num.empty() && option[0] == '+'){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l * :You must specify a parameter for the limit mode. Syntax: <limit>.\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
@@ -355,7 +361,7 @@ void cmd::plusOption_k(string ch_name, string pass)
 				else {
 					_chpass = pass;
 					for (int i = 0; i < (int)members.size(); i++) {
-						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +k :" + pass + "/r/n";
+						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +k :" + pass + "\r\n";
 						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
@@ -390,7 +396,7 @@ void cmd::minusOption_k(string ch_name, string pass)
 				else {
 					_chpass = "";
 					for (int i = 0; i < (int)members.size(); i++){
-						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " -k :" + pass + "/r/n";
+						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " -k :" + pass + "\r\n";
 						if (send(members[i]->getSock(), msg.c_str(), msg.length(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
