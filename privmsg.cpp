@@ -24,8 +24,8 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 				for (int i = 0; i < (int)members.size(); i++)
 				{
 					msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() \
-						   + " PRIVMSG " + arg + " " + inputmsg;
-					if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+						   + " PRIVMSG " + arg + " " + inputmsg + "\r\n";
+					if (members[i]->getSock() != _clntSock && send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 						cerr << "Error: send error" << endl;
 				}
 			}
