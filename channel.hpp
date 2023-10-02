@@ -16,10 +16,6 @@ class Channel
 		std::vector<Client *>	_opUsers;
 		std::string				_topic;
 		int						_userLimit;
-		bool					_kflag;
-		bool					_iflag;
-		bool					_tflag;
-		bool					_lflag;
 
 		/* option flag */
 		bool					_kflag;

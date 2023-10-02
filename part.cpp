@@ -8,7 +8,7 @@ void cmd::execPart(string ch_name, string inputmsg)
 	string						msg;
 	Client						*me = searchClient(_clntSock);
 
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->isClientInChannel(me))) {
@@ -35,8 +35,8 @@ void cmd::execPart(string ch_name, string inputmsg)
 void cmd::part(string arg)
 {
 	string line;
-	stringstream tmp;
-	tmp = stringstream(arg);
+	stringstream tmp(arg);
+
 	tmp >> arg;
 	getline(tmp, line, static_cast<char>(EOF));
 	line.erase(0, 1);
