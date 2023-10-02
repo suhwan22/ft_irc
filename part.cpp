@@ -28,6 +28,7 @@ void cmd::execPart(string ch_name, string inputmsg)
 					
 				}
 				(*iter)->delUser(me);
+				me->exitChannel(ch_name);
 			}
 			return ;
 		}
