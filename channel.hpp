@@ -46,6 +46,11 @@ class Channel
 
 		void	clearClient(Client *client);
 
+		/* print func */
+		void	printUsers();
+		void	printOpUsers();
+		void	printInviteUsers();
+
 		/* setter func */
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);

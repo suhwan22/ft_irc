@@ -44,38 +44,11 @@ void	Client::cleanChannel()
 	_joinChannels.clear();
 }
 
-void	Client::addInviteChannel(Channel *channel)
+void	Client::printJoinChannel()
 {
-	for (std::vector<Channel *>::iterator it = _inviteChannels.begin(); it != _inviteChannels.end(); it++)
-		if ((*it) == channel)
-			return ;
-	_inviteChannels.push_back(channel);
-}
-
-void	Client::delInviteChannel(Channel *channel)
-{
-	for (std::vector<Channel *>::iterator it = _inviteChannels.begin(); it != _inviteChannels.end(); it++)
-	{
-		if ((*it) == channel)
-		{
-			if (_inviteChannels.size() == 1)
-			{
-				_inviteChannels.erase(it);
-				_inviteChannels = std::vector<Channel *>();
-			}
-			else
-				_inviteChannels.erase(it);
-			return ;
-		}
-	}
-}
-
-bool	Client::isInviteChannel(Channel *channel)
-{
-	for (std::vector<Channel *>::iterator it = _inviteChannels.begin(); it != _inviteChannels.end(); it++)
-		if ((*it) == channel)
-			return (true);
-	return (false);
+	for (std::vector<Channel *>::iterator it = _joinChannels.begin(); it != _joinChannels.end(); it++)
+		std::cout << (*it)->getChannelName() << " ";
+	std::cout << std::endl;
 }
 
 void	Client::setCreated(const bool val)
