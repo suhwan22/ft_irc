@@ -100,7 +100,7 @@ void	cmd::joinNewChannel(Client *me, string channel)
 		ch->addUser(me);
 		me->joinChannel(ch);
 		msg = ":" + me->getNickname() + "!" + me->getUserName() \
-			   + "@127.0.0.1 JOIN: " + ch->getChannelName() + "\r\n" 
+			   + "@127.0.0.1 JOIN :" + ch->getChannelName() + "\r\n" 
 			   + ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
 			   + " :" + "@" + me->getNickname() + "\r\n" \
 			   + ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
