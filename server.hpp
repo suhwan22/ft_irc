@@ -39,11 +39,12 @@ class Server
 		void	addClient(int sock);
 		void	delClient(Client *client);
 
-		/* get set func */
+		/* getter func */
 		int					getSock() const;
 		int					getPort() const;
 		const std::string&	getPass() const;
 
+		/* setter func */
 		void				setPass(const std::string pass);
 };
 

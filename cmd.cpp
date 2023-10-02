@@ -2,7 +2,7 @@
 #include "client.hpp"
 #include "channel.hpp"
 
-cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist) : _clntSock(clntSock), _clilist(clilist), _chlist(chlist), _servPass(servpass)
+cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList) : _clntSock(clntSock), _clntList(clntList), _chList(chList), _servPass(servpass)
 {
 	string			input(buf, strlen);
 	string			line;
@@ -40,11 +40,19 @@ vector<string> *cmd::splitCmd(string &str) {
 
 Client	*cmd::searchClient(int sock)
 {
-	for (vector<Client *>::iterator it = _clilist.begin(); it != _clilist.end(); it++)
+	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 	{
 		if ((*it)->getSock() == sock)
 			return (*it);
 	}
+	return (NULL);
+}
+
+Channel	*cmd::searchChannel(string channelName)
+{
+	for (vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
+		if ((*it)->getChannelName() == channelName)
+			return (*it);
 	return (NULL);
 }
 
@@ -67,11 +75,61 @@ int cmd::parsecommand() {
 			user((*it).arg);
 		else if ((*it).cmd == "TOPIC")
 			topic((*it).arg);
-		else if ((*it).cmd == "TOPIC")
+		else if ((*it).cmd == "QUIT")
 			quit((*it).arg);
+		else if ((*it).cmd == "JOIN")
+			join((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;
+}
+
+Channel	*cmd::addChannel(std::string name)
+{
+	Channel *newChannel = new Channel(name);
+	if (!newChannel)
+	{
+		std::cout << "Error: cmd::addChannel: new Channel()" << std::endl;
+		return (NULL);
+	}
+	_chList.push_back(newChannel);
+	return (newChannel);
+}
+
+void	cmd::delChannel(Channel *channel)
+{
+	for (std::vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
+	{
+		if (channel == (*it))
+		{
+			_chList.erase(it);
+			break ;
+		}
+	}
+}
+
+Client	*cmd::addClient(int sock)
+{
+	Client *newClient = new Client(sock);
+	if (!newClient)
+	{
+		std::cout << "Error: cmd::addClient: new Client()" << std::endl;
+		return (NULL);
+	}
+	_clntList.push_back(newClient);
+	return (newClient);
+}
+
+void	cmd::delClient(Client *client)
+{
+	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	{
+		if (client == (*it))
+		{
+			_clntList.erase(it);
+			break ;
+		}
+	}
 }
 
 void	cmd::printContent(const vector<content>& contents)

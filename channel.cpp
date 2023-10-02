@@ -4,13 +4,13 @@
 Channel::Channel(std::string channelName) :
 	_channelName(channelName),
 	_passWord(""),
-	_userLimit(2147483647)
+	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(false), _lflag(false)
 {}
 
 Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
 	_passWord(password),
-	_userLimit(2147483647)
+	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(false), _lflag(false)
 {}
 
 Channel::~Channel() {}
@@ -75,6 +75,26 @@ bool	Channel::isClientOp(Client *client)
 	return (false);
 }
 
+void	Channel::setInviteOnlyFlag(const bool flag)
+{
+	_iflag = flag;
+}
+
+void	Channel::setChPassFlag(const bool flag)
+{
+	_kflag = flag;
+}
+
+void	Channel::setChTopicFlag(const bool flag)
+{
+	_tflag = flag;
+}
+
+void	Channel::setChLimitFlag(const bool flag)
+{
+	_lflag = flag;
+}
+
 void	Channel::setPassWord(const std::string passWord)
 {
 	_passWord = passWord;
@@ -88,6 +108,16 @@ void	Channel::setUserLimit(const int limit)
 void	Channel::setTopic(const std::string topic)
 {
 	_topic = topic;
+}
+
+std::string	Channel::getUsersName()
+{
+	std::string	users = "";
+
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+		users += ((*it)->getNickname() + " ");
+	users.erase(users.size() - 1, 1);
+	return (users);
 }
 
 const std::string&	Channel::getChannelName() const
@@ -105,7 +135,25 @@ int	Channel::getUserLimit() const
 	return (_userLimit);
 }
 
-const std::vector<Client *>	Channel::getUsers() const
+const std::vector<Client *>&	Channel::getUsers() const
 {
 	return (_users);
+}
+
+bool Channel::getInviteOnlyFlag() const
+{
+	return (_iflag);
+}
+bool Channel::getChPassFlag() const
+{
+	return (_kflag);
+}
+bool Channel::getChTopicFlag() const
+{
+	return (_tflag);
+}
+
+bool Channel::getChLimitFlag() const
+{
+	return (_lflag);
 }
