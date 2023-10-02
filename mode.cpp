@@ -359,13 +359,13 @@ void cmd::plusOption_k(string ch_name, string pass)
 				if ((*iter)->getChPassFlag() == true)
 					return ;
 				else {
-					_chpass = pass;
 					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +k :" + pass + "\r\n";
 						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
 				}
+				(*iter)->setPassWord(pass);
 				(*iter)->setChPassFlag(true);
 			}
 			return ;
