@@ -26,7 +26,7 @@ void	cmd::nick(string nick)
 		else
 		{
 			vector<Client *>::iterator cliit;
-			for(cliit = _clilist.begin(); cliit != _clilist.end(); cliit++) {
+			for(cliit = _clntList.begin(); cliit != _clntList.end(); cliit++) {
 				if ((*cliit)->getNickname() == nick) {
 					msg = ":irc.local 433 " + me->getNickname() + " " + nick + " :Nickname is already in use.\r\n";
 					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
@@ -36,7 +36,7 @@ void	cmd::nick(string nick)
 
 			}
 			vector<Channel *>::iterator iter;
-			for (iter = _chlist.begin(); iter != _chlist.end(); iter++)
+			for (iter = _chList.begin(); iter != _chList.end(); iter++)
 			{
 				if ((*iter)->isClientInChannel(me))
 				{

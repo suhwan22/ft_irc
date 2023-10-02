@@ -313,8 +313,9 @@ void cmd::plusOption_k(string ch_name, string pass)
 	string msg;
 	vector<Channel *>::iterator iter;
 	Client	*me = searchClient(_clntSock);
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
-		if ((*iter)->getChannelName() == ch_name) {
+
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
+		if ((*iter)->getChannelName() == channel) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!(*iter)->isClientOp(me)) {
 				sendNotOpMsg(ch_name, "k", false);
@@ -344,8 +345,9 @@ void cmd::minusOption_k(string ch_name, string pass)
 	string msg;
 	vector<Channel *>::iterator iter;
 	Client	*me = searchClient(_clntSock);
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
-		if ((*iter)->getChannelName() == ch_name) {
+
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
+		if ((*iter)->getChannelName() == channel) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!(*iter)->isClientOp(me)) {
 				sendNotOpMsg(ch_name, "k", true);
@@ -394,8 +396,7 @@ void cmd::chModeB(string ch_name)
 void cmd::modeToChannel(string arg, string line)
 {
 	string line_two;
-	stringstream tmp;
-	tmp = stringstream(line);
+	stringstream tmp(line);
 	tmp >> line;
 	getline(tmp, line_two, static_cast<char>(EOF));
 	line_two.erase(0, 1);
@@ -419,10 +420,9 @@ void cmd::modeToChannel(string arg, string line)
 void cmd::modeToClient(string line)
 {
 	string			line_two;
-	stringstream	tmp;
+	stringstream	tmp(line);
 	string			msg;
 	Client			*me = searchClient(_clntSock);
-	tmp = stringstream(line);
 	tmp >> line;
 	getline(tmp, line_two, static_cast<char>(EOF));
 	line_two.erase(0, 1);
@@ -443,8 +443,7 @@ void cmd::mode(string arg)
 {
 	string msg;
 	string line;
-	stringstream tmp;
-	tmp = stringstream(arg);
+	stringstream tmp(arg);
 	tmp >> arg;
 	line.erase(0, 1);
 	getline(tmp, line, static_cast<char>(EOF));

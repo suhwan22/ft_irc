@@ -8,7 +8,7 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 	string						msg;
 	Client 						*me = searchClient(_clntSock);
 
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++)	{
+	for (iter = _chList.begin(); iter != _chList.end(); iter++)	{
 		if ((*iter)->getChannelName() == arg) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->isClientInChannel(me)))
@@ -41,7 +41,7 @@ void cmd::privmsgToClient(string arg, string inputmsg)
 	string						msg;
 	Client						*me = searchClient(_clntSock);
 
-	for (iter = _clilist.begin(); iter != _clilist.end(); iter++) {
+	for (iter = _clntList.begin(); iter != _clntList.end(); iter++) {
 		if ((*iter)->getNickname() == arg){
 			msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() \
 				   + " PRIVMSG " + arg + " " + inputmsg + "\r\n";

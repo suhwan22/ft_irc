@@ -13,7 +13,10 @@ SRC = main.cpp \
 	  user.cpp \
 	  util.cpp \
 	  privmsg.cpp \
-	  ping.cpp
+	  ping.cpp \
+	  topic.cpp \
+	  join.cpp \
+	  quit.cpp
 
 
 OBJ = $(SRC:.cpp=.o)

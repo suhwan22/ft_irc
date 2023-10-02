@@ -75,22 +75,22 @@ bool	Channel::isClientOp(Client *client)
 	return (false);
 }
 
-void	Channel::setInviteOnlyFlag(bool flag)
+void	Channel::setInviteOnlyFlag(const bool flag)
 {
 	_iflag = flag;
 }
 
-void	Channel::setChPassFlag(bool flag)
+void	Channel::setChPassFlag(const bool flag)
 {
 	_kflag = flag;
 }
 
-void	Channel::setChTopicFlag(bool flag)
+void	Channel::setChTopicFlag(const bool flag)
 {
 	_tflag = flag;
 }
 
-void	Channel::setChLimitFlag(bool flag)
+void	Channel::setChLimitFlag(const bool flag)
 {
 	_lflag = flag;
 }
@@ -110,6 +110,21 @@ void	Channel::setTopic(const std::string topic)
 	_topic = topic;
 }
 
+std::string	Channel::getUsersName()
+{
+	std::string	users = "";
+
+	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+	{
+		if (isClientOp((*it)))
+			users += "@" + ((*it)->getNickname() + " ");
+		else
+			users += ((*it)->getNickname() + " ");
+	}
+	users.erase(users.size() - 1, 1);
+	return (users);
+}
+
 const std::string&	Channel::getChannelName() const
 {
 	return (_channelName);
@@ -125,7 +140,7 @@ int	Channel::getUserLimit() const
 	return (_userLimit);
 }
 
-const std::vector<Client *>	Channel::getUsers() const
+const std::vector<Client *>&	Channel::getUsers() const
 {
 	return (_users);
 }
