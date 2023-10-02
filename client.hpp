@@ -55,6 +55,7 @@ class Client
 		const std::string&	getRealName() const;
 		const std::string&	getIP() const;
 		const std::string&	getPass() const;
+		Channel*			getLastJoinChannel() const;
 		bool				getCreated() const;
 		int					getSock() const;
 };

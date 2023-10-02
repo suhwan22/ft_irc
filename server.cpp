@@ -87,23 +87,21 @@ void	Server::serverStart()
 			else
 			{
 				strlen = recv(epEvents[i].data.fd, buf, BUF_SIZE, 0);
-				if (strlen == -1)
-				{
-					std::cout << "Error: serverStart(): recv()" << std::endl;
-				}
-
-				cmd command(epEvents[i].data.fd, buf, strlen, _passWord, _clntList, _channelList);
-				command.printContent(command.getContent());
-
-				if (strlen == 0)
+				if (strlen <= 0)
 				{
 					epoll_ctl(epfd, EPOLL_CTL_DEL, epEvents[i].data.fd, NULL);
+					delClient(epEvents[i].data.fd);
 					std::cout << "closed client: " << epEvents[i].data.fd << std::endl;
-					//shutdown(epEvents[i].data.fd, SHUT_RDWR);
 					close(epEvents[i].data.fd);
 				}
 				else
+				{
+					cmd command(epEvents[i].data.fd, buf, strlen, _passWord, _clntList, _channelList);
+					command.printContent(command.getContent());
 					command.parsecommand();
+				}
+
+
 			}
 		}
 	}
@@ -148,6 +146,18 @@ void	Server::delClient(Client *client)
 	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 	{
 		if (client == (*it))
+		{
+			_clntList.erase(it);
+			break ;
+		}
+	}
+}
+
+void	Server::delClient(int sock)
+{
+	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	{
+		if (sock == (*it)->getSock())
 		{
 			_clntList.erase(it);
 			break ;

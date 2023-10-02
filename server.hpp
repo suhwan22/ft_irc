@@ -38,6 +38,7 @@ class Server
 
 		void	addClient(int sock);
 		void	delClient(Client *client);
+		void	delClient(int sock);
 
 		/* getter func */
 		int					getSock() const;
