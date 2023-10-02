@@ -48,6 +48,16 @@ Client	*cmd::searchClient(int sock)
 	return (NULL);
 }
 
+Client	*cmd::searchClient(string name)
+{
+	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	{
+		if ((*it)->getNickname() == name)
+			return (*it);
+	}
+	return (NULL);
+}
+
 Channel	*cmd::searchChannel(string channelName)
 {
 	for (vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
@@ -83,8 +93,10 @@ int cmd::parsecommand() {
 			kick((*it).arg);
 		else if ((*it).cmd == "PART")
 			part((*it).arg);
-//		else if ((*it).cmd == "INVITE")
-//			inivite((*it).arg);
+		else if ((*it).cmd == "INVITE")
+			invite((*it).arg);
+		else if ((*it).cmd == "WHO")
+			who((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;

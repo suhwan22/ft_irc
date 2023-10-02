@@ -119,6 +119,13 @@ const std::string&	Client::getPass() const
 	return (_pass);
 }
 
+Channel*	Client::getLastJoinChannel() const
+{
+	if (_joinChannels.size() == 0)
+		return (NULL);
+	return (_joinChannels[_joinChannels.size() - 1]);
+}
+
 bool	Client::getCreated() const
 {
 	return (_isCreated);
