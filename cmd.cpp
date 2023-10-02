@@ -98,8 +98,25 @@ int cmd::parsecommand() {
 		else if ((*it).cmd == "WHO")
 			who((*it).arg);
 	}
-	// printCmdVector(*tokens);
+	emptyChannelClear();
 	return 0;
+}
+
+void	cmd::emptyChannelClear()
+{
+	for (vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
+	{
+		if ((*it)->getUsers().size() == 0)
+		{
+			if (_chList.size() == 1)
+			{
+				_chList.erase(it);
+				_chList = vector<Channel *>();
+			}
+			else
+				_chList.erase(it);
+		}
+	}
 }
 
 Channel	*cmd::addChannel(string name)
