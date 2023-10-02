@@ -16,6 +16,10 @@ class Channel
 		std::vector<Client *>	_opUsers;
 		std::string				_topic;
 		int						_userLimit;
+		bool					_kflag;
+		bool					_iflag;
+		bool					_tflag;
+		bool					_lflag;
 
 		/* option flag */
 		bool					_kflag;
@@ -41,6 +45,7 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
+
 		void	setInviteOnlyFlag(const bool flag);
 		void	setChPassFlag(const bool flag);
 		void	setChTopicFlag(const bool flag);
