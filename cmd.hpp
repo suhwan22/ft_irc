@@ -21,49 +21,53 @@ struct content
 };
 
 class cmd {
- private:
-	int					_clntSock;
-	vector<content>		_content;
-	vector<Client *>&	_clntList;
-	vector<Channel *>&	_chList;
-	string				_servPass;
-	string				_chpass;
-	bool				_kflag;
+	private:
+		int					_clntSock;
+		vector<content>		_content;
+		vector<Client *>&	_clntList;
+		vector<Channel *>&	_chList;
+		string				_servPass;
+		string				_chpass;
+		bool				_kflag;
 
- public:
-	cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList);
-	~cmd();
-	std::vector<string> *splitCmd(string &str);
-	void	printContent(const vector<content>& content);
-	int		parsecommand();
+	public:
+		cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList);
+		~cmd();
+		std::vector<string> *splitCmd(string &str);
+		void	printContent(const vector<content>& content);
+		int		parsecommand();
 
-	Channel	*addChannel(std::string name);
-	void	delChannel(Channel *channel);
-	Channel	*searchChannel(string channelName);
+		Channel	*addChannel(std::string name);
+		void	delChannel(Channel *channel);
+		Channel	*searchChannel(string channelName);
 
-	Client	*addClient(int sock);
-	void	delClient(Client *client);
-	Client	*searchClient(int sock);
+		Client	*addClient(int sock);
+		void	delClient(Client *client);
+		Client	*searchClient(int sock);
+		Client	*searchClient(string name);
 
-	/* privmsg.cpp */
-	void	privmsg(vector<string> tokens);
-	void	privmsgToChannel(vector<string> tokens);
-	void	privmsgToClient(vector<string> tokens);
+		/* privmsg.cpp */
+		void	privmsg(vector<string> tokens);
+		void	privmsgToChannel(vector<string> tokens);
+		void	privmsgToClient(vector<string> tokens);
 
-	/* user.cpp */
-	void	user(string arg);
+		/* user.cpp */
+		void	user(string arg);
 
-	/* nick.cpp */
-	void	nick(string nick);
+		/* nick.cpp */
+		void	nick(string nick);
 
-	/* pass.cpp */
-	void	pass(string pass);
+		/* pass.cpp */
+		void	pass(string pass);
 
-	/* ping.cpp */
-	void	ping();
+		/* ping.cpp */
+		void	ping();
 
-	/* quit.cpp */
-	void	quit(string arg);
+		/* quit.cpp */
+		void	quit(string arg);
+
+		/* invite.cpp */
+	void	invite(string arg);
 
 	/* join.cpp */
 	void	join(string arg);
