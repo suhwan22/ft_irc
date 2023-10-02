@@ -1,6 +1,7 @@
 #include "cmd.hpp"
 #include "channel.hpp"
 #include "client.hpp"
+#include <cstdlib>
 
 void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 {
@@ -56,7 +57,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 			}
 			else
 			{
-				if (ch->getUsers().size() >= ch->getUserLimit())
+				if (static_cast<int>(ch->getUsers().size()) >= ch->getUserLimit())
 				/* 유저제한을 넘는 경우 */
 				{
 					/* msg 미완성 */
