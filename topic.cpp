@@ -7,7 +7,7 @@ void cmd::settingtopic(string arg, string inputmsg) {
 	string						topic;
 	Client						*me = searchClient(_clntSock);
 
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == arg) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->isClientInChannel(me))) {

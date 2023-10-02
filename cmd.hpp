@@ -24,18 +24,25 @@ class cmd {
  private:
 	int					_clntSock;
 	vector<content>		_content;
-	vector<Client *>&	_clilist;
-	vector<Channel *>&	_chlist;
+	vector<Client *>&	_clntList;
+	vector<Channel *>&	_chList;
 	string				_servPass;
 	string				_chpass;
-	int					_kflag;
+	bool				_kflag;
 
  public:
-	cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clilist, vector<Channel *> &chlist);
+	cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList);
 	~cmd();
 	std::vector<string> *splitCmd(string &str);
 	void	printContent(const vector<content>& content);
 	int		parsecommand();
+
+	Channel	*addChannel(std::string name);
+	void	delChannel(Channel *channel);
+	Channel	*searchChannel(string channelName);
+
+	Client	*addClient(int sock);
+	void	delClient(Client *client);
 	Client	*searchClient(int sock);
 
 	/* privmsg.cpp */
@@ -57,6 +64,13 @@ class cmd {
 
 	/* quit.cpp */
 	void	quit(string arg);
+
+	/* join.cpp */
+	void	join(string arg);
+	void	joinWithPass(vector<string> &chList, vector<string> &passList);
+	void	joinNoPass(vector<string> &chList);
+	void	joinNewChannel(Client *me, string channel);
+	void	joinExistChannel(Client *me, Channel *ch, string pass);
 
 	/* util.cpp */
 	void noSuchNick(string wrongnick);

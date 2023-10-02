@@ -22,7 +22,7 @@ void cmd::plusOption_k(string channel, string option, string pass)
 	string msg;
 	vector<Channel *>::iterator iter;
 	Client	*me = searchClient(_clntSock);
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == channel) {
 			vector<Client *> members = (*iter)->getUsers();
 			// if (!(*iter)->isChannelOp(me)) {
@@ -53,7 +53,7 @@ void cmd::minusOption_k(string channel, string option, string pass)
 	string msg;
 	vector<Channel *>::iterator iter;
 	Client	*me = searchClient(_clntSock);
-	for (iter = _chlist.begin(); iter != _chlist.end(); iter++) {
+	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == channel) {
 			vector<Client *> members = (*iter)->getUsers();
 			// if (!(*iter)->isChannelOp(me)) {
