@@ -70,7 +70,7 @@ int cmd::parsecommand() {
 	int	cnt = 0;
 	for (vector<content>::iterator it = _content.begin(); it != _content.end(); it++)
 	{
-		cout << cnt++ << std::endl;
+		cout << cnt++ << endl;
 		if ((*it).cmd == "JOIN")
 			join((*it).arg);
 		else if ((*it).cmd == "PING")
@@ -102,12 +102,12 @@ int cmd::parsecommand() {
 	return 0;
 }
 
-Channel	*cmd::addChannel(std::string name)
+Channel	*cmd::addChannel(string name)
 {
 	Channel *newChannel = new Channel(name);
 	if (!newChannel)
 	{
-		std::cout << "Error: cmd::addChannel: new Channel()" << std::endl;
+		cout << "Error: cmd::addChannel: new Channel()" << endl;
 		return (NULL);
 	}
 	_chList.push_back(newChannel);
@@ -116,11 +116,17 @@ Channel	*cmd::addChannel(std::string name)
 
 void	cmd::delChannel(Channel *channel)
 {
-	for (std::vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
+	for (vector<Channel *>::iterator it = _chList.begin(); it != _chList.end(); it++)
 	{
 		if (channel == (*it))
 		{
-			_chList.erase(it);
+			if (_chList.size() == 1)
+			{
+				_chList.erase(it);
+				_chList = vector<Channel *>();
+			}
+			else
+				_chList.erase(it);
 			break ;
 		}
 	}
@@ -131,7 +137,7 @@ Client	*cmd::addClient(int sock)
 	Client *newClient = new Client(sock);
 	if (!newClient)
 	{
-		std::cout << "Error: cmd::addClient: new Client()" << std::endl;
+		cout << "Error: cmd::addClient: new Client()" << endl;
 		return (NULL);
 	}
 	_clntList.push_back(newClient);
@@ -140,11 +146,17 @@ Client	*cmd::addClient(int sock)
 
 void	cmd::delClient(Client *client)
 {
-	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 	{
 		if (client == (*it))
 		{
-			_clntList.erase(it);
+			if (_clntList.size() == 1)
+			{
+				_clntList.erase(it);
+				_clntList = vector<Client *>();
+			}
+			else
+				_clntList.erase(it);
 			break ;
 		}
 	}

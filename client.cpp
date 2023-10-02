@@ -25,7 +25,13 @@ void	Client::exitChannel(const std::string channelName)
 	{
 		if ((*it)->getChannelName() == channelName)
 		{
-			_joinChannels.erase(it);
+			if (_joinChannels.size() == 1)
+			{
+				_joinChannels.erase(it);
+				_joinChannels = std::vector<Channel *>();
+			}
+			else
+				_joinChannels.erase(it);
 			return ;
 		}
 	}
@@ -52,7 +58,13 @@ void	Client::delInviteChannel(Channel *channel)
 	{
 		if ((*it) == channel)
 		{
-			_inviteChannels.erase(it);
+			if (_inviteChannels.size() == 1)
+			{
+				_inviteChannels.erase(it);
+				_inviteChannels = std::vector<Channel *>();
+			}
+			else
+				_inviteChannels.erase(it);
 			return ;
 		}
 	}

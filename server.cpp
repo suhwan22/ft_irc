@@ -125,7 +125,13 @@ void	Server::delChannel(Channel *channel)
 	{
 		if (channel == (*it))
 		{
-			_channelList.erase(it);
+			if (_channelList.size() == 1)
+			{
+				_channelList.erase(it);
+				_channelList = std::vector<Channel *>();
+			}
+			else
+				_channelList.erase(it);
 			break ;
 		}
 	}
@@ -147,7 +153,13 @@ void	Server::delClient(Client *client)
 	{
 		if (client == (*it))
 		{
-			_clntList.erase(it);
+			if (_clntList.size() == 1)
+			{
+				_clntList.erase(it);
+				_clntList = std::vector<Client *>();
+			}
+			else
+				_clntList.erase(it);
 			break ;
 		}
 	}
@@ -159,7 +171,13 @@ void	Server::delClient(int sock)
 	{
 		if (sock == (*it)->getSock())
 		{
-			_clntList.erase(it);
+			if (_clntList.size() == 1)
+			{
+				_clntList.erase(it);
+				_clntList = std::vector<Client *>();
+			}
+			else
+				_clntList.erase(it);
 			break ;
 		}
 	}

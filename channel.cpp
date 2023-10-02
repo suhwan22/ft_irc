@@ -31,7 +31,13 @@ void	Channel::delUser(Client *client)
 	{
 		if ((*it) == client)
 		{
-			_users.erase(it);
+			if (_users.size() == 1)
+			{
+				_users.erase(it);
+				_users = std::vector<Client *>();
+			}
+			else
+				_users.erase(it);
 			break ;
 		}
 	}
@@ -61,7 +67,13 @@ void	Channel::delOpUser(Client *client)
 	{
 		if ((*it) == client)
 		{
-			_opUsers.erase(it);
+			if (_users.size() == 1)
+			{
+				_users.erase(it);
+				_users = std::vector<Client *>();
+			}
+			else
+				_users.erase(it);
 			break ;
 		}
 	}
@@ -91,7 +103,13 @@ void	Channel::delInviteUser(Client *client)
 	{
 		if ((*it) == client)
 		{
-			_inviteUsers.erase(it);
+			if (_users.size() == 1)
+			{
+				_inviteUsers.erase(it);
+				_inviteUsers = std::vector<Client *>();
+			}
+			else
+				_inviteUsers.erase(it);
 			break ;
 		}
 	}
@@ -108,14 +126,44 @@ bool	Channel::isClientInvite(Client *client)
 void	Channel::clearClient(Client *client)
 {
 	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
+	{
 		if ((*it) == client)
-			_users.erase(it);
+		{
+			if (_users.size() == 1)
+			{
+				_users.erase(it);
+				_users = std::vector<Client *>();
+			}
+			else
+				_users.erase(it);
+		}
+	}
 	for (std::vector<Client *>::iterator it = _opUsers.begin(); it != _opUsers.end(); it++)
+	{
 		if ((*it) == client)
-			_opUsers.erase(it);
+		{
+			if (_users.size() == 1)
+			{
+				_opUsers.erase(it);
+				_opUsers = std::vector<Client *>();
+			}
+			else
+				_opUsers.erase(it);
+		}
+	}
 	for (std::vector<Client *>::iterator it = _inviteUsers.begin(); it != _inviteUsers.end(); it++)
+	{
 		if ((*it) == client)
-			_inviteUsers.erase(it);
+		{
+			if (_users.size() == 1)
+			{
+				_inviteUsers.erase(it);
+				_inviteUsers = std::vector<Client *>();
+			}
+			else
+				_inviteUsers.erase(it);
+		}
+	}
 }
 
 void	Channel::setInviteOnlyFlag(const bool flag)
