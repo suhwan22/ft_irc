@@ -24,8 +24,7 @@ void cmd::execPart(string ch_name, string inputmsg)
 					else
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PART " + ch_name + " " + inputmsg + "\r\n";
 					if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
-					
+						cerr << "Error: send error" << endl;				
 				}
 				(*iter)->delUser(me);
 				me->exitChannel(ch_name);
