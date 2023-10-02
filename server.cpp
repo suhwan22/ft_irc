@@ -109,7 +109,7 @@ void	Server::serverStart()
 				for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 				{
 					std::cout << (*it)->getNickname() << " : ";
-					(*it)->printChannel();
+					(*it)->printJoinChannel();
 					std::cout << std::endl;
 				}
 
