@@ -13,7 +13,10 @@ void cmd::mode_i(string ch_name, string option) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)){
-					sendNotOpMsg(ch_name, "i", false);
+					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+						" :You must have channel op access or above to set channel mode i\r\n";
+					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+						cerr << "Error: send error" << endl;
 					return ;
 				}
 				else {
@@ -37,7 +40,10 @@ void cmd::mode_i(string ch_name, string option) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)){
-					sendNotOpMsg(ch_name, "i", false);
+					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+						" :You must have channel op access or above to unset channel mode i\r\n";
+					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+						cerr << "Error: send error" << endl;
 					return ;
 				}
 				else {
@@ -68,7 +74,10 @@ void cmd::mode_t(string ch_name, string option) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)) {
-					sendNotOpMsg(ch_name, "t", false);
+					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+						" :You must have channel op access or above to set channel mode t\r\n";
+					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+						cerr << "Error: send error" << endl;
 					return ;
 				}
 				else {
@@ -92,7 +101,10 @@ void cmd::mode_t(string ch_name, string option) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
 				if (!(*iter)->isClientOp(me)) {
-					sendNotOpMsg(ch_name, "t", true);
+					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+						" :You must have channel op access or above to unset channel mode t\r\n";
+					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+						cerr << "Error: send error" << endl;
 					return ;
 				}
 				else {
@@ -141,7 +153,10 @@ void cmd::minusOption_o(string ch_name, string nick)
 			vector<Client *> members = (*iter)->getUsers();
 			vector<Client *>::iterator cliter;
 			if (!(*iter)->isClientOp(me)) {
-				sendNotOpMsg(ch_name, "o", true);
+				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+					" :You must have channel op access or above to unset channel mode o\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
 				return ;
 			}
 			else {
@@ -180,7 +195,10 @@ void cmd::plusOption_o(string ch_name, string nick)
 			vector<Client *> members = (*iter)->getUsers();
 			vector<Client *>::iterator cliter;
 			if (!(*iter)->isClientOp(me)) {
-				sendNotOpMsg(ch_name, "o", false);
+				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+					" :You must have channel op access or above to set channel mode o\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
 				return ;
 			}
 			else {
@@ -241,7 +259,10 @@ void cmd::plusOption_l(string ch_name, string num)
 		vector<Client *> members = (*iter)->getUsers();
 		if ((*iter)->getChannelName() == ch_name){
 			if(!(*iter)->isClientOp(me)) {
-				sendNotOpMsg(ch_name, "l", false);
+				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+					" :You must have channel op access or above to set channel mode l\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
 				return ;
 			}
 			else {
@@ -272,7 +293,10 @@ void cmd::minusOption_l(string ch_name)
 		vector<Client *> members = (*iter)->getUsers();
 		if ((*iter)->getChannelName() == ch_name){
 			if (!(*iter)->isClientOp(me)) {
-				sendNotOpMsg(ch_name, "l", true);
+				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+					" :You must have channel op access or above to unset channel mode l\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
 				return ;
 				}
 			else {
@@ -319,7 +343,10 @@ void cmd::plusOption_k(string ch_name, string pass)
 		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!(*iter)->isClientOp(me)) {
-				sendNotOpMsg(ch_name, "k", false);
+				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+					" :You must have channel op access or above to set channel mode k\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
 				return ;
 			}
 			else {
@@ -351,7 +378,10 @@ void cmd::minusOption_k(string ch_name, string pass)
 		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!(*iter)->isClientOp(me)) {
-				sendNotOpMsg(ch_name, "k", true);
+				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+					" :You must have channel op access or above to unset channel mode k\r\n";
+				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+					cerr << "Error: send error" << endl;
 				return ;
 			}
 			else {
