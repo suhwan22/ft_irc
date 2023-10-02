@@ -33,7 +33,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 	}
 	else
 	{
-		if (pass != ch->getPassWord())
+		if (ch->getChPassFlag() && pass != ch->getPassWord())
 		/* password가 일치하지않는 경우 */
 		{
 			/* msg 미완성 */
