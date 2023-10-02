@@ -115,7 +115,12 @@ std::string	Channel::getUsersName()
 	std::string	users = "";
 
 	for (std::vector<Client *>::iterator it = _users.begin(); it != _users.end(); it++)
-		users += ((*it)->getNickname() + " ");
+	{
+		if (isClientOp((*it)))
+			users += "@" + ((*it)->getNickname() + " ");
+		else
+			users += ((*it)->getNickname() + " ");
+	}
 	users.erase(users.size() - 1, 1);
 	return (users);
 }

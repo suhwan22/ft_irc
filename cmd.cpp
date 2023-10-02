@@ -62,7 +62,7 @@ int cmd::parsecommand() {
 	{
 		cout << cnt++ << std::endl;
 		if ((*it).cmd == "JOIN")
-			;
+			join((*it).arg);
 		else if ((*it).cmd == "PING")
 			ping();
 		else if ((*it).cmd == "PRIVMSG")
@@ -77,8 +77,6 @@ int cmd::parsecommand() {
 			topic((*it).arg);
 		else if ((*it).cmd == "QUIT")
 			quit((*it).arg);
-		else if ((*it).cmd == "JOIN")
-			join((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;

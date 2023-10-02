@@ -26,13 +26,10 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 				+ " :" + channel_users + "\r\n";
 		msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
 				+ " :End of /NAMES list.\r\n";
+		send(_clntSock, (msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
 		for (vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
-		{
-			if ((*it) == me)
-				send(_clntSock, (msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
-			else
-				send(_clntSock, msg.c_str(), msg.size(), 0);
-		}
+			if ((*it) != me)
+				send((*it)->getSock(), msg.c_str(), msg.size(), 0);
 	}
 	else
 	{
@@ -79,13 +76,10 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 							+ " :" + channel_users + "\r\n";
 					msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
 							+ " :End of /NAMES list.\r\n";
+					send(_clntSock, (msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
 					for (vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
-					{
-						if ((*it) == me)
-							send(_clntSock, (msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
-						else
-							send(_clntSock, msg.c_str(), msg.size(), 0);
-					}
+						if ((*it) != me)
+							send((*it)->getSock(), msg.c_str(), msg.size(), 0);
 				}
 			}
 		}
@@ -95,8 +89,9 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 void	cmd::joinNewChannel(Client *me, string channel)
 {
 	Channel	*ch;
+	string	msg;
 	
-	ch = addChannel("#" + channel);
+	ch = addChannel(channel);
 	if (!ch)
 		exit(1);
 	else
@@ -104,6 +99,13 @@ void	cmd::joinNewChannel(Client *me, string channel)
 		ch->addOpUser(me);
 		ch->addUser(me);
 		me->joinChannel(ch);
+		msg = ":" + me->getNickname() + "!" + me->getUserName() \
+			   + "@127.0.0.1 JOIN: " + ch->getChannelName() + "\r\n" 
+			   + ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
+			   + " :" + "@" + me->getNickname() + "\r\n" \
+			   + ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
+			   + " :End of /NAMES list.\r\n";
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		/* msg 미완성 */
 	}
 }
@@ -159,7 +161,6 @@ void	cmd::join(string arg)
 	vector<string>	passList;
 	size_t			start = 0;
 	size_t			pos = 0;
-
 
 	/* 채널 이름들 ',' 기준으로 스플릿*/
 	ss >> channels;
