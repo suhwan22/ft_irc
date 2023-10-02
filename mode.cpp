@@ -362,7 +362,7 @@ void cmd::plusOption_k(string ch_name, string pass)
 					_chpass = pass;
 					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +k :" + pass + "\r\n";
-						if (members[i]->getSock() != _clntSock && send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
 					}
 				}
