@@ -101,6 +101,13 @@ void	Server::serverStart()
 					command.parsecommand();
 				}
 				delEmptyChannel();
+				for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
+				{
+					std::cout << (*it)->getChannelName() << " : ";
+					for (std::vector<Client *>::iterator clnt = (*it)->getUsers().begin(); clnt != (*it)->getUsers.end(); clnt++)
+						std::cout << (*clnt)->getNickname(); << " ";
+					std::cout << std::endl;
+				}
 			}
 		}
 	}
