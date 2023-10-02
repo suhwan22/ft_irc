@@ -95,6 +95,11 @@ void	Channel::setChLimitFlag(const bool flag)
 	_lflag = flag;
 }
 
+void	Channel::setIsEmpty(const bool flag)
+{
+	_isEmpty = flag;
+}
+
 void	Channel::setPassWord(const std::string passWord)
 {
 	_passWord = passWord;
@@ -161,4 +166,9 @@ bool Channel::getChTopicFlag() const
 bool Channel::getChLimitFlag() const
 {
 	return (_lflag);
+}
+
+bool	Channel::getIsEmpty() const
+{
+	return (_isEmpty);
 }

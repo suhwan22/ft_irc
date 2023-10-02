@@ -22,6 +22,7 @@ class Channel
 		bool					_iflag;
 		bool					_tflag;
 		bool					_lflag;
+		bool					_isEmpty;
 
 	public:
 		Channel(std::string channelName);
@@ -41,7 +42,7 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
-
+		void	setIsEmpty(const bool flag);
 		void	setInviteOnlyFlag(const bool flag);
 		void	setChPassFlag(const bool flag);
 		void	setChTopicFlag(const bool flag);
@@ -57,6 +58,7 @@ class Channel
 		bool							getChPassFlag() const;
 		bool							getChTopicFlag() const;
 		bool							getChLimitFlag() const;
+		bool							getIsEmpty() const;
 };
 
 #endif

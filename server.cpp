@@ -107,7 +107,7 @@ void	Server::serverStart()
 					std::cout << (*it)->getChannelName() << " : ";
 					for (std::vector<Client *>::iterator clnt = users.begin(); clnt != users.end(); clnt++)
 						std::cout << (*clnt)->getNickname() << " ";
-					std::cout << std::endl;
+					std::cout << users.size() << std::endl;
 				}
 			}
 		}
@@ -120,8 +120,7 @@ void	Server::delEmptyChannel()
 {
 	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
 	{
-		std::vector<Client *> users = (*it)->getUsers();
-		if (users.size() == 0)
+		if ((*it)->getIsEmpty() == true)
 			_channelList.erase(it);
 	}
 //	std::vector<Client *> users;

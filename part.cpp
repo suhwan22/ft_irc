@@ -28,6 +28,8 @@ void cmd::execPart(string ch_name, string inputmsg)
 					
 				}
 				(*iter)->delUser(me);
+				if ((*iter)->getUsers().size() == 0)
+					(*iter)->setIsEmpty(true);
 				cout << "after del size : " << (*iter)->getUsers().size() << endl;
 				me->exitChannel(ch_name);
 			}
