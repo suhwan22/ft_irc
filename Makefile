@@ -19,7 +19,8 @@ SRC = main.cpp \
 	  quit.cpp \
 	  kick.cpp \
 	  mode.cpp \
-	  part.cpp
+	  part.cpp \
+	  invite.cpp
 
 
 OBJ = $(SRC:.cpp=.o)

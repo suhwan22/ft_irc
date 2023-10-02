@@ -48,7 +48,7 @@ Client	*cmd::searchClient(int sock)
 	return (NULL);
 }
 
-Client	*cmd::serachClient(string name)
+Client	*cmd::searchClient(string name)
 {
 	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 	{
@@ -94,7 +94,7 @@ int cmd::parsecommand() {
 		else if ((*it).cmd == "PART")
 			part((*it).arg);
 		else if ((*it).cmd == "INVITE")
-			inivite((*it).arg);
+			invite((*it).arg);
 	}
 	// printCmdVector(*tokens);
 	return 0;
