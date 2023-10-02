@@ -100,14 +100,8 @@ void	Server::serverStart()
 					command.printContent(command.getContent());
 					command.parsecommand();
 				}
-				delEmptyChannel();
-				for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
-				{
-					std::cout << (*it)->getChannelName() << " : ";
-					for (std::vector<Client *>::iterator clnt = (*it)->getUsers().begin(); clnt != (*it)->getUsers.end(); clnt++)
-						std::cout << (*clnt)->getNickname(); << " ";
-					std::cout << std::endl;
-				}
+
+
 			}
 		}
 	}
@@ -135,13 +129,6 @@ void	Server::delChannel(Channel *channel)
 			break ;
 		}
 	}
-}
-
-void	Server::delEmptyChannel()
-{
-	for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
-		if ((*it)->getUsers().size() == 0)
-			_channelList.erase(it);
 }
 
 void	Server::addClient(int sock)

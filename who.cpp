@@ -37,7 +37,7 @@ void	cmd::who(string arg)
 			}
 
 			msg = ":irc.local 352 " + me->getNickname() + " " + lastJoinChannel \
-				   + " " + client->getUserName() + " 127.0.0.1 irc.local " \
+				   + " " + client->getUserName() + "127.0.0.1 irc.local " \
 				   + client->getNickname() + " " + status + " :0 " + client->getRealName() + "\r\n" \
 				   + ":irc.local 315 " + me->getNickname() + " " \
 				   + client->getNickname() + " :End of /WHO list.\r\n";
@@ -62,7 +62,7 @@ void	cmd::who(string arg)
 				if (ch->isClientOp((*it)))
 					status += "@";
 				msg += (":irc.local 352 " + me->getNickname() + " " + ch->getChannelName() \
-						+ " " + (*it)->getUserName() + " 127.0.0.1 irc.local " \
+						+ (*it)->getUserName() + "127.0.0.1 irc.local " \
 						+ (*it)->getNickname() + " " + status + " :0 " + (*it)->getRealName() + "\r\n");
 			}
 			msg += ":irc.local 315 " + me->getNickname() + " " + ch->getChannelName() + " :End of /WHO list.\r\n";

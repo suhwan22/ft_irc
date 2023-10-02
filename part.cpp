@@ -28,8 +28,6 @@ void cmd::execPart(string ch_name, string inputmsg)
 					
 				}
 				(*iter)->delUser(me);
-				cout << "after del size : " << (*iter)->getUsers().size() << endl;
-				me->exitChannel(ch_name);
 			}
 			return ;
 		}

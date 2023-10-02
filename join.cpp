@@ -21,7 +21,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 		users = ch->getUsers();
 		/* msg 미완성 */
 		msg = ":" + me->getNickname() + "!" + me->getUserName() \
-			   + "@127.0.0.1 JOIN: " + ch->getChannelName() + "\r\n";
+			   + "@127.0.0.1 JOIN :" + ch->getChannelName() + "\r\n";
 		msg2 = ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
 				+ " :" + channel_users + "\r\n";
 		msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
@@ -71,7 +71,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 					users = ch->getUsers();
 					/* msg 미완성 */
 					msg = ":" + me->getNickname() + "!" + me->getUserName() \
-						   + "@127.0.0.1 JOIN: " + ch->getChannelName() + "\r\n";
+						   + "@127.0.0.1 JOIN :" + ch->getChannelName() + "\r\n";
 					msg2 = ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
 							+ " :" + channel_users + "\r\n";
 					msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
@@ -99,8 +99,6 @@ void	cmd::joinNewChannel(Client *me, string channel)
 		ch->addOpUser(me);
 		ch->addUser(me);
 		me->joinChannel(ch);
-		cout << "join new channel : " << ch->getChannelName() << endl;
-		cout << "op : " << me->getNickname() << endl;
 		msg = ":" + me->getNickname() + "!" + me->getUserName() \
 			   + "@127.0.0.1 JOIN: " + ch->getChannelName() + "\r\n" 
 			   + ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
