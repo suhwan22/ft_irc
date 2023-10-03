@@ -5,6 +5,7 @@
 Channel::Channel(std::string channelName) :
 	_channelName(channelName),
 	_passWord(""),
+	_topic(""),
 	_userLimit(2147483647), _chTime(saveTime()), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
 {
 }
@@ -12,6 +13,7 @@ Channel::Channel(std::string channelName) :
 Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
 	_passWord(password),
+	_topic(""),
 	_userLimit(2147483647), _chTime(saveTime()), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
 {}
 
@@ -219,6 +221,21 @@ void	Channel::setUserLimit(const int limit)
 void	Channel::setTopic(const std::string topic)
 {
 	_topic = topic;
+}
+
+void	Channel::setTopicMaker(const std::string name)
+{
+	_topicMaker = name;
+}
+
+std::string	Channel::getTopic()
+{
+	return (_topic);
+}
+
+std::string	Channel::getTopicMaker()
+{
+	return (_topicMaker);
 }
 
 std::string	Channel::getUsersName()
