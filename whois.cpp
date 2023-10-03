@@ -23,7 +23,7 @@ void	cmd::whois(string nick)
 		msg1 = ":irc.local 319 " + me->getNickname() + " " + nick + " :" + who->getChNames() + "\r\n";
 	}
 
-	ltime = who->getClntTimeLong() - time(NULL);
+	ltime = time(NULL) - me->getClntTimeLong();
 	char	c;
 
 	while (ltime / 10)
@@ -36,7 +36,7 @@ void	cmd::whois(string nick)
 	stime.insert(0, 1 ,c);
 
 	idle = ":irc.local 317 " + me->getNickname() + " " + nick + " " \
-			+ stime + " "  + who->getClntTime() + ":seconds idle, signon time\r\n";
+			+ stime + " "  + who->getClntTime() + " :seconds idle, signon time\r\n";
 
 	msg = ":irc.local 311 " + me->getNickname() + " " + nick + " " \
 		   + who->getUserName() +  " " + who->getIP() + " * :" + who->getRealName() + "\r\n";
