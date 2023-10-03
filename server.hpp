@@ -9,7 +9,7 @@
 # include <cstdio>
 # include <vector>
 # include <arpa/inet.h>
-# include <sys/epoll.h>
+# include <sys/event.h>
 
 # define BUF_SIZE 100
 # define EPOLL_SIZE 50

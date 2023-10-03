@@ -2,6 +2,7 @@
 #include "client.hpp"
 #include "channel.hpp"
 #include "cmd.hpp"
+#include <fcntl.h>
 
 Server::Server(int port, std::string pass) : _port(port), _passWord(pass) {}
 
@@ -17,7 +18,10 @@ void	Server::serverInit()
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servAddr.sin_port = htons(_port);
 
-	if (bind(_servSock, (struct sockaddr *) &servAddr, sizeof(servAddr)) == -1)
+	int flags = fcntl(_servSock, F_GETFL, 0);
+	fcntl(_servSock, F_SETFL, flags | O_NONBLOCK);
+
+	if (bind(_servSock, (struct sockaddr *)&servAddr, sizeof(servAddr)) == -1)
 	{
 		std::cout << "Error: bind()" << std::endl;
 		exit(1);
@@ -32,17 +36,7 @@ void	Server::serverInit()
 
 void	Server::serverStart()
 {
-	int	epfd, eventCnt;
-	struct epoll_event	*epEvents;
-	struct epoll_event	event;
-
-	epfd = epoll_create(EPOLL_SIZE);
-	//epEvents = malloc(sizeof(struct epoll_event) * EPOLL_SIZE);
-	epEvents = new epoll_event[EPOLL_SIZE];
-	event.events = EPOLLIN;
-	event.data.fd = _servSock;
-	epoll_ctl(epfd, EPOLL_CTL_ADD, _servSock, &event);
-
+	int		eventCnt, flags;
 	socklen_t	addrSize;
 	struct sockaddr_in	clntAddr;
 	int	clntSock;
@@ -51,9 +45,29 @@ void	Server::serverStart()
 	int		strlen;
 	int		i;
 
+	int kq = kqueue();
+	if (kq < 0) {
+		std::cerr << "Failef to create kqueue" << std::endl;
+		close(_servSock);
+		return ;
+	}
+
+	struct kevent events[10];
+	struct kevent change;
+
+	EV_SET(&change, _servSock, EVFILT_READ, EV_ADD, 0, 0, NULL);
+
+	if (kevent(kq, &change, 1, NULL, 0, NULL) < 0) {
+		std::cerr << "Failed to register server socket with kqueue" << std::endl;
+		close(_servSock);
+		close(kq);
+		return ;
+	}
+
 	while (1)
 	{
-		eventCnt = epoll_wait(epfd, epEvents, EPOLL_SIZE, -1);
+		eventCnt = kevent(kq, NULL, 0, events, 10, NULL);
+
 		if (eventCnt == -1)
 		{
 			std::cout << "Error: epoll_wait()" << std::endl;
@@ -61,12 +75,20 @@ void	Server::serverStart()
 		}
 		for (i = 0; i < eventCnt; i++)
 		{
-			if (epEvents[i].data.fd == _servSock)
+			if ((int)events[i].ident == _servSock)
 			{
 				/* Add Client!! */
-				addrSize = sizeof(clntAddr);
 				clntSock = accept(_servSock, (struct sockaddr *)&clntAddr, &addrSize);
 
+				flags = fcntl(clntSock, F_GETFL, 0);
+				fcntl(clntSock, F_SETFL, flags | O_NONBLOCK);
+				EV_SET(&change, clntSock, EVFILT_READ, EV_ADD, 0, 0, NULL);
+				if (kevent(kq, &change, 1, NULL, 0, NULL) < 0) {
+					std::cerr << "Failed to register client socket with kqueue" << std::endl;
+					close(clntSock);
+				}
+
+				/* linger socket */
 				linger optval;
      			optval.l_onoff = 1;
      			optval.l_linger = 1;
@@ -76,27 +98,23 @@ void	Server::serverStart()
 			        close(clntSock);
 			        exit(1);
 			    }
-
-				event.events = EPOLLIN;
-				event.data.fd = clntSock;
-				epoll_ctl(epfd, EPOLL_CTL_ADD, clntSock, &event);
 				
 				addClient(clntSock);
 				std::cout << "connected client: " << clntSock << std::endl;
 			}
 			else
 			{
-				strlen = recv(epEvents[i].data.fd, buf, BUF_SIZE, 0);
+				strlen = recv(events[i].ident, buf, BUF_SIZE, 0);
 				if (strlen <= 0)
 				{
-					epoll_ctl(epfd, EPOLL_CTL_DEL, epEvents[i].data.fd, NULL);
-					delClient(epEvents[i].data.fd);
-					std::cout << "closed client: " << epEvents[i].data.fd << std::endl;
-					close(epEvents[i].data.fd);
+					EV_SET(&change, events[i].ident, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+					delClient(events[i].ident);
+					std::cout << "closed client: " << events[i].ident << std::endl;
+					close(events[i].ident);
 				}
 				else
 				{
-					cmd command(epEvents[i].data.fd, buf, strlen, _passWord, _clntList, _channelList);
+					cmd command(events[i].ident, buf, strlen, _passWord, _clntList, _channelList);
 					command.printContent(command.getContent());
 					command.parsecommand();
 				}
@@ -131,7 +149,7 @@ void	Server::serverStart()
 		}
 	}
 	close(_servSock);
-	close(epfd);
+	close(kq);
 }
 
 void	Server::addChannel(std::string name)
