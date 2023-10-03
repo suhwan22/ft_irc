@@ -97,6 +97,9 @@ int cmd::parsecommand() {
 			invite((*it).arg);
 		else if ((*it).cmd == "WHO")
 			who((*it).arg);
+		else if ((*it).cmd == "WHOIS")
+			whois((*it).arg);
+						
 	}
 	emptyChannelClear();
 	return 0;

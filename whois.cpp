@@ -1,0 +1,24 @@
+#include "client.hpp"
+#include "channel.hpp"
+#include "cmd.hpp"
+
+void	cmd::whois(string nick)
+{
+	string	msg, msg1, msg2, msg3;
+	Client	*me = searchClient(_clntSock);
+	// Client	*who = searchClient(nick);
+
+	msg = ":irc.local 311 " + me->getNickname() + " " + nick + " " + me->getUserName() +  " " + me->getIP() + " * :" + me->getUserName() + "\r\n";
+	msg1 = ":irc.local 319 " + me->getNickname() + " " + nick + " :#123\r\n"; 
+	msg2 = ":irc.local 312 " + me->getNickname() + " " + nick + " irc.local :Local IRC Server\r\n";
+	msg3 = ":irc.local 318 " + me->getNickname() + " " + nick + " :End of /WHOIS list.\r\n";
+	send(_clntSock, (msg + msg1 + msg2 + msg3).c_str(), (msg + msg1 + msg2 + msg3).size(), 0);
+}
+
+// :irc.local 311 test2 test root 127.0.0.1 * :root
+// :irc.local 319 test2 test :#123
+// :irc.local 312 test2 test irc.local :Local IRC Server
+// :irc.local 317 test2 test 873 1696305780 :seconds idle, signon time
+// :irc.local 318 test2 test :End of /WHOIS list.
+
+
