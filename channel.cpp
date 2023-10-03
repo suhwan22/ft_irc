@@ -6,7 +6,8 @@ Channel::Channel(std::string channelName) :
 	_channelName(channelName),
 	_passWord(""),
 	_topic(""),
-	_userLimit(2147483647), _chTime(saveTime()), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
+	_userLimit(-1), _chTime(saveTime()), 
+	_kflag(false), _iflag(false), _tflag(true), _lflag(false), _nflag(true)
 {
 }
 
@@ -14,7 +15,8 @@ Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
 	_passWord(password),
 	_topic(""),
-	_userLimit(2147483647), _chTime(saveTime()), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
+	_userLimit(-1), _chTime(saveTime()), 
+	_kflag(false), _iflag(false), _tflag(true), _lflag(false), _nflag(true)
 {}
 
 Channel::~Channel() {}
@@ -208,6 +210,11 @@ void	Channel::setChLimitFlag(const bool flag)
 	_lflag = flag;
 }
 
+void	Channel::setChNFlag(const bool flag)
+{
+	_nflag = flag;
+}
+
 void	Channel::setPassWord(const std::string passWord)
 {
 	_passWord = passWord;
@@ -236,6 +243,49 @@ std::string	Channel::getTopic()
 std::string	Channel::getTopicMaker()
 {
 	return (_topicMaker);
+}
+
+std::string	Channel::getOption(Client *client)
+{
+	std::string	opt = "+";
+	std::string	key = "<key>";
+	std::string	limit = "";
+	int			lim = _userLimit;
+
+	if (_iflag)
+		opt += "i";
+	if (_kflag)
+		opt += "k";
+	if (_lflag)
+		opt += "l";
+	if (_nflag)
+		opt += "n";
+	if (_tflag)
+		opt += "t";
+
+	char	c;
+	while (_lflag && lim / 10)
+	{
+		c = '0' + lim % 10;
+		limit.insert(0, 1, c);
+		lim /= 10;
+	}
+	c = '0' + lim % 10;
+	limit.insert(0, 1 ,c);
+
+	if (isClientInChannel(client))
+		key = _passWord;
+
+	if (_kflag && _lflag)
+		opt = opt + " " + key + " :" + limit;
+	else if (_kflag)
+		opt = opt + " :" + key;
+	else if (_lflag)
+		opt = opt + " :" + limit;
+	else
+		opt = ":" + opt;
+
+	return (opt);
 }
 
 std::string	Channel::getUsersName()
@@ -289,6 +339,11 @@ bool Channel::getChTopicFlag() const
 bool Channel::getChLimitFlag() const
 {
 	return (_lflag);
+}
+
+bool Channel::getChNFlag() const
+{
+	return (_nflag);
 }
 
 std::string	Channel::getChannelTime() const
