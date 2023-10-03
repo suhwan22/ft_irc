@@ -9,10 +9,9 @@ void	cmd::nick(string nick)
 	if (!me->getCreated())
 	{
 		/* dup nick check */
-//		if (isDupNick(nick))
-//			nick += "_";
-//		else
-			me->setNickname(nick);
+		if (isNickExist(nick))
+			nick += "_";
+		me->setNickname(nick);
 	}
 	else
 	{
@@ -63,3 +62,12 @@ void	cmd::nick(string nick)
 		}
 	}
 }
+
+bool	cmd::isNickExist(string nick)
+{
+	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+		if ((*it)->getNickname() == nick)
+			return (true);
+	return (false);
+}
+

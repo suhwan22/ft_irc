@@ -57,6 +57,7 @@ class cmd {
 
 		/* nick.cpp */
 		void	nick(string nick);
+		bool	isNickExist(string nick);
 
 		/* pass.cpp */
 		void	pass(string pass);
