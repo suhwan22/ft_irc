@@ -124,6 +124,9 @@ class cmd {
 	
 		void	emptyChannelClear();
 		const	vector<content>& getContent() const;
-};
+
+		/* whois.cpp */
+		void	whois(string nick);
+};			
 
 #endif
