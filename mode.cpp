@@ -3,12 +3,12 @@
 #include "channel.hpp"
 #include <cstdlib>
 
-void cmd::mode_i(string ch_name, string option) {
+void cmd::mode_i(string ch_name, char option) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
-	if (option[0] == '+') {
+	if (option == '+') {
 		for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
@@ -36,7 +36,7 @@ void cmd::mode_i(string ch_name, string option) {
 		}
 		noSuchChannel(ch_name);
 	}
-	else if (option[0] == '-') {
+	else if (option == '-') {
 		for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
@@ -66,12 +66,12 @@ void cmd::mode_i(string ch_name, string option) {
 	}
 }
 
-void cmd::mode_t(string ch_name, string option) {
+void cmd::mode_t(string ch_name, char option) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
-	if (option[0] == '+') {
+	if (option == '+') {
 		for (iter = _chList.begin(); iter != _chList.end(); iter++){
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
@@ -99,7 +99,7 @@ void cmd::mode_t(string ch_name, string option) {
 		}
 		noSuchChannel(ch_name);
 	}
-	else if (option[0] == '-') {
+	else if (option == '-') {
 		for (iter = _chList.begin(); iter != _chList.end(); iter++){
 			if ((*iter)->getChannelName() == ch_name) {
 				vector<Client *> members = (*iter)->getUsers();
@@ -130,18 +130,18 @@ void cmd::mode_t(string ch_name, string option) {
 }
 
 
-void cmd::mode_o(string channel, string option, string nick) {
+void cmd::mode_o(string channel, char option, string nick) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	if (nick.empty()){
-		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " k * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
+		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " o * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
 		return ;
 	}
-	if (option[0] == '+')
+	if (option == '+')
 		plusOption_o(channel, nick);
-	else if (option[0] == '-')
+	else if (option == '-')
 		minusOption_o(channel, nick);
 }
 
@@ -230,10 +230,74 @@ void cmd::plusOption_o(string ch_name, string nick)
 	noSuchChannel(ch_name);
 }
 
-void cmd::mode_l(string channel, string option, string num) {
+void cmd::mode_n(string ch_name, char option)
+{
+	string	msg;
+	Client	*me = searchClient(_clntSock);
+	vector<Channel *>::iterator iter;
+
+	if (option == '+') {
+		for (iter = _chList.begin(); iter != _chList.end(); iter++){
+			if ((*iter)->getChannelName() == ch_name) {
+				vector<Client *> members = (*iter)->getUsers();
+				if (!(*iter)->isClientOp(me)) {
+					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+						" :You must have channel op access or above to set channel mode t\r\n";
+					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+						cerr << "Error: send error" << endl;
+					return ;
+				}
+				else {
+					if ((*iter)->getChNFlag() == true)
+						return ;
+					else {
+						for (int i = 0; i < (int)members.size(); i++){
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+n\r\n";
+							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+								cerr << "Error: send error" << endl;
+						}
+					}
+					(*iter)->setChNFlag(true);
+					return ;
+				}
+			}
+		}
+		noSuchChannel(ch_name);
+	}
+	else if (option == '-') {
+		for (iter = _chList.begin(); iter != _chList.end(); iter++){
+			if ((*iter)->getChannelName() == ch_name) {
+				vector<Client *> members = (*iter)->getUsers();
+				if (!(*iter)->isClientOp(me)) {
+					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
+						" :You must have channel op access or above to unset channel mode t\r\n";
+					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+						cerr << "Error: send error" << endl;
+					return ;
+				}
+				else {
+					if ((*iter)->getChNFlag() == false)
+						return ;
+					else {
+						for (int i = 0; i < (int)members.size(); i++){
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-n\r\n";
+							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
+								cerr << "Error: send error" << endl;
+						}
+					}
+					(*iter)->setChNFlag(false);
+					return ;
+				}
+			}
+		}
+		noSuchChannel(ch_name);
+	}
+}
+
+void cmd::mode_l(string channel, char option, string num) {
 	string msg;
 	Client *me = searchClient(_clntSock);
-	if (num.empty() && option[0] == '+'){
+	if (num.empty() && option == '+'){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l * :You must specify a parameter for the limit mode. Syntax: <limit>.\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
@@ -246,9 +310,9 @@ void cmd::mode_l(string channel, string option, string num) {
 			cerr << "Error: send error" << endl;
 		return ;
 	}
-	if (option[0] == '+')
+	if (option == '+')
 		plusOption_l(channel, num);
-	else if(option[0] == '-')
+	else if(option == '-')
 		minusOption_l(channel);
 }
 
@@ -260,6 +324,8 @@ void cmd::plusOption_l(string ch_name, string num)
 	int							limitnum;
 
 	limitnum = strtod(num.c_str(), NULL);
+	if (limitnum == 0)
+		num = "0";
 	for (iter = _chList.begin(); iter != _chList.end(); iter++)
 	{
 		vector<Client *> members = (*iter)->getUsers();
@@ -324,7 +390,7 @@ void cmd::minusOption_l(string ch_name)
 	noSuchChannel(ch_name);
 }
 
-void cmd::mode_k(string channel, string option, string pass) {
+void cmd::mode_k(string channel, char option, string pass) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	if (pass.empty()){
@@ -333,9 +399,9 @@ void cmd::mode_k(string channel, string option, string pass) {
 			cerr << "Error: send error" << endl;
 		return ;
 	}
-	if (option[0] == '+')
+	if (option == '+')
 		plusOption_k(channel, pass);
-	else if (option[0] == '-')
+	else if (option == '-')
 		minusOption_k(channel, pass);
 }
 
@@ -413,77 +479,137 @@ void cmd::onlyChannel(string ch_name)
 {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
+	Channel	*ch = searchChannel(ch_name);
+	string	opt = ch->getOption(me);
 
-	long long	ltime = static_cast<long long>(time(NULL));
-	string	stime = "";
-	char	c;
-
-	while (ltime / 10)
-	{
-		c = '0' + ltime % 10;
-		stime.insert(0, 1, c);
-		ltime /= 10;
-	}
-	c = '0' + ltime % 10;
-	stime.insert(0, 1 ,c);
-
-	msg = ":irc.local 324 " + me->getNickname() + " " + ch_name + " :+nt\r\n" + \
-		":irc.local 329 " + me->getNickname() + " " + ch_name + " :" + stime + "\r\n"; //채널고유번호가 들어가는곳
+	msg = ":irc.local 324 " + me->getNickname() + " " + ch_name + " " + opt + "\r\n" + \
+		":irc.local 329 " + me->getNickname() + " " + ch_name + " :" + ch->getChannelTime() + "\r\n";
 	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 		cerr << "Error: send error" << endl;
 }
 
-void cmd::chModeB(string ch_name)
+void cmd::mode_b(string ch_name, char option)
 {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 
+	if (option == '-')
+		return ;
 	msg = ":irc.local 368 " + me->getNickname() + " " + ch_name + " :End of channel ban list\r\n";
 	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 		cerr << "Error: send error" << endl;
 }
 
-void cmd::modeToChannel(string arg, string line)
+void	cmd::error_arg(char c)
 {
-	string msg;
-	string line_two;
-	stringstream tmp(line);
-	tmp >> line;
-	getline(tmp, line_two, static_cast<char>(EOF));
-	line_two.erase(0, 1);
-	if (line.size() >= 3){
-		msg = "Error: Too many option\r\n";
-		send(_clntSock, msg.c_str(), msg.size(), 0); 
-	}
-	if (line[1] == 'k')
-		mode_k(arg, line, line_two);
-	else if (line[1] == 'l')
-		mode_l(arg, line, line_two);
-	else if (line[1] == 'i')
-		mode_i(arg, line);
-	else if (line[1] == 't')
-		mode_t(arg, line);
-	else if (line[1] == 'o')
-		mode_o(arg, line, line_two);
-	else if (line.empty())
-		onlyChannel(arg);
-	else if (line[0] == 'b')
-		chModeB(arg);
-	
+	string	tmp;
+	Client	*me = searchClient(_clntSock);
+
+	tmp.push_back(c);
+
+	string	msg = ":irc.local 472 " + me->getNickname() + " " + tmp + " :is not a recognised channel mode.\r\n";
+	send(_clntSock, msg.c_str(), msg.size(), 0);
 }
 
-void cmd::modeToClient(string line)
+void cmd::modeToChannel(string chName, string line)
 {
-	string			line_two;
 	stringstream	tmp(line);
-	string			msg;
-	Client			*me = searchClient(_clntSock);
-	tmp >> line;
-	getline(tmp, line_two, static_cast<char>(EOF));
-	line_two.erase(0, 1);
-	if (line[1] == 'i')
+	string	msg;
+	string	opt;
+	vector<string>	args;
+	string			arg;
+
+	if (line.empty())
 	{
-		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " :+i\r\n";
+		onlyChannel(chName);
+		return ;
+	}
+
+	tmp >> opt;
+	while (!tmp.eof())
+	{
+		tmp >> line;
+		args.insert(args.begin(), line);
+	}
+
+	if (opt[0] == 'b')
+	{
+		mode_b(chName, '+');
+		return ;
+	}
+
+	size_t	idx = 1;
+	for (;idx < opt.size(); idx++)
+	{
+		if (args.empty())
+			arg = "";
+		else
+			arg = args.back();
+		if (opt[idx] == 'k' || opt[idx] == 'l' || opt[idx] == 'o')
+		{
+			if (opt[idx] == 'k')
+			{
+				mode_k(chName, opt[0], arg);
+				if (!args.empty())
+					args.pop_back();
+			}
+			else if (opt[idx] == 'l')
+			{
+				mode_l(chName, opt[0], arg);
+				if (opt[0] == '+')
+					if (!args.empty())
+						args.pop_back();
+			}
+			else if (opt[idx] == 'o')
+			{
+				mode_o(chName, opt[0], arg);
+				if (!args.empty())
+					args.pop_back();
+			}
+		}
+		else
+		{
+			if (opt[idx] == 'i')
+				mode_i(chName, opt[0]);
+			else if (opt[idx] == 't')
+				mode_t(chName, opt[0]);
+			else if (opt[idx] == 'n')
+				mode_n(chName, opt[0]);
+			else if (opt[idx] == 'b')
+				mode_b(chName, opt[0]);
+			else
+				error_arg(opt[idx]);
+		}
+	}	
+}
+
+void cmd::modeToClient(string clntName, string opt)
+{
+	string			msg;
+	string			sign;
+	Client			*me = searchClient(_clntSock);
+
+	if (me->getNickname() != clntName)
+	{
+		msg = ":irc.local 502 " + me->getNickname() + " :Can't change mode for other users\r\n";
+		send(_clntSock, msg.c_str(), msg.size(), 0);
+		return ;
+	}
+	if (opt.size() != 2)
+	{
+		msg = "Error: parameters error\n";
+		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+			cerr << "Error: send error" << endl;
+		return ;
+	}
+	if (opt[1] == 'i')
+	{
+		if (opt[0] == '-')
+			sign = "-";
+		else
+			sign = "+";
+
+		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " :" + sign + "i\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
 	}
@@ -496,15 +622,15 @@ void cmd::modeToClient(string line)
 
 void cmd::mode(string arg)
 {
-	string msg;
 	string line;
 	stringstream tmp(arg);
+
 	tmp >> arg;
-	line.erase(0, 1);
 	getline(tmp, line, static_cast<char>(EOF));
+	line.erase(0, 1);
+
 	if (arg[0] == '#')
 		modeToChannel(arg, line);
-	
 	else
-		modeToClient(line);
+		modeToClient(arg, line);
 }

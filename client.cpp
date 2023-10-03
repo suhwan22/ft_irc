@@ -1,5 +1,6 @@
 #include "client.hpp"
 #include "channel.hpp"
+#include <cstdlib>
 
 Client::Client(int clntSock) : _clntSock(clntSock), 
 							   _isCreated(false),
