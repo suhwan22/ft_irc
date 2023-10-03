@@ -552,7 +552,8 @@ void cmd::modeToChannel(string chName, string line)
 				mode_l(chName, opt[0], arg);
 			else if (opt[idx] == 'o')
 				mode_o(chName, opt[0], arg);
-			args.pop_back();
+			if (!args.empty())
+				args.pop_back();
 		}
 		else
 		{
