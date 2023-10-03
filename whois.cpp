@@ -23,7 +23,7 @@ void	cmd::whois(string nick)
 		msg1 = ":irc.local 319 " + me->getNickname() + " " + nick + " :" + who->getChNames() + "\r\n";
 	}
 
-	ltime = time(NULL) - me->getClntTimeLong();
+	ltime = time(NULL) - who->getClntTimeLong();
 	char	c;
 
 	while (ltime / 10)
