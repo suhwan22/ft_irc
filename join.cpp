@@ -14,11 +14,22 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 	if (ch->isClientInvite(me))
 	/* invite 받은 client인 경우 */
 	{
+		string	topicMsg = "";
 		ch->addUser(me);
 		me->joinChannel(ch);
 		ch->delInviteUser(me);
 		channel_users = ch->getUsersName();
 		users = ch->getUsers();
+
+		if (ch->getTopic().size() != 0)
+		{
+			Client	*topicer = searchClient(ch->getTopicMaker());
+			topicMsg = ":irc.local 332 " + me->getNickname() + " " \
+						+ ch->getChannelName() + " :" + ch->getTopic() + " \r\n" \
+						+ ":irc.local 333 " + me->getNickname() + " " \
+						+ ch->getChannelName() + " " + topicer->getNickname() + "!" \
+						+ topicer->getUserName() + "@127.0.0.1 :" + ch->getTopicTime() + "\r\n";
+		}
 		/* msg 미완성 */
 		msg = ":" + me->getNickname() + "!" + me->getUserName() \
 			   + "@127.0.0.1 JOIN :" + ch->getChannelName() + "\r\n";
@@ -26,7 +37,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 				+ " :" + channel_users + "\r\n";
 		msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
 				+ " :End of /NAMES list.\r\n";
-		send(_clntSock, (msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
+		send(_clntSock, (topicMsg + msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
 		for (vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
 			if ((*it) != me)
 				send((*it)->getSock(), msg.c_str(), msg.size(), 0);
@@ -71,7 +82,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 					me->joinChannel(ch);
 					channel_users = ch->getUsersName();
 					users = ch->getUsers();
-					if (ch->getTopic().size() == 0)
+					if (ch->getTopic().size() != 0)
 					{
 						Client	*topicer = searchClient(ch->getTopicMaker());
 						topicMsg = ":irc.local 332 " + me->getNickname() + " " \
