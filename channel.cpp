@@ -5,14 +5,14 @@
 Channel::Channel(std::string channelName) :
 	_channelName(channelName),
 	_passWord(""),
-	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(true), _lflag(false) , _chTime(saveTime())
+	_userLimit(2147483647), _chTime(saveTime()), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
 {
 }
 
 Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
 	_passWord(password),
-	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
+	_userLimit(2147483647), _chTime(saveTime()), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
 {}
 
 Channel::~Channel() {}
