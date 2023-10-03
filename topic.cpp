@@ -31,6 +31,7 @@ void cmd::settingtopic(string arg, string inputmsg) {
 					if (send(members[i]->getSock(), topic.c_str(), topic.size(), 0) == -1)
 						cerr << "Error: send error" << endl;
 					}
+					(*iter)->setTopic(inputmsg);
 				}
 				return ;
 			}
