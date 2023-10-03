@@ -39,7 +39,7 @@ void	cmd::user(string arg)
 	}
 	else
 	{
-		msg = ":irc.local 433 * " + me->getNickname() + " " + nick + " :Nickname is already in use.\r\n";
+		msg = ":irc.local 433 * " + client->getNickname() + " :Nickname is already in use.\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
 	}
 }
