@@ -500,6 +500,16 @@ void cmd::mode_b(string ch_name, char option)
 		cerr << "Error: send error" << endl;
 }
 
+void	cmd::error_arg(char c)
+{
+	string	tmp;
+	Client	*me = searchClient(_clntSock);
+
+	tmp.push_back(c);
+
+	string	msg = ":irc.local 472 " + me->getNickname() + " " + tmp + " :is not a recognised channel mode.\r\n";
+}
+
 void cmd::modeToChannel(string chName, string line)
 {
 	stringstream	tmp(line);
@@ -554,6 +564,8 @@ void cmd::modeToChannel(string chName, string line)
 				mode_n(chName, opt[0]);
 			else if (opt[idx] == 'b')
 				mode_b(chName, opt[0]);
+			else
+				error_arg(opt[idx]);
 		}
 	}	
 }
