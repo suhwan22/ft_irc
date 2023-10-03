@@ -28,7 +28,7 @@ void cmd::execKick(string ch_name, string nick)
 					}
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
-							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " KICK " + ch_name + " " + nick + " :" + inputmsg + "\r\n";
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " KICK " + ch_name + " " + nick + " " + inputmsg + "\r\n";
 							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cout << "Error: send error" << endl; 
 						}
