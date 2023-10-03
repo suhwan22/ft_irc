@@ -26,6 +26,7 @@ class Channel
 		bool					_iflag;
 		bool					_tflag;
 		bool					_lflag;
+		bool					_nflag;
 
 	public:
 		Channel(std::string channelName);
@@ -64,6 +65,7 @@ class Channel
 		void	setTopicTime(const std::string time);
 		void	setInviteOnlyFlag(const bool flag);
 		void	setChPassFlag(const bool flag);
+		void	setChNFlag(const bool flag);
 		void	setChTopicFlag(const bool flag);
 		void	setChLimitFlag(const bool flag);
 
@@ -79,8 +81,10 @@ class Channel
 		bool							getChPassFlag() const;
 		bool							getChTopicFlag() const;
 		bool							getChLimitFlag() const;
+		bool							getChNFlag() const;
 		std::string						getTopicTime() const;
 		std::string						getChannelTime() const;
+		std::string						getOption(Client *client);
 		std::string						saveTime();
 };
 

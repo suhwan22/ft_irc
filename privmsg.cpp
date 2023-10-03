@@ -11,7 +11,7 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 	for (iter = _chList.begin(); iter != _chList.end(); iter++)	{
 		if ((*iter)->getChannelName() == arg) {
 			vector<Client *> members = (*iter)->getUsers();
-			if (!((*iter)->isClientInChannel(me)))
+			if (!((*iter)->isClientInChannel(me)) && !(*iter)->getChNFlag())
 			{
 				/* 메세지를 보내려는 client가 해당 채널에 없는 경우 +n 이 안된 채널이면 보낼 수 없다 */
 				msg = ":irc.local 404 " + me->getNickname() + " " + arg \
