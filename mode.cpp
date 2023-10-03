@@ -134,7 +134,7 @@ void cmd::mode_o(string channel, char option, string nick) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 	if (nick.empty()){
-		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " k * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
+		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " o * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
 		return ;
