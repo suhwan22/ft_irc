@@ -82,50 +82,51 @@ class cmd {
 		void	who(string arg);
 	
 		/* util.cpp */
-		void noSuchNick(string wrongnick);
-		void noSuchChannel(string wrongchannel);
-		bool hasSpecialCharacter(const std::string& str);
-		void sendNotOpMsg(string channel, string mode, bool flag);
+		void	noSuchNick(string wrongnick);
+		void	noSuchChannel(string wrongchannel);
+		bool	hasSpecialCharacter(const std::string& str);
+		void	sendNotOpMsg(string channel, string mode, bool flag);
 	
 		/* privmsg.cpp */
-		void privmsg(string arg);
-		void privmsgToClient(string arg, string inputmsg);
-		void privmsgToChannel(string arg, string inputmsg);
+		void	privmsg(string arg);
+		void	privmsgToClient(string arg, string inputmsg);
+		void	privmsgToChannel(string arg, string inputmsg);
 	
 		/* topic.cpp */
-		void topic(string arg);
-		void settingtopic(string arg, string inputmsg);
+		void	topic(string arg);
+		void	settingtopic(string arg, string inputmsg);
 	
 		/* mode.cpp */
-		void mode(string arg);
-		void onlyChannel(string ch_name);
-		void modeToChannel(string arg, string line);
-		void modeToClient(string clntName, string opt);
+		void	mode(string arg);
+		void	onlyChannel(string ch_name);
+		void	modeToChannel(string arg, string line);
+		void	modeToClient(string clntName, string opt);
 
-		void mode_k(string channel, char option, string pass);
-		void plusOption_k(string ch_name, string pass);
-		void minusOption_k(string ch_name, string pass);
+		void	mode_k(string channel, char option, string pass);
+		void	plusOption_k(string ch_name, string pass);
+		void	minusOption_k(string ch_name, string pass);
 
-		void mode_l(string channel, char option, string num);
-		void plusOption_l(string ch_name, string num);
-		void minusOption_l(string ch_name);
+		void	mode_l(string channel, char option, string num);
+		void	plusOption_l(string ch_name, string num);
+		void	minusOption_l(string ch_name);
 
-		void mode_o(string channel, char option, string nick);
-		void plusOption_o(string ch_name, string nick);
-		void minusOption_o(string ch_name, string nick);
-
-		void mode_t(string ch_name, char option);
-		void mode_i(string ch_name, char option);
-		void mode_n(string ch_name, char option);
-		void mode_b(string ch_name, char option);
+		void	mode_o(string channel, char option, string nick);
+		void	plusOption_o(string ch_name, string nick);
+		void	minusOption_o(string ch_name, string nick);
+                
+		void	mode_t(string ch_name, char option);
+		void	mode_i(string ch_name, char option);
+		void	mode_n(string ch_name, char option);
+		void	mode_b(string ch_name, char option);
+		void	error_arg(char c);
 	
 		/* part.cpp */
-		void part(string arg);
-		void execPart(string ch_name, string inputmsg);
+		void	part(string arg);
+		void	execPart(string ch_name, string inputmsg);
 	
 		/* kick.cpp */
-		void kick(string arg);
-		void execKick(string ch_name, string inputmsg);
+		void	kick(string arg);
+		void	execKick(string ch_name, string inputmsg);
 	
 		void	emptyChannelClear();
 		const	vector<content>& getContent() const;
