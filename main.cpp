@@ -11,6 +11,8 @@
 #define BUF_SIZE 100
 #define EPOLL_SIZE 50
 
+#include <crtdbg.h>
+
 #include "server.hpp"
 #include "client.hpp"
 
@@ -24,7 +26,5 @@ int main(int argc, char **argv)
 	Server _server(atoi(argv[1]), argv[2]);
 	_server.serverInit();
 	_server.serverStart();
-	//close(_server.getSock());
-	//close(epfd);
 	return (0);
 }
