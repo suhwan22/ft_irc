@@ -51,6 +51,7 @@ void cmd::execKick(string ch_name, string nick)
 				}
 			}
 			noSuchNick(nick);
+			return ;
 		}
 	}
 	noSuchChannel(ch_name);
