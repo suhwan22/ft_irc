@@ -15,10 +15,10 @@ void cmd::execKick(string ch_name, string nick)
 	getline(tmp, inputmsg, static_cast<char>(EOF));
 	inputmsg.erase(0, 1);
 
-	for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++) {
-		if ((*cliter)->getNickname() == nick) {
-			for (chiter = _chList.begin(); chiter != _chList.end(); chiter++) {
-				if ((*chiter)->getChannelName() == ch_name) {
+	for (chiter = _chList.begin(); chiter != _chList.end(); chiter++) {
+		if ((*chiter)->getChannelName() == ch_name) {
+			for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++) {
+				if ((*cliter)->getNickname() == nick) {
 					vector<Client *> members = (*chiter)->getUsers();
 					if (!(*chiter)->isClientInChannel(me)) {
 						msg = ":irc.local 442 " + me->getNickname() + " " + ch_name + " :You're not on that channel!\r\n";
@@ -50,10 +50,10 @@ void cmd::execKick(string ch_name, string nick)
 					return ;
 				}
 			}
-			noSuchChannel(ch_name);
+			noSuchNick(nick);
 		}
 	}
-	noSuchNick(nick);
+	noSuchChannel(ch_name);
 }
 
 void cmd::kick(string arg)
