@@ -538,7 +538,7 @@ void cmd::modeToChannel(string chName, string line)
 	}
 
 	size_t	idx = 1;
-	for (;idx < opt.size() - 1; idx++)
+	for (;idx < opt.size(); idx++)
 	{
 		if (args.empty())
 			arg = "";
