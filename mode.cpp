@@ -547,13 +547,24 @@ void cmd::modeToChannel(string chName, string line)
 		if (opt[idx] == 'k' || opt[idx] == 'l' || opt[idx] == 'o')
 		{
 			if (opt[idx] == 'k')
+			{
 				mode_k(chName, opt[0], arg);
+				if (!args.empty())
+					args.pop_back();
+			}
 			else if (opt[idx] == 'l')
+			{
 				mode_l(chName, opt[0], arg);
+				if (opt[0] == '+')
+					if (!args.empty())
+						args.pop_back();
+			}
 			else if (opt[idx] == 'o')
+			{
 				mode_o(chName, opt[0], arg);
-			if (!args.empty())
-				args.pop_back();
+				if (!args.empty())
+					args.pop_back();
+			}
 		}
 		else
 		{
