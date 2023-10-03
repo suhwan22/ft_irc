@@ -17,6 +17,8 @@ class Channel
 		std::vector<Client *>	_inviteUsers;
 		std::string				_topic;
 		int						_userLimit;
+		std::string				_topicTime;
+		std::string				_chTime;
 
 		/* option flag */
 		bool					_kflag;
@@ -46,6 +48,7 @@ class Channel
 
 		void	clearClient(Client *client);
 
+
 		/* print func */
 		void	printUsers();
 		void	printOpUsers();
@@ -55,7 +58,8 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
-
+		void	setChCreatTime(const std::string time);
+		void	setTopicTime(const std::string time);
 		void	setInviteOnlyFlag(const bool flag);
 		void	setChPassFlag(const bool flag);
 		void	setChTopicFlag(const bool flag);
@@ -71,6 +75,9 @@ class Channel
 		bool							getChPassFlag() const;
 		bool							getChTopicFlag() const;
 		bool							getChLimitFlag() const;
+		std::string						getTopicTime() const;
+		std::string						getChannelTime() const;
+		std::string						saveTime();
 };
 
 #endif

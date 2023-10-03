@@ -1,11 +1,13 @@
 #include "channel.hpp"
 #include "client.hpp"
+#include <cstdlib>
 
 Channel::Channel(std::string channelName) :
 	_channelName(channelName),
 	_passWord(""),
-	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(true), _lflag(false)
-{}
+	_userLimit(2147483647), _kflag(false), _iflag(false), _tflag(true), _lflag(false) , _chTime(saveTime())
+{
+}
 
 Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
@@ -105,6 +107,23 @@ bool	Channel::isClientInvite(Client *client)
 	return (false);
 }
 
+std::string	Channel::saveTime()
+{
+	long long	ltime = static_cast<long long>(time(NULL));
+	std::string stime = "";
+	char	c;
+
+	while (ltime / 10)
+	{
+		c = '0' + ltime % 10;
+		stime.insert(0, 1, c);
+		ltime /= 10;
+	}
+	c = '0' + ltime % 10;
+	stime.insert(0, 1 ,c);
+	return stime;
+}
+
 void	Channel::printUsers()
 {
 	std::cout << "users(" << _users.size() << ") : ";
@@ -155,6 +174,16 @@ void	Channel::clearClient(Client *client)
 			break ;
 		}
 	}
+}
+
+void	Channel::setChCreatTime(const std::string time)
+{
+	_chTime = time;
+}
+
+void	Channel::setTopicTime(const std::string time)
+{
+	_topicTime = time;
 }
 
 void	Channel::setInviteOnlyFlag(const bool flag)
@@ -243,4 +272,14 @@ bool Channel::getChTopicFlag() const
 bool Channel::getChLimitFlag() const
 {
 	return (_lflag);
+}
+
+std::string	Channel::getChannelTime() const
+{
+	return (_chTime);
+}
+
+std::string Channel::getTopicTime() const
+{
+	return (_topicTime);
 }
