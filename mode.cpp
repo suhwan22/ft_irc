@@ -166,7 +166,7 @@ void cmd::minusOption_o(string ch_name, string nick)
 			else {
 				for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++){
 					if ((*cliter)->getNickname() == nick){
-						if (!(*iter)->isClientOp(*cliter))
+						if (!(*iter)->isClientOp(*cliter) || !(*iter)->isClientInChannel(*cliter))
 							return ;
 						else {
 							(*iter)->delOpUser(*cliter);
@@ -209,7 +209,7 @@ void cmd::plusOption_o(string ch_name, string nick)
 			else {
 				for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++){
 					if ((*cliter)->getNickname() == nick){
-						if ((*iter)->isClientOp(*cliter))
+						if ((*iter)->isClientOp(*cliter) || !(*iter)->isClientInChannel(*cliter))
 							return ;
 						else {
 							for (int i = 0; i < (int)members.size(); i++) {
@@ -455,7 +455,6 @@ void cmd::modeToChannel(string arg, string line)
 		msg = "Error: Too many option\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0); 
 	}
-		
 	if (line[1] == 'k')
 		mode_k(arg, line, line_two);
 	else if (line[1] == 'l')
