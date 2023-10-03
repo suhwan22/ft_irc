@@ -37,7 +37,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 				+ " :" + channel_users + "\r\n";
 		msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
 				+ " :End of /NAMES list.\r\n";
-		send(_clntSock, (topicMsg + msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
+		send(_clntSock, (topicMsg + msg + msg2 + msg3).c_str(), (topicMsg + msg + msg2 + msg3).size(), 0);
 		for (vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
 			if ((*it) != me)
 				send((*it)->getSock(), msg.c_str(), msg.size(), 0);
@@ -98,7 +98,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 							+ " :" + channel_users + "\r\n";
 					msg3 = ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
 							+ " :End of /NAMES list.\r\n";
-					send(_clntSock, (topicMsg + msg + msg2 + msg3).c_str(), (msg + msg2 + msg3).size(), 0);
+					send(_clntSock, (topicMsg + msg + msg2 + msg3).c_str(), (topicMsg + msg + msg2 + msg3).size(), 0);
 					for (vector<Client *>::iterator it = users.begin(); it != users.end(); it++)
 						if ((*it) != me)
 							send((*it)->getSock(), msg.c_str(), msg.size(), 0);
