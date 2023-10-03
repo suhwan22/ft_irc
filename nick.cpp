@@ -6,12 +6,39 @@ void	cmd::nick(string nick)
 {
 	string msg;
 	Client	*me = searchClient(_clntSock); 
+
 	if (!me->getCreated())
 	{
-		/* dup nick check */
-		if (isNickExist(nick))
-			nick += "_";
 		me->setNickname(nick);
+		if (!isNickExist(nick))
+			me->setIsValidNick(true);
+	}
+	else if (!me->getIsValidNick())
+	{
+		if (isNickExist(nick))
+		{
+			msg = ":irc.local 433 * " + me->getNickname() + " " + nick + " :Nickname is already in use.\r\n";
+			send(_clntSock, msg.c_str(), msg.size(), 0);
+		}
+		else
+		{
+			me->setNickname(nick);
+			if (me->getPass() != _servPass)
+			{
+				msg = ":irc.local ";
+				//msg = "NOTICE SEOUL :*** Could not resolve your hostname: Request timed out; using your IP address (127.0.0.1) instead.\n";
+				msg = msg + "ERROR :Closing link: (" + me->getUserName() + "@127.0.0.1) [Access denied by configuration]\r\n";
+				send(_clntSock, msg.c_str(), msg.size(), 0);
+			}
+			else
+			{
+				me->setIsValidNick(true);
+				msg = ":irc.local 001 " + me->getNickname() + " :Welcome to the Localnet IRC Network " \
+					   + me->getNickname() + "!" + me->getUserName() + "@127.0.0.1\r\n";
+				send(_clntSock, msg.c_str(), msg.size(), 0);
+			}
+		}
+
 	}
 	else
 	{

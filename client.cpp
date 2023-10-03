@@ -2,7 +2,8 @@
 #include "channel.hpp"
 
 Client::Client(int clntSock) : _clntSock(clntSock), 
-							   _isCreated(false)
+							   _isCreated(false),
+							   _isValidNick(false)
 {
 	/* something  */
 }
@@ -54,6 +55,11 @@ void	Client::printJoinChannel()
 void	Client::setCreated(const bool val)
 {
 	_isCreated = val;
+}
+
+void	Client::setIsValidNick(const bool val)
+{
+	_isValidNick = val;
 }
 
 void	Client::setIP(const std::string ip)
@@ -115,6 +121,11 @@ Channel*	Client::getLastJoinChannel() const
 bool	Client::getCreated() const
 {
 	return (_isCreated);
+}
+
+bool	Client::getIsValidNick() const
+{
+	return (_isValidNick);
 }
 
 int	Client::getSock() const

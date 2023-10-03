@@ -18,8 +18,11 @@ class Client
 		/* 실제로 client의 ip는 없고 서버가 할당해준다 host name을 못찾아서? 인듯 */
 		std::string				_ip;
 
-		/* user information */
+		/* user init stat */
 		bool					_isCreated;
+		bool					_isValidNick;
+
+		/* user information */
 		std::string				_pass;
 		std::string				_nickname;
 		std::string				_realName;
@@ -37,6 +40,7 @@ class Client
 
 		/* setter func */
 		void	setCreated(const bool val);
+		void	setIsValidNick(const bool val);
 		void	setIP(const std::string ip);
 		void	setPass(const std::string pass);
 		void	setNickname(const std::string nickname);
@@ -51,6 +55,7 @@ class Client
 		const std::string&	getPass() const;
 		Channel*			getLastJoinChannel() const;
 		bool				getCreated() const;
+		bool				getIsValidNick() const;
 		int					getSock() const;
 
 		/* print func */
