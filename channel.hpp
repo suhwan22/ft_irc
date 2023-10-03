@@ -16,6 +16,7 @@ class Channel
 		std::vector<Client *>	_opUsers;
 		std::vector<Client *>	_inviteUsers;
 		std::string				_topic;
+		std::string				_topicMaker;
 		int						_userLimit;
 		std::string				_topicTime;
 		std::string				_chTime;
@@ -58,6 +59,7 @@ class Channel
 		void	setPassWord(const std::string passWord);
 		void	setUserLimit(const int limit);
 		void	setTopic(const std::string topic);
+		void	setTopicMaker(const std::string name);
 		void	setChCreatTime(const std::string time);
 		void	setTopicTime(const std::string time);
 		void	setInviteOnlyFlag(const bool flag);
@@ -67,6 +69,8 @@ class Channel
 
 		/* getter func */
 		std::string						getUsersName();
+		std::string						getTopic();
+		std::string						getTopicMaker();
 		const std::vector<Client *>&	getUsers() const;
 		const std::string&				getChannelName() const;
 		const std::string&				getPassWord() const;

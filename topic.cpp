@@ -32,6 +32,7 @@ void cmd::settingtopic(string arg, string inputmsg) {
 						cerr << "Error: send error" << endl;
 					}
 					(*iter)->setTopicTime((*iter)->saveTime());
+					(*iter)->setTopicMaker(me->getNickname());
 					(*iter)->setTopic(inputmsg);
 				}
 				return ;
