@@ -27,6 +27,8 @@ class Client
 		std::string				_nickname;
 		std::string				_realName;
 		std::string				_userName;
+		std::string				_clntTime;
+		long long				_clntTimeLong;
 		std::vector<Channel *>	_joinChannels;
 
 	public:
@@ -37,6 +39,7 @@ class Client
 		void	joinChannel(Channel *channel);
 		void	exitChannel(const std::string channelName);
 		void	cleanChannel();
+		std::string	saveTime();
 
 		/* setter func */
 		void	setCreated(const bool val);
@@ -53,10 +56,13 @@ class Client
 		const std::string&	getRealName() const;
 		const std::string&	getIP() const;
 		const std::string&	getPass() const;
+		std::string			getChNames();
+		std::string			getClntTime();
 		Channel*			getLastJoinChannel() const;
 		bool				getCreated() const;
 		bool				getIsValidNick() const;
 		int					getSock() const;
+		long long			getClntTimeLong();
 
 		/* print func */
 		void	printJoinChannel();

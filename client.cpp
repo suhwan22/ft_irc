@@ -3,7 +3,9 @@
 
 Client::Client(int clntSock) : _clntSock(clntSock), 
 							   _isCreated(false),
-							   _isValidNick(false)
+							   _isValidNick(false),
+							   _clntTime(saveTime()),
+							   _clntTimeLong(std::strtod(_clntTime.c_str(), NULL))
 {
 	/* something  */
 }
@@ -50,6 +52,23 @@ void	Client::printJoinChannel()
 	for (std::vector<Channel *>::iterator it = _joinChannels.begin(); it != _joinChannels.end(); it++)
 		std::cout << (*it)->getChannelName() << " ";
 	std::cout << std::endl;
+}
+
+std::string	Client::saveTime()
+{
+	long long	ltime = static_cast<long long>(time(NULL));
+	std::string stime = "";
+	char	c;
+
+	while (ltime / 10)
+	{
+		c = '0' + ltime % 10;
+		stime.insert(0, 1, c);
+		ltime /= 10;
+	}
+	c = '0' + ltime % 10;
+	stime.insert(0, 1 ,c);
+	return stime;
 }
 
 void	Client::setCreated(const bool val)
@@ -118,6 +137,28 @@ Channel*	Client::getLastJoinChannel() const
 	return (_joinChannels[_joinChannels.size() - 1]);
 }
 
+std::string	Client::getChNames()
+{
+	std::string	chnames = "";
+
+	if (_joinChannels.size() == 0)
+		return (chnames);
+	for (std::vector<Channel *>::iterator it = _joinChannels.begin(); it != _joinChannels.end(); it++)
+	{
+		if ((*it)->isClientOp(this))
+			chnames += "@";
+		chnames += (*it)->getChannelName();
+		chnames += " ";
+	}
+	chnames.erase(chnames.size() - 1, 1);
+	return (chnames);
+}
+
+std::string	Client::getClntTime()
+{
+	return (_clntTime);
+}
+
 bool	Client::getCreated() const
 {
 	return (_isCreated);
@@ -131,4 +172,9 @@ bool	Client::getIsValidNick() const
 int	Client::getSock() const
 {
 	return (_clntSock);
+}
+
+long long	Client::getClntTimeLong()
+{
+	return (_clntTimeLong);
 }
