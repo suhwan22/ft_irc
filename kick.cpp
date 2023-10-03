@@ -15,12 +15,23 @@ void cmd::execKick(string ch_name, string nick)
 	getline(tmp, inputmsg, static_cast<char>(EOF));
 	inputmsg.erase(0, 1);
 
-	for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++) {
-		if ((*cliter)->getNickname() == nick) {
-			for (chiter = _chList.begin(); chiter != _chList.end(); chiter++) {
-				if ((*chiter)->getChannelName() == ch_name) {
+	for (chiter = _chList.begin(); chiter != _chList.end(); chiter++) {
+		if ((*chiter)->getChannelName() == ch_name) {
+			for (cliter = _clntList.begin(); cliter != _clntList.end(); cliter++) {
+				if ((*cliter)->getNickname() == nick) {
 					vector<Client *> members = (*chiter)->getUsers();
-					if (!(*chiter)->isClientOp(me)) {
+					if (!(*chiter)->isClientInChannel(me)) {
+						msg = ":irc.local 442 " + me->getNickname() + " " + ch_name + " :You're not on that channel!\r\n";
+						if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+							cerr << "Error: send error" << endl;
+						return ;
+					}
+					else if (!(*chiter)->isClientInChannel(*cliter)){
+						msg = ":irc.local 441 " + me->getNickname() + " " + nick + " " + ch_name + " :They are not on that channel\r\n";
+						send(_clntSock, msg.c_str(), msg.size(), 0);
+						return ;
+					}
+					else if (!(*chiter)->isClientOp(me)) {
 						msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + " :You must be a channel operator\r\n";
 						if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 							cerr << "Error: send error" << endl;
@@ -28,20 +39,22 @@ void cmd::execKick(string ch_name, string nick)
 					}
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
-							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " KICK " + ch_name + " " + nick + " :" + inputmsg + "\r\n";
+							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " KICK " + ch_name + " " + nick + " " + inputmsg + "\r\n";
 							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
 								cout << "Error: send error" << endl; 
 						}
 						(*chiter)->delUser(*cliter);
+						(*chiter)->delOpUser(*cliter);
 						(*cliter)->exitChannel(ch_name);
 					}
 					return ;
 				}
 			}
-			noSuchChannel(ch_name);
+			noSuchNick(nick);
+			return ;
 		}
 	}
-	noSuchNick(nick);
+	noSuchChannel(ch_name);
 }
 
 void cmd::kick(string arg)
