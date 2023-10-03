@@ -100,7 +100,7 @@ class cmd {
 		void mode(string arg);
 		void onlyChannel(string ch_name);
 		void modeToChannel(string arg, string line);
-		void modeToClient(string line);
+		void modeToClient(string clntName, string opt);
 
 		void mode_k(string channel, char option, string pass);
 		void plusOption_k(string ch_name, string pass);

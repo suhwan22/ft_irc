@@ -556,18 +556,27 @@ void cmd::modeToChannel(string chName, string line)
 	}	
 }
 
-void cmd::modeToClient(string line)
+void cmd::modeToClient(string clntName, string opt)
 {
-	string			line_two;
-	stringstream	tmp(line);
 	string			msg;
+	string			sign;
 	Client			*me = searchClient(_clntSock);
-	tmp >> line;
-	getline(tmp, line_two, static_cast<char>(EOF));
-	line_two.erase(0, 1);
-	if (line[1] == 'i')
+
+	if (opt.size() != 2)
 	{
-		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " :+i\r\n";
+		msg = "Error: parameters error\n";
+		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
+			cerr << "Error: send error" << endl;
+		return ;
+	}
+	if (opt[1] == 'i')
+	{
+		if (opt[0] == '-')
+			sign = "-";
+		else
+			sign = "+";
+
+		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " : " + sign + "i\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
 	}
@@ -590,5 +599,5 @@ void cmd::mode(string arg)
 	if (arg[0] == '#')
 		modeToChannel(arg, line);
 	else
-		modeToClient(arg);
+		modeToClient(arg, line);
 }
