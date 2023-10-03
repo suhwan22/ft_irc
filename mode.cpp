@@ -324,6 +324,8 @@ void cmd::plusOption_l(string ch_name, string num)
 	int							limitnum;
 
 	limitnum = strtod(num.c_str(), NULL);
+	if (limitnum == 0)
+		num = "0";
 	for (iter = _chList.begin(); iter != _chList.end(); iter++)
 	{
 		vector<Client *> members = (*iter)->getUsers();
@@ -582,7 +584,7 @@ void cmd::modeToClient(string clntName, string opt)
 		else
 			sign = "+";
 
-		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " : " + sign + "i\r\n";
+		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " :" + sign + "i\r\n";
 		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
 			cerr << "Error: send error" << endl;
 	}
