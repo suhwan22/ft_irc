@@ -445,11 +445,17 @@ void cmd::chModeB(string ch_name)
 
 void cmd::modeToChannel(string arg, string line)
 {
+	string msg;
 	string line_two;
 	stringstream tmp(line);
 	tmp >> line;
 	getline(tmp, line_two, static_cast<char>(EOF));
 	line_two.erase(0, 1);
+	if (line.size() >= 3){
+		msg = "Error: Too many option\r\n";
+		send(_clntSock, msg.c_str(), msg.size(), 0); 
+	}
+		
 	if (line[1] == 'k')
 		mode_k(arg, line, line_two);
 	else if (line[1] == 'l')
