@@ -9,9 +9,9 @@ void	cmd::nick(string nick)
 
 	if (!me->getCreated())
 	{
-		me->setNickname(nick);
 		if (!isNickExist(nick))
 			me->setIsValidNick(true);
+		me->setNickname(nick);
 	}
 	else if (!me->getIsValidNick())
 	{
