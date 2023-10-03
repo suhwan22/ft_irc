@@ -508,6 +508,7 @@ void	cmd::error_arg(char c)
 	tmp.push_back(c);
 
 	string	msg = ":irc.local 472 " + me->getNickname() + " " + tmp + " :is not a recognised channel mode.\r\n";
+	send(_clntSock, msg.c_str(), msg.size(), 0);
 }
 
 void cmd::modeToChannel(string chName, string line)
