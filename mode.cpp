@@ -562,6 +562,12 @@ void cmd::modeToClient(string clntName, string opt)
 	string			sign;
 	Client			*me = searchClient(_clntSock);
 
+	if (me->getNickname() != clntName)
+	{
+		msg = ":irc.local 502 " + me->getNickname() + " :Can't change mode for other users\r\n";
+		send(_clntSock, msg.c_str(), msg.size(), 0);
+		return ;
+	}
 	if (opt.size() != 2)
 	{
 		msg = "Error: parameters error\n";
