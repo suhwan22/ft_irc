@@ -142,13 +142,8 @@ void	cmd::delChannel(Channel *channel)
 	{
 		if (channel == (*it))
 		{
-			if (_chList.size() == 1)
-			{
-				_chList.erase(it);
-				_chList = vector<Channel *>();
-			}
-			else
-				_chList.erase(it);
+			delete (*it);
+			_chList.erase(it);
 			break ;
 		}
 	}
@@ -172,13 +167,8 @@ void	cmd::delClient(Client *client)
 	{
 		if (client == (*it))
 		{
-			if (_clntList.size() == 1)
-			{
-				_clntList.erase(it);
-				_clntList = vector<Client *>();
-			}
-			else
-				_clntList.erase(it);
+			delete (*it);
+			_clntList.erase(it);
 			break ;
 		}
 	}
