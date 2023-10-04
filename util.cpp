@@ -8,8 +8,7 @@ void cmd::noSuchNick(string wrongnick) {
 	Client	*me = searchClient(_clntSock);
 
 	msg = ":irc.local 401 " + me->getNickname() + " " + wrongnick + " :No such nick\r\n";
-	if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
-		cerr << "Error: send err" << endl;
+	send(_clntSock, msg.c_str(), msg.length(), 0);
 }
 
 void cmd::noSuchChannel(string wrongchannel) {
@@ -18,8 +17,7 @@ void cmd::noSuchChannel(string wrongchannel) {
 
 	
 	msg = ":irc.local 403 " + me->getNickname() + " " + wrongchannel + " :No such channel\r\n";
-	if (send(_clntSock, msg.c_str(), msg.length(), 0) == -1)
-		cerr << "Error: send err" << endl;
+	send(_clntSock, msg.c_str(), msg.length(), 0);
 }
 
 bool cmd::hasSpecialCharacter(const std::string& str) {

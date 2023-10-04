@@ -38,8 +38,7 @@ void	cmd::invite(string arg)
 	{
 		msg = ":irc.local 442 " + me->getNickname() + " " \
 			   + ch->getChannelName() + " :You're not on that channel!\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send err" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		}
 	else
 	{

@@ -15,8 +15,7 @@ void cmd::mode_i(string ch_name, char option) {
 				if (!(*iter)->isClientOp(me)){
 					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 						" :You must have channel op access or above to set channel mode i\r\n";
-					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
+					send(_clntSock, msg.c_str(), msg.size(), 0);
 					return ;
 				}
 				else {
@@ -25,8 +24,7 @@ void cmd::mode_i(string ch_name, char option) {
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+i\r\n";
-							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cerr << "Error: send error" << endl;
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setInviteOnlyFlag(true);
@@ -43,8 +41,7 @@ void cmd::mode_i(string ch_name, char option) {
 				if (!(*iter)->isClientOp(me)){
 					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 						" :You must have channel op access or above to unset channel mode i\r\n";
-					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
+					send(_clntSock, msg.c_str(), msg.size(), 0);
 					return ;
 				}
 				else {
@@ -53,8 +50,7 @@ void cmd::mode_i(string ch_name, char option) {
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-i\r\n";
-							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cerr << "Error: send error" << endl;
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setInviteOnlyFlag(false);
@@ -78,8 +74,7 @@ void cmd::mode_t(string ch_name, char option) {
 				if (!(*iter)->isClientOp(me)) {
 					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 						" :You must have channel op access or above to set channel mode t\r\n";
-					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
+					send(_clntSock, msg.c_str(), msg.size(), 0);
 					return ;
 				}
 				else {
@@ -88,8 +83,7 @@ void cmd::mode_t(string ch_name, char option) {
 					else {
 						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+t\r\n";
-							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cerr << "Error: send error" << endl;
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setChTopicFlag(true);
@@ -106,8 +100,7 @@ void cmd::mode_t(string ch_name, char option) {
 				if (!(*iter)->isClientOp(me)) {
 					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 						" :You must have channel op access or above to unset channel mode t\r\n";
-					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
+					send(_clntSock, msg.c_str(), msg.size(), 0);
 					return ;
 				}
 				else {
@@ -116,8 +109,7 @@ void cmd::mode_t(string ch_name, char option) {
 					else {
 						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-t\r\n";
-							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cerr << "Error: send error" << endl;
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setChTopicFlag(false);
@@ -135,8 +127,7 @@ void cmd::mode_o(string channel, char option, string nick) {
 	Client	*me = searchClient(_clntSock);
 	if (nick.empty()){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " o * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		return ;
 	}
 	if (option == '+')
@@ -159,8 +150,7 @@ void cmd::minusOption_o(string ch_name, string nick)
 			if (!(*iter)->isClientOp(me)) {
 				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 					" :You must have channel op access or above to unset channel mode o\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 			}
 			else {
@@ -172,8 +162,7 @@ void cmd::minusOption_o(string ch_name, string nick)
 							(*iter)->delOpUser(*cliter);
 							for (int i = 0; i < (int)members.size(); i++) {
 								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " -o :" + nick + "\r\n";
-								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-									cerr << "Error: send error" << endl;
+								send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 							}
 						}
 						return ;
@@ -202,8 +191,7 @@ void cmd::plusOption_o(string ch_name, string nick)
 			if (!(*iter)->isClientOp(me)) {
 				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 					" :You must have channel op access or above to set channel mode o\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 			}
 			else {
@@ -214,8 +202,7 @@ void cmd::plusOption_o(string ch_name, string nick)
 						else {
 							for (int i = 0; i < (int)members.size(); i++) {
 								msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +o :" + nick + "\r\n";
-								if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-									cerr << "Error: send error" << endl;
+								send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 							}
 							(*iter)->addOpUser(*cliter);
 						}
@@ -243,8 +230,7 @@ void cmd::mode_n(string ch_name, char option)
 				if (!(*iter)->isClientOp(me)) {
 					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 						" :You must have channel op access or above to set channel mode t\r\n";
-					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
+					send(_clntSock, msg.c_str(), msg.size(), 0);
 					return ;
 				}
 				else {
@@ -253,8 +239,7 @@ void cmd::mode_n(string ch_name, char option)
 					else {
 						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :+n\r\n";
-							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cerr << "Error: send error" << endl;
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setChNFlag(true);
@@ -271,8 +256,7 @@ void cmd::mode_n(string ch_name, char option)
 				if (!(*iter)->isClientOp(me)) {
 					msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 						" :You must have channel op access or above to unset channel mode t\r\n";
-					if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
+					send(_clntSock, msg.c_str(), msg.size(), 0);
 					return ;
 				}
 				else {
@@ -281,8 +265,7 @@ void cmd::mode_n(string ch_name, char option)
 					else {
 						for (int i = 0; i < (int)members.size(); i++){
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-n\r\n";
-							if(send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cerr << "Error: send error" << endl;
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setChNFlag(false);
@@ -299,15 +282,13 @@ void cmd::mode_l(string channel, char option, string num) {
 	Client *me = searchClient(_clntSock);
 	if (num.empty() && option == '+'){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l * :You must specify a parameter for the limit mode. Syntax: <limit>.\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		return ;
 	}
 	else if (strtod(num.c_str(), NULL) < 0)
 	{
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l " + num + " :Invalid limit mode parameter. Syntax: <limit>.\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		return ;
 	}
 	if (option == '+')
@@ -333,8 +314,7 @@ void cmd::plusOption_l(string ch_name, string num)
 			if(!(*iter)->isClientOp(me)) {
 				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 					" :You must have channel op access or above to set channel mode l\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 			}
 			else {
@@ -344,8 +324,7 @@ void cmd::plusOption_l(string ch_name, string num)
 					(*iter)->setUserLimit(limitnum);
 					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +l :" + num + "\r\n";
-						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 					}
 				}
 				(*iter)->setChLimitFlag(true);
@@ -367,8 +346,7 @@ void cmd::minusOption_l(string ch_name)
 			if (!(*iter)->isClientOp(me)) {
 				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 					" :You must have channel op access or above to unset channel mode l\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 				}
 			else {
@@ -378,8 +356,7 @@ void cmd::minusOption_l(string ch_name)
 					(*iter)->setUserLimit(2147483647);
 					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " :-l\r\n";
-						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 					}
 					(*iter)->setChLimitFlag(false);
@@ -395,8 +372,7 @@ void cmd::mode_k(string channel, char option, string pass) {
 	Client	*me = searchClient(_clntSock);
 	if (pass.empty()){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " k * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		return ;
 	}
 	if (option == '+')
@@ -417,8 +393,7 @@ void cmd::plusOption_k(string ch_name, string pass)
 			if (!(*iter)->isClientOp(me)) {
 				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 					" :You must have channel op access or above to set channel mode k\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 			}
 			else {
@@ -427,8 +402,7 @@ void cmd::plusOption_k(string ch_name, string pass)
 				else {
 					for (int i = 0; i < (int)members.size(); i++) {
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " +k :" + pass + "\r\n";
-						if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 					}
 				}
 				(*iter)->setPassWord(pass);
@@ -452,8 +426,7 @@ void cmd::minusOption_k(string ch_name, string pass)
 			if (!(*iter)->isClientOp(me)) {
 				msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + \
 					" :You must have channel op access or above to unset channel mode k\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 			}
 			else {
@@ -462,8 +435,7 @@ void cmd::minusOption_k(string ch_name, string pass)
 				else {
 					for (int i = 0; i < (int)members.size(); i++){
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + ch_name + " -k :" + pass + "\r\n";
-						if (send(members[i]->getSock(), msg.c_str(), msg.length(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(members[i]->getSock(), msg.c_str(), msg.length(), 0);
 					}
 				}
 				(*iter)->setPassWord("");
@@ -484,8 +456,7 @@ void cmd::onlyChannel(string ch_name)
 
 	msg = ":irc.local 324 " + me->getNickname() + " " + ch_name + " " + opt + "\r\n" + \
 		":irc.local 329 " + me->getNickname() + " " + ch_name + " :" + ch->getChannelTime() + "\r\n";
-	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-		cerr << "Error: send error" << endl;
+	send(_clntSock, msg.c_str(), msg.size(), 0);
 }
 
 void cmd::mode_b(string ch_name, char option)
@@ -496,8 +467,7 @@ void cmd::mode_b(string ch_name, char option)
 	if (option == '-')
 		return ;
 	msg = ":irc.local 368 " + me->getNickname() + " " + ch_name + " :End of channel ban list\r\n";
-	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-		cerr << "Error: send error" << endl;
+	send(_clntSock, msg.c_str(), msg.size(), 0);
 }
 
 void	cmd::error_arg(char c)
@@ -598,8 +568,7 @@ void cmd::modeToClient(string clntName, string opt)
 	if (opt.size() != 2)
 	{
 		msg = "Error: parameters error\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		return ;
 	}
 	if (opt[1] == 'i')
@@ -610,13 +579,11 @@ void cmd::modeToClient(string clntName, string opt)
 			sign = "+";
 
 		msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " MODE " + me->getNickname() + " :" + sign + "i\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 	}
 	else {
 		msg = "Error: parameters error\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 	}
 }
 
