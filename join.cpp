@@ -67,7 +67,7 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 			}
 			else
 			{
-				if (static_cast<int>(ch->getUsers().size()) >= ch->getUserLimit())
+				if (ch->getChLimitFlag() && static_cast<int>(ch->getUsers().size()) >= ch->getUserLimit())
 				/* 유저제한을 넘는 경우 */
 				{
 					/* msg 미완성 */
