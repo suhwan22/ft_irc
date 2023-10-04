@@ -30,9 +30,10 @@ class cmd {
 		string				_servPass;
 		string				_chpass;
 		bool				_kflag;
+		bool&				_quit;
 
 	public:
-		cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList);
+		cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList, bool &quit);
 		~cmd();
 		std::vector<string> *splitCmd(string &str);
 		void	printContent(const vector<content>& content);
@@ -133,6 +134,8 @@ class cmd {
 
 		/* whois.cpp */
 		void	whois(string nick);
+
+		void	setQuit(bool val);
 };			
 
 #endif

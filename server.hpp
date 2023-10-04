@@ -25,6 +25,7 @@ class Server
 		std::string				_passWord;
 		std::vector<Channel *>	_channelList;
 		std::vector<Client *>	_clntList;
+		bool					_quit;
 
 	public:
 		Server(int port, std::string pass);
@@ -39,6 +40,11 @@ class Server
 		void	addClient(int sock);
 		void	delClient(Client *client);
 		void	delClient(int sock);
+
+		Client	*searchClient(std::string name);
+		Client	*searchClient(int sock);
+		bool	checkConnect(int clntSock);
+		
 
 		/* getter func */
 		int					getSock() const;

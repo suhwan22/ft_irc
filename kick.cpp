@@ -11,6 +11,8 @@ void cmd::execKick(string ch_name, string nick)
 	vector<Client *>::iterator	cliter;
 	Client						*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	tmp >> nick;
 	getline(tmp, inputmsg, static_cast<char>(EOF));
 	inputmsg.erase(0, 1);

@@ -2,7 +2,8 @@
 #include "client.hpp"
 #include "channel.hpp"
 
-cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList) : _clntSock(clntSock), _clntList(clntList), _chList(chList), _servPass(servpass)
+cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> &clntList, vector<Channel *> &chList, bool& quit) : 
+	_clntSock(clntSock), _clntList(clntList), _chList(chList), _servPass(servpass), _quit(quit)
 {
 	string			input(buf, strlen);
 	string			line;
@@ -12,17 +13,22 @@ cmd::cmd(int clntSock, char *buf, int strlen, string servpass, vector<Client *> 
 
 	while ((pos = input.find("\r\n", start)) != string::npos)
 	{
-		if (pos + 2== input.size() - 1)
-			break ;
 		line = input.substr(start, pos - start);
 		start = pos + 2;
 		stringstream	tmp(line);
 		tmp >> line;
 		content.cmd = line;
-		getline(tmp, line, static_cast<char>(EOF));
-		line.erase(0, 1);
+		if (!tmp.eof())
+		{
+			getline(tmp, line, static_cast<char>(EOF));
+			line.erase(0, 1);
+		}
+		else
+			line = "";
 		content.arg = line;
 		_content.push_back(content);
+		if (pos + 2 == input.size() - 1)
+			break ;
 	}
 }
 
@@ -67,37 +73,40 @@ Channel	*cmd::searchChannel(string channelName)
 }
 
 int cmd::parsecommand() {
+	Client *me = searchClient(_clntSock);
 	for (vector<content>::iterator it = _content.begin(); it != _content.end(); it++)
 	{
-		if ((*it).cmd == "JOIN")
-			join((*it).arg);
-		else if ((*it).cmd == "PING")
-			ping();
-		else if ((*it).cmd == "PRIVMSG")
-			privmsg((*it).arg);
-		else if ((*it).cmd == "PASS")
+		if ((*it).cmd == "PASS")
 			pass((*it).arg);
 		else if ((*it).cmd == "NICK")
 			nick((*it).arg);
 		else if ((*it).cmd == "USER")
 			user((*it).arg);
-		else if ((*it).cmd == "TOPIC")
-			topic((*it).arg);
-		else if ((*it).cmd == "QUIT")
-			quit((*it).arg);
-		else if ((*it).cmd == "MODE")
-			mode((*it).arg);
-		else if ((*it).cmd == "KICK")
-			kick((*it).arg);
-		else if ((*it).cmd == "PART")
-			part((*it).arg);
-		else if ((*it).cmd == "INVITE")
-			invite((*it).arg);
-		else if ((*it).cmd == "WHO")
-			who((*it).arg);
-		else if ((*it).cmd == "WHOIS")
-			whois((*it).arg);
-						
+		else if ((*it).cmd == "PING")
+			ping();
+		else if (me->getCreated() && me->getIsValidNick())
+		{
+			if ((*it).cmd == "JOIN")
+				join((*it).arg);
+			else if ((*it).cmd == "PRIVMSG")
+				privmsg((*it).arg);
+			else if ((*it).cmd == "TOPIC")
+				topic((*it).arg);
+			else if ((*it).cmd == "QUIT")
+				quit((*it).arg);
+			else if ((*it).cmd == "MODE")
+				mode((*it).arg);
+			else if ((*it).cmd == "KICK")
+				kick((*it).arg);
+			else if ((*it).cmd == "PART")
+				part((*it).arg);
+			else if ((*it).cmd == "INVITE")
+				invite((*it).arg);
+			else if ((*it).cmd == "WHO")
+				who((*it).arg);
+			else if ((*it).cmd == "WHOIS")
+				whois((*it).arg);
+		}
 	}
 	emptyChannelClear();
 	return 0;
@@ -184,4 +193,9 @@ void	cmd::printContent(const vector<content>& contents)
 const vector<content>& cmd::getContent() const
 {
 	return (_content);
+}
+
+void	cmd::setQuit(bool val)
+{
+	_quit = val;
 }

@@ -4,7 +4,7 @@
 #include "cmd.hpp"
 #include <fcntl.h>
 
-Server::Server(int port, std::string pass) : _port(port), _passWord(pass) {}
+Server::Server(int port, std::string pass) : _port(port), _passWord(pass), _quit(false) {}
 
 Server::~Server() {}
 
@@ -112,9 +112,17 @@ void	Server::serverStart()
 				}
 				else
 				{
-					cmd command(events[i].ident, buf, strlen, _passWord, _clntList, _channelList);
+					cmd command(events[i].ident, buf, strlen, _passWord, _clntList, _channelList, _quit);
 					command.printContent(command.getContent());
 					command.parsecommand();
+				}
+				if (_quit || !checkConnect(events[i].ident))
+				{
+					_quit = false;
+					EV_SET(&change, events[i].ident, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+					delClient(events[i].ident);
+					std::cout << "closed client: " << events[i].ident << std::endl;
+					close(events[i].ident);
 				}
 				std::cout << "current user(" << _clntList.size() << ") : ";
 				for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
@@ -150,6 +158,48 @@ void	Server::serverStart()
 	close(kq);
 }
 
+bool	Server::checkConnect(int clntSock)
+{
+	Client *me = searchClient(clntSock);
+	if (!me)
+		return (true);
+	if (!(me->getPass()).empty() && !(me->getNickname().empty()) && !(me->getUserName().empty()))
+	{
+		string	msg;
+		if (!me->getIsValidNick())
+		{
+			msg = ":irc.local 433 * " + me->getNickname() + " :Nickname is already in use.\r\n";
+			me->setNickname("");
+			send(clntSock, msg.c_str(), msg.size(), 0);
+		}
+		else
+		{
+			if (me->getPass() != _passWord)
+			{
+				msg = ":irc.local ";
+				msg = msg + "ERROR :Closing link: (" + me->getUserName() + "@127.0.0.1) [Access denied by configuration]\r\n";
+				send(clntSock, msg.c_str(), msg.size(), 0);
+				return (false);
+			}
+			else
+			{
+				string msg1 = "";
+				string msg2 = "";
+				me->setCreated(true);
+				if (me->getIP() != "127.0.0.1")
+				{
+					msg1 = "NOTICE " + me->getNickname() +" :*** Could not resolve your hostname; using your IP address (127.0.0.1) instead.\r\n";
+					me->setIP("127.0.0.1");
+				}
+				msg2 = ":irc.local 001 " + me->getNickname() + " :Welcome to the Localnet IRC Network " \
+					   + me->getNickname() + "!" + me->getUserName() + "@127.0.0.1\r\n";
+				send(clntSock, (msg1 + msg2).c_str(), (msg1 + msg2).size(), 0);
+			}
+		}
+	}
+	return (true);
+}
+
 void	Server::addChannel(std::string name)
 {
 	Channel *newChannel = new Channel(name);
@@ -177,6 +227,28 @@ void	Server::delChannel(Channel *channel)
 		}
 	}
 }
+
+Client	*Server::searchClient(int sock)
+{
+	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	{
+		if ((*it)->getSock() == sock)
+			return (*it);
+	}
+	return (NULL);
+}
+
+Client	*Server::searchClient(string name)
+{
+	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	{
+		if ((*it)->getNickname() == name)
+			return (*it);
+	}
+	return (NULL);
+}
+
+
 
 void	Server::addClient(int sock)
 {
