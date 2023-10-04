@@ -217,8 +217,6 @@ Client	*Server::searchClient(string name)
 	return (NULL);
 }
 
-
-
 void	Server::addClient(int sock)
 {
 	Client *newClient = new Client(sock);
@@ -235,6 +233,19 @@ void	Server::delClient(Client *client)
 	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
 	{
 		if (client == (*it))
+		{
+			delete ((*it));
+			_clntList.erase(it);
+			break ;
+		}
+	}
+}
+
+void	Server::delClient(int sock)
+{
+	for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
+	{
+		if (sock == (*it)->getSock())
 		{
 			delete ((*it));
 			_clntList.erase(it);
