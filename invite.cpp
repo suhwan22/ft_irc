@@ -5,7 +5,6 @@
 void	cmd::invite(string arg)
 {
 	stringstream		ss(arg);
-	/* arg 에서 받은 초대할 client -> userName channel -> chName */ 
 	string				userName;
 	string				chName;
 
@@ -16,6 +15,8 @@ void	cmd::invite(string arg)
 	Client				*me;
 	Channel				*ch;
 
+	if (arg.empty())
+		return ;
 	ss >> userName;
 	ss >> chName;
 

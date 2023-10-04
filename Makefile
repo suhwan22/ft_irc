@@ -1,7 +1,7 @@
 NAME = ircserv
 
 CXX = c++
-CXXFLAGS = -Werror -Wall -Wextra -std=c++98 -g3 -fsanitize=address
+CXXFLAGS = -Werror -Wall -Wextra -std=c++98
 
 SRC = main.cpp \
 	  server.cpp \
