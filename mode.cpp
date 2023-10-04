@@ -8,6 +8,8 @@ void cmd::mode_i(string ch_name, char option) {
 	Client	*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
+	if (!me)
+		return ;
 	if (option == '+') {
 		for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 			if ((*iter)->getChannelName() == ch_name) {
@@ -67,6 +69,8 @@ void cmd::mode_t(string ch_name, char option) {
 	Client	*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
 
+	if (!me)
+		return ;
 	if (option == '+') {
 		for (iter = _chList.begin(); iter != _chList.end(); iter++){
 			if ((*iter)->getChannelName() == ch_name) {
@@ -125,6 +129,9 @@ void cmd::mode_t(string ch_name, char option) {
 void cmd::mode_o(string channel, char option, string nick) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
+	
+	if (!me)
+		return ;
 	if (nick.empty()){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " o * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -140,6 +147,9 @@ void cmd::minusOption_o(string ch_name, string nick)
 {
 	string						msg;
 	Client						*me = searchClient(_clntSock);
+
+	if (!me)
+		return ;
 	vector<Channel *>::iterator iter;
 
 	for (iter = _chList.begin(); iter != _chList.end(); iter++)
@@ -181,6 +191,9 @@ void cmd::plusOption_o(string ch_name, string nick)
 {
 	string						msg;
 	Client						*me = searchClient(_clntSock);
+
+	if (!me)
+		return ;
 	vector<Channel *>::iterator iter;
 
 	for (iter = _chList.begin(); iter != _chList.end(); iter++)
@@ -280,6 +293,9 @@ void cmd::mode_n(string ch_name, char option)
 void cmd::mode_l(string channel, char option, string num) {
 	string msg;
 	Client *me = searchClient(_clntSock);
+
+	if (!me)
+		return ;
 	if (num.empty() && option == '+'){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " l * :You must specify a parameter for the limit mode. Syntax: <limit>.\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -304,6 +320,8 @@ void cmd::plusOption_l(string ch_name, string num)
 	vector<Channel *>::iterator iter;
 	int							limitnum;
 
+	if (!me)
+		return ;
 	limitnum = strtod(num.c_str(), NULL);
 	if (limitnum == 0)
 		num = "0";
@@ -340,6 +358,9 @@ void cmd::minusOption_l(string ch_name)
 	string						msg;
 	Client						*me = searchClient(_clntSock);
 	vector<Channel *>::iterator iter;
+
+	if (!me)
+		return ;
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		vector<Client *> members = (*iter)->getUsers();
 		if ((*iter)->getChannelName() == ch_name){
@@ -370,6 +391,9 @@ void cmd::minusOption_l(string ch_name)
 void cmd::mode_k(string channel, char option, string pass) {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
+
+	if (!me)
+		return ;
 	if (pass.empty()){
 		msg = ":irc.local 696 " + me->getNickname() + " " + channel + " k * :You must specify a parameter for the key mode. Syntax: <key>.\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -387,6 +411,8 @@ void cmd::plusOption_k(string ch_name, string pass)
 	vector<Channel *>::iterator iter;
 	Client	*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
@@ -420,6 +446,8 @@ void cmd::minusOption_k(string ch_name, string pass)
 	vector<Channel *>::iterator iter;
 	Client	*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();
@@ -454,6 +482,8 @@ void cmd::onlyChannel(string ch_name)
 	Channel	*ch = searchChannel(ch_name);
 	string	opt = ch->getOption(me);
 
+	if (!me)
+		return ;
 	msg = ":irc.local 324 " + me->getNickname() + " " + ch_name + " " + opt + "\r\n" + \
 		":irc.local 329 " + me->getNickname() + " " + ch_name + " :" + ch->getChannelTime() + "\r\n";
 	send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -464,6 +494,8 @@ void cmd::mode_b(string ch_name, char option)
 	string	msg;
 	Client	*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	if (option == '-')
 		return ;
 	msg = ":irc.local 368 " + me->getNickname() + " " + ch_name + " :End of channel ban list\r\n";
@@ -475,6 +507,8 @@ void	cmd::error_arg(char c)
 	string	tmp;
 	Client	*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	tmp.push_back(c);
 
 	string	msg = ":irc.local 472 " + me->getNickname() + " " + tmp + " :is not a recognised channel mode.\r\n";
@@ -559,6 +593,8 @@ void cmd::modeToClient(string clntName, string opt)
 	string			sign;
 	Client			*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	if (me->getNickname() != clntName)
 	{
 		msg = ":irc.local 502 " + me->getNickname() + " :Can't change mode for other users\r\n";

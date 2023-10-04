@@ -8,6 +8,8 @@ void cmd::privmsgToChannel(string arg, string inputmsg) {
 	string						msg;
 	Client 						*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	for (iter = _chList.begin(); iter != _chList.end(); iter++)	{
 		if ((*iter)->getChannelName() == arg) {
 			vector<Client *> members = (*iter)->getUsers();

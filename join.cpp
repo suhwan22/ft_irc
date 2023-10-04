@@ -24,6 +24,8 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 		if (ch->getTopic().size() != 0)
 		{
 			Client	*topicer = searchClient(ch->getTopicMaker());
+			if (!topicer)
+				return ;
 			topicMsg = ":irc.local 332 " + me->getNickname() + " " \
 						+ ch->getChannelName() + " :" + ch->getTopic() + " \r\n" \
 						+ ":irc.local 333 " + me->getNickname() + " " \
@@ -85,6 +87,8 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 					if (ch->getTopic().size() != 0)
 					{
 						Client	*topicer = searchClient(ch->getTopicMaker());
+						if (topicer)
+							return ;
 						topicMsg = ":irc.local 332 " + me->getNickname() + " " \
 									+ ch->getChannelName() + " :" + ch->getTopic() + " \r\n" \
 									+ ":irc.local 333 " + me->getNickname() + " " \
@@ -138,6 +142,9 @@ void	cmd::joinWithPass(vector<string> &chList, vector<string> &passList)
 	vector<string>::iterator	pass = passList.begin();
 
 	Client	*me = searchClient(_clntSock);
+
+	if (!me)
+		return ;
 	Channel	*ch;
 
 	for (;channel != chList.end(); channel++)
@@ -160,6 +167,8 @@ void	cmd::joinNoPass(vector<string> &chList)
 	Client	*me = searchClient(_clntSock);
 	Channel	*ch;
 
+	if (!me)
+		return ;
 	for (;channel != chList.end(); channel++)
 	{
 		ch = searchChannel((*channel));

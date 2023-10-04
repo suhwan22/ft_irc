@@ -10,36 +10,25 @@ void	cmd::user(string arg)
 	string			ip;
 	string			msg;
 
-	temp >> username;
-	temp >> username;
-	temp >> ip;
-	temp >> realname;
-	realname.erase(0, 1);
-
-	client->setRealName(realname);
-	client->setUserName(username);
-	client->setIP(ip);
-	client->setCreated(true);
-	if (client->getIsValidNick())
+	if (!client)
+		return ;
+	if (!client->getCreated())
 	{
-		if (client->getPass() != _servPass)
+		temp >> username;
+		temp >> username;
+		temp >> ip;
+		temp >> realname;
+		if (realname.size() > 1 && realname[0] == ':')
+			realname.erase(0, 1);
+	
+		if (username.empty() || ip.empty() || realname.empty())
 		{
-			msg = ":irc.local ";
-			//msg = "NOTICE SEOUL :*** Could not resolve your hostname: Request timed out; using your IP address (127.0.0.1) instead.\n";
-			msg = msg + "ERROR :Closing link: (" + client->getUserName() + "@127.0.0.1) [Access denied by configuration]\r\n";
+			msg = "Error: parameters error\r\n";
 			send(_clntSock, msg.c_str(), msg.size(), 0);
+			return ;
 		}
-		else
-		{
-			client->setIsValidNick(true);
-			msg = ":irc.local 001 " + client->getNickname() + " :Welcome to the Localnet IRC Network " \
-				   + client->getNickname() + "!" + client->getUserName() + "@127.0.0.1\r\n";
-			send(_clntSock, msg.c_str(), msg.size(), 0);
-		}
-	}
-	else
-	{
-		msg = ":irc.local 433 * " + client->getNickname() + " :Nickname is already in use.\r\n";
-		send(_clntSock, msg.c_str(), msg.size(), 0);
+		client->setRealName(realname);
+		client->setUserName(username);
+		client->setIP(ip);
 	}
 }

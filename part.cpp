@@ -8,6 +8,8 @@ void cmd::execPart(string ch_name, string inputmsg)
 	string						msg;
 	Client						*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == ch_name) {
 			vector<Client *> members = (*iter)->getUsers();

@@ -7,9 +7,7 @@ Client::Client(int clntSock) : _clntSock(clntSock),
 							   _isValidNick(false),
 							   _clntTime(saveTime()),
 							   _clntTimeLong(std::strtod(_clntTime.c_str(), NULL))
-{
-	/* something  */
-}
+{}
 
 Client::~Client() {}
 
@@ -133,7 +131,7 @@ const std::string&	Client::getPass() const
 
 Channel*	Client::getLastJoinChannel() const
 {
-	if (_joinChannels.size() == 0)
+	if (_joinChannels.empty())
 		return (NULL);
 	return (_joinChannels[_joinChannels.size() - 1]);
 }

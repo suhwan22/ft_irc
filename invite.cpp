@@ -34,6 +34,8 @@ void	cmd::invite(string arg)
 	}
 
 	me = searchClient(_clntSock);
+	if (!me)
+		return ;
 	if (!(ch->isClientInChannel(me)))
 	{
 		msg = ":irc.local 442 " + me->getNickname() + " " \

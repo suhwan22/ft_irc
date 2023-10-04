@@ -7,6 +7,8 @@ void cmd::settingtopic(string arg, string inputmsg) {
 	string						topic;
 	Client						*me = searchClient(_clntSock);
 
+	if (!me)
+		return ;
 	for (iter = _chList.begin(); iter != _chList.end(); iter++) {
 		if ((*iter)->getChannelName() == arg) {
 			vector<Client *> members = (*iter)->getUsers();
@@ -40,6 +42,9 @@ void cmd::topic(string arg)
 {
 	string	msg;
 	Client	*me = searchClient(_clntSock);
+
+	if (!me)
+		return ;
 	if (arg.empty()) {
 		msg = ":irc.local 461 " + me->getNickname() + " TOPIC " + ":Not enough parameters.\r\n";
 		send(_clntSock, msg.c_str(), msg.size(), 0);

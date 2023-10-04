@@ -11,6 +11,15 @@ void	cmd::whois(string nick)
 	string	stime = "";
 	Client	*me = searchClient(_clntSock);
 	Client	*who = searchClient(nick);
+	
+	if (!me)
+		return ;
+	if (!who)
+	{
+		msg = ":irc.local 318 " + me->getNickname() + " :End of /WHOIS list.\r\n";
+		send(_clntSock, msg.c_str(), msg.size(), 0);
+		return ;
+	}
 
 	if (nick == me->getNickname())
 	{
@@ -19,9 +28,7 @@ void	cmd::whois(string nick)
 		mymsg2 = ":irc.local 379 " + me->getNickname() + " " + nick + " :is using modes +i\r\n";
 	}
 	if (who->getLastJoinChannel())
-	{
 		msg1 = ":irc.local 319 " + me->getNickname() + " " + nick + " :" + who->getChNames() + "\r\n";
-	}
 
 	ltime = time(NULL) - who->getClntTimeLong();
 	char	c;

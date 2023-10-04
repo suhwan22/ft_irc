@@ -11,6 +11,8 @@ void	cmd::who(string arg)
 	string	status;
 
 	me = searchClient(_clntSock);
+	if (!me)
+		return ;
 	ch = searchChannel(arg);
 	if (!ch)
 	/* who <client_name> */
