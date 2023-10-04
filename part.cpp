@@ -13,8 +13,7 @@ void cmd::execPart(string ch_name, string inputmsg)
 			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->isClientInChannel(me))) {
 				msg = ":irc.local 442 " + me->getNickname() + " " + ch_name + " :You're not on that channel!\r\n";
-				if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
+				send(_clntSock, msg.c_str(), msg.size(), 0);
 				return ;
 			}
 			else {
@@ -23,8 +22,7 @@ void cmd::execPart(string ch_name, string inputmsg)
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PART :" + ch_name + "\r\n";
 					else
 						msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " PART " + ch_name + " " + inputmsg + "\r\n";
-					if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-						cerr << "Error: send error" << endl;				
+					send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 				}
 				(*iter)->delUser(me);
 				(*iter)->delOpUser(me);

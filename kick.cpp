@@ -22,8 +22,7 @@ void cmd::execKick(string ch_name, string nick)
 					vector<Client *> members = (*chiter)->getUsers();
 					if (!(*chiter)->isClientInChannel(me)) {
 						msg = ":irc.local 442 " + me->getNickname() + " " + ch_name + " :You're not on that channel!\r\n";
-						if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(_clntSock, msg.c_str(), msg.size(), 0);
 						return ;
 					}
 					else if (!(*chiter)->isClientInChannel(*cliter)){
@@ -33,15 +32,13 @@ void cmd::execKick(string ch_name, string nick)
 					}
 					else if (!(*chiter)->isClientOp(me)) {
 						msg = ":irc.local 482 " + me->getNickname() + " " + ch_name + " :You must be a channel operator\r\n";
-						if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(_clntSock, msg.c_str(), msg.size(), 0);
 						return; 
 					}
 					else {
 						for (int i = 0; i < (int)members.size(); i++) {
 							msg = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " KICK " + ch_name + " " + nick + " " + inputmsg + "\r\n";
-							if (send(members[i]->getSock(), msg.c_str(), msg.size(), 0) == -1)
-								cout << "Error: send error" << endl; 
+							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						}
 						(*chiter)->delUser(*cliter);
 						(*chiter)->delOpUser(*cliter);

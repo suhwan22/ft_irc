@@ -11,8 +11,7 @@ void	cmd::quit(string arg)
 		(*it)->clearClient(me);
 
 	msg = "ERROR :Closing link: (" + me->getUserName() + "@127.0.0.1) [Quit: " + arg + "]\r\n";
-	if (send(_clntSock, msg.c_str(), msg.size(), 0) == -1)
-		cout << "quit send fail?" << endl;
+	send(_clntSock, msg.c_str(), msg.size(), 0);
 
 	msg = ":" + me->getNickname() + "!" + me->getUserName() + "@127.0.0.1 QUIT :Quit: " + arg + "\r\n";
 	for (vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)

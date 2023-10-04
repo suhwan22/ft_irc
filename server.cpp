@@ -18,8 +18,7 @@ void	Server::serverInit()
 	servAddr.sin_addr.s_addr = htonl(INADDR_ANY);
 	servAddr.sin_port = htons(_port);
 
-	int flags = fcntl(_servSock, F_GETFL, 0);
-	fcntl(_servSock, F_SETFL, flags | O_NONBLOCK);
+	fcntl(_servSock, F_SETFL, O_NONBLOCK);
 
 	if (bind(_servSock, (struct sockaddr *)&servAddr, sizeof(servAddr)) == -1)
 	{
@@ -36,7 +35,7 @@ void	Server::serverInit()
 
 void	Server::serverStart()
 {
-	int		eventCnt, flags;
+	int		eventCnt;
 	socklen_t	addrSize;
 	struct sockaddr_in	clntAddr;
 	int	clntSock;
@@ -80,8 +79,7 @@ void	Server::serverStart()
 				/* Add Client!! */
 				clntSock = accept(_servSock, (struct sockaddr *)&clntAddr, &addrSize);
 
-				flags = fcntl(clntSock, F_GETFL, 0);
-				fcntl(clntSock, F_SETFL, flags | O_NONBLOCK);
+				fcntl(clntSock, F_SETFL, O_NONBLOCK);
 				EV_SET(&change, clntSock, EVFILT_READ, EV_ADD, 0, 0, NULL);
 				if (kevent(kq, &change, 1, NULL, 0, NULL) < 0) {
 					std::cerr << "Failed to register client socket with kqueue" << std::endl;

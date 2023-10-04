@@ -12,32 +12,27 @@ void cmd::settingtopic(string arg, string inputmsg) {
 			vector<Client *> members = (*iter)->getUsers();
 			if (!((*iter)->isClientInChannel(me))) {
 				topic = ":irc.local 442 " + me->getNickname() + " " + arg + " :You're not on that channel!\r\n";
-				if (send(_clntSock, topic.c_str(), topic.size(), 0) == -1)
-					cerr << "Error: send error" << endl;
-				return ;
+				send(_clntSock, topic.c_str(), topic.size(), 0);
 			}
 			else {
-				if ((*iter)->getChTopicFlag() == true)
-				{
+				if ((*iter)->getChTopicFlag() == true){
 					if (!((*iter)->isClientOp(me))) {
 						topic = ":irc.local 482 " + me->getNickname() + " " + arg + " :You do not have access to change the topic on this channel\r\n";
-						if (send(_clntSock, topic.c_str(), topic.size(), 0) == -1)
-							cerr << "Error: send error" << endl;
+						send(_clntSock, topic.c_str(), topic.size(), 0);
 						return ;
 					}
 				}
 				for (int i = 0; i < (int)members.size(); i++) {
 					topic = ":" + me->getNickname() + "!" + me->getUserName() + "@" + me->getIP() + " TOPIC " + arg + " " + inputmsg + "\r\n";
-					if (send(members[i]->getSock(), topic.c_str(), topic.size(), 0) == -1)
-						cerr << "Error: send error" << endl;
-					}
-					(*iter)->setTopicTime((*iter)->saveTime());
-					(*iter)->setTopicMaker(me->getNickname());
-					(*iter)->setTopic(inputmsg);
+					send(members[i]->getSock(), topic.c_str(), topic.size(), 0);
 				}
-				return ;
+				(*iter)->setTopicTime((*iter)->saveTime());
+				(*iter)->setTopicMaker(me->getNickname());
+				(*iter)->setTopic(inputmsg);
 			}
+			return ;
 		}
+	}
 	noSuchChannel(arg);
 }
 
@@ -47,8 +42,7 @@ void cmd::topic(string arg)
 	Client	*me = searchClient(_clntSock);
 	if (arg.empty()) {
 		msg = ":irc.local 461 " + me->getNickname() + " TOPIC " + ":Not enough parameters.\r\n";
-		if (send(_clntSock, msg.c_str(), msg.size(), 0) == 1)
-			cerr << "Error: send error" << endl;
+		send(_clntSock, msg.c_str(), msg.size(), 0);
 		return ;
 	}
 	string line;
