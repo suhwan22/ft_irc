@@ -116,7 +116,7 @@ void	Server::serverStart()
 					command.printContent(command.getContent());
 					command.parsecommand();
 				}
-				if (_quit || !checkConnect(events[i].ident))
+				if (!checkConnect(events[i].ident) || _quit)
 				{
 					_quit = false;
 					EV_SET(&change, events[i].ident, EVFILT_READ, EV_DELETE, 0, 0, NULL);
@@ -163,7 +163,7 @@ bool	Server::checkConnect(int clntSock)
 	Client *me = searchClient(clntSock);
 	if (!me)
 		return (true);
-	if (!(me->getPass()).empty() && !(me->getNickname().empty()) && !(me->getUserName().empty()))
+	if (!me->getCreated() && !(me->getPass()).empty() && !(me->getNickname().empty()) && !(me->getUserName().empty()))
 	{
 		string	msg;
 		if (!me->getIsValidNick())
