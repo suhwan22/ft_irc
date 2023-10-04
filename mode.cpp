@@ -628,6 +628,8 @@ void cmd::mode(string arg)
 	string line;
 	stringstream tmp(arg);
 
+	if (arg.empty())
+		return ;
 	tmp >> arg;
 	getline(tmp, line, static_cast<char>(EOF));
 	line.erase(0, 1);

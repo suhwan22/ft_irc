@@ -52,11 +52,3 @@ void	cmd::whois(string nick)
 	send(_clntSock, (msg + mymsg + msg1 + msg2 + mymsg2 + idle + msg3).c_str(), \
 			(msg + mymsg + msg1 + msg2 + mymsg2 + idle + msg3).size(), 0);
 }
-
-//:irc.local 311 suhkim suhkim dummy 127.0.0.1 * :DUMMY
-//:irc.local 378 suhkim suhkim :is connecting from dummy@127.0.0.1 127.0.0.1
-//:irc.local 319 suhkim suhkim :@#456 @#123
-//:irc.local 312 suhkim suhkim irc.local :Local IRC Server
-//:irc.local 379 suhkim suhkim :is using modes +i
-//:irc.local 317 suhkim suhkim 427 1696308741 :seconds idle, signon time
-//:irc.local 318 suhkim suhkim :End of /WHOIS list.

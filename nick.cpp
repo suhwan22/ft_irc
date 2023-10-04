@@ -56,9 +56,6 @@ void	cmd::nick(string nick)
 							send(members[i]->getSock(), msg.c_str(), msg.size(), 0);
 						else
 							me->setNickname(nick);
-							
-						
-						
 					}
 				}
 			}

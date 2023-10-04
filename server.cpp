@@ -124,33 +124,6 @@ void	Server::serverStart()
 					std::cout << "closed client: " << events[i].ident << std::endl;
 					close(events[i].ident);
 				}
-				std::cout << "current user(" << _clntList.size() << ") : ";
-				for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
-					std::cout << (*it)->getNickname() << " ";
-				std::cout << std::endl;
-
-				std::cout << "current each user Channels" << std::endl;
-				for (std::vector<Client *>::iterator it = _clntList.begin(); it != _clntList.end(); it++)
-				{
-					std::cout << (*it)->getNickname() << " : ";
-					(*it)->printJoinChannel();
-					std::cout << std::endl;
-				}
-
-				std::cout << "\ncurrent channel(" << _channelList.size() << ") : ";
-				for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
-					std::cout << (*it)->getChannelName() << " ";
-				std::cout << std::endl;
-
-				std::cout << "current each channel user" << std::endl;
-				for (std::vector<Channel *>::iterator it = _channelList.begin(); it != _channelList.end(); it++)
-				{
-					std::cout << (*it)->getChannelName() << std::endl;
-					(*it)->printUsers();
-					(*it)->printOpUsers();
-					(*it)->printInviteUsers();
-					std::cout << std::endl;
-				}
 			}
 		}
 	}
@@ -206,6 +179,7 @@ void	Server::addChannel(std::string name)
 	if (!newChannel)
 	{
 		std::cout << "Error: Server::addChannel: new Channel()" << std::endl;
+		return ;
 	}
 	_channelList.push_back(newChannel);
 }
@@ -256,6 +230,7 @@ void	Server::addClient(int sock)
 	if (!newClient)
 	{
 		std::cout << "Error: Server::addClient: new Client()" << std::endl;
+		return ;
 	}
 	_clntList.push_back(newClient);
 }

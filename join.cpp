@@ -32,7 +32,6 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 						+ ch->getChannelName() + " " + topicer->getNickname() + "!" \
 						+ topicer->getUserName() + "@127.0.0.1 :" + ch->getTopicTime() + "\r\n";
 		}
-		/* msg 미완성 */
 		msg = ":" + me->getNickname() + "!" + me->getUserName() \
 			   + "@127.0.0.1 JOIN :" + ch->getChannelName() + "\r\n";
 		msg2 = ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
@@ -46,10 +45,9 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 	}
 	else
 	{
-		if (ch->getChPassFlag() && pass != ch->getPassWord())
+		if (ch->getChPassFlag() && ch->getChPassFlag() && pass != ch->getPassWord())
 		/* password가 일치하지않는 경우 */
 		{
-			/* msg 미완성 */
 			msg = ":irc.local 475 " + me->getNickname() + " " + ch->getChannelName() \
 				   + " :Cannot join channel (incorrect channel key)\r\n";
 			send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -60,7 +58,6 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 			if (ch->getInviteOnlyFlag())
 			/* channel이 invite only 인 경우 */
 			{
-				/* msg 미완성 */
 				msg = ":irc.local 473 " + me->getNickname() + " " + ch->getChannelName() \
 					   + " :Cannot join channel (invite only)\r\n";
 				send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -70,7 +67,6 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 				if (ch->getChLimitFlag() && static_cast<int>(ch->getUsers().size()) >= ch->getUserLimit())
 				/* 유저제한을 넘는 경우 */
 				{
-					/* msg 미완성 */
 					msg = ":irc.local 471 " + me->getNickname() + " " + ch->getChannelName() \
 						   + " :Cannot join channel (channel is full)\r\n";
 					send(_clntSock, msg.c_str(), msg.size(), 0);
@@ -95,7 +91,6 @@ void	cmd::joinExistChannel(Client *me, Channel *ch, string pass)
 									+ ch->getChannelName() + " " + topicer->getNickname() + "!" \
 									+ topicer->getUserName() + "@127.0.0.1 :" + ch->getTopicTime() + "\r\n";
 					}
-					/* msg 미완성 */
 					msg = ":" + me->getNickname() + "!" + me->getUserName() \
 						   + "@127.0.0.1 JOIN :" + ch->getChannelName() + "\r\n";
 					msg2 = ":irc.local 353 " + me->getNickname() + " = " + ch->getChannelName() \
@@ -131,7 +126,6 @@ void	cmd::joinNewChannel(Client *me, string channel)
 			   + " :" + "@" + me->getNickname() + "\r\n" \
 			   + ":irc.local 366 " + me->getNickname() + " " + ch->getChannelName() \
 			   + " :End of /NAMES list.\r\n"; send(_clntSock, msg.c_str(), msg.size(), 0);
-		/* msg 미완성 */
 	}
 }
 
@@ -191,6 +185,9 @@ void	cmd::join(string arg)
 	vector<string>	passList;
 	size_t			start = 0;
 	size_t			pos = 0;
+
+	if (arg.empty())
+		return ;
 
 	/* 채널 이름들 ',' 기준으로 스플릿*/
 	ss >> channels;

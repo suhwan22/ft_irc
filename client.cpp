@@ -41,8 +41,6 @@ void	Client::exitChannel(const std::string channelName)
 
 void	Client::cleanChannel()
 {
-	/* 그냥 써도 되나? */
-
 	_joinChannels.clear();
 }
 

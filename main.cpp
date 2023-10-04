@@ -23,7 +23,5 @@ int main(int argc, char **argv)
 	Server _server(atoi(argv[1]), argv[2]);
 	_server.serverInit();
 	_server.serverStart();
-	//close(_server.getSock());
-	//close(epfd);
 	return (0);
 }

@@ -14,15 +14,13 @@ class Client
 		/* client socket info */
 		int						_clntSock;
 
-		/* 아이피  어떤식으로 들어오는지 봐야함 -> 들어오는 ip는 서버 ip였다,, */
-		/* 실제로 client의 ip는 없고 서버가 할당해준다 host name을 못찾아서? 인듯 */
-		std::string				_ip;
 
 		/* user init stat */
 		bool					_isCreated;
 		bool					_isValidNick;
 
 		/* user information */
+		std::string				_ip;
 		std::string				_pass;
 		std::string				_nickname;
 		std::string				_realName;

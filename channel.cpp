@@ -8,8 +8,7 @@ Channel::Channel(std::string channelName) :
 	_topic(""),
 	_userLimit(-1), _chTime(saveTime()), 
 	_kflag(false), _iflag(false), _tflag(true), _lflag(false), _nflag(true)
-{
-}
+{}
 
 Channel::Channel(std::string channelName, std::string password) :
 	_channelName(channelName),
