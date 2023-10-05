@@ -7,13 +7,13 @@
 # include <vector>
 
 class Channel;
+class Content;
 
 class Client
 {
 	private:
 		/* client socket info */
 		int						_clntSock;
-
 
 		/* user init stat */
 		bool					_isCreated;
@@ -29,9 +29,14 @@ class Client
 		long long				_clntTimeLong;
 		std::vector<Channel *>	_joinChannels;
 
+		/* recv buf */
+		std::string				_input;
+
 	public:
 		Client(int ClntSock);
 		~Client();
+
+		void	recv(char *buf, int len, std::vector<Content>& contentList);
 
 		/* Channel func */
 		void	joinChannel(Channel *channel);
@@ -49,18 +54,18 @@ class Client
 		void	setUserName(const std::string userName);
 		
 		/* getter func */
-		const std::string&	getNickname() const;
-		const std::string&	getUserName() const;
-		const std::string&	getRealName() const;
-		const std::string&	getIP() const;
-		const std::string&	getPass() const;
-		std::string			getChNames();
-		std::string			getClntTime();
-		Channel*			getLastJoinChannel() const;
+		int					getSock() const;
 		bool				getCreated() const;
 		bool				getIsValidNick() const;
-		int					getSock() const;
-		long long			getClntTimeLong();
+		const std::string&	getIP() const;
+		const std::string&	getPass() const;
+		const std::string&	getNickname() const;
+		const std::string&	getRealName() const;
+		const std::string&	getUserName() const;
+		const std::string&	getClntTime() const;
+		std::string			getChNames();
+		Channel*			getLastJoinChannel() const;
+		long long			getClntTimeLong() const;
 
 		/* print func */
 		void	printJoinChannel();

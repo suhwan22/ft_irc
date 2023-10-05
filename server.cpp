@@ -46,7 +46,7 @@ void	Server::serverStart()
 
 	int kq = kqueue();
 	if (kq < 0) {
-		std::cerr << "Failef to create kqueue" << std::endl;
+		std::cerr << "Failed to create kqueue" << std::endl;
 		close(_servSock);
 		return ;
 	}
@@ -81,7 +81,8 @@ void	Server::serverStart()
 
 				fcntl(clntSock, F_SETFL, O_NONBLOCK);
 				EV_SET(&change, clntSock, EVFILT_READ, EV_ADD, 0, 0, NULL);
-				if (kevent(kq, &change, 1, NULL, 0, NULL) < 0) {
+				if (kevent(kq, &change, 1, NULL, 0, NULL) < 0)
+				{
 					std::cerr << "Failed to register client socket with kqueue" << std::endl;
 					close(clntSock);
 				}
@@ -103,9 +104,15 @@ void	Server::serverStart()
 			else
 			{
 				strlen = recv(events[i].ident, buf, BUF_SIZE, 0);
-				if (strlen <= 0)
+				if (strlen <= 0 || !checkConnect(events[i].ident) || _quit)
 				{
+					_quit = false;
 					EV_SET(&change, events[i].ident, EVFILT_READ, EV_DELETE, 0, 0, NULL);
+					if (kevent(kq, &change, 1, NULL, 0, NULL) < 0)
+					{
+						std::cerr << "Failed to register client socket with kqueue" << std::endl;
+						close(clntSock);
+					}
 					delClient(events[i].ident);
 					std::cout << "closed client: " << events[i].ident << std::endl;
 					close(events[i].ident);
@@ -113,16 +120,10 @@ void	Server::serverStart()
 				else
 				{
 					cmd command(events[i].ident, buf, strlen, _passWord, _clntList, _channelList, _quit);
+					Client	*me = searchClient(clntSock);
+					me->recv(buf, strlen);
 					command.printContent(command.getContent());
 					command.parsecommand();
-				}
-				if (!checkConnect(events[i].ident) || _quit)
-				{
-					_quit = false;
-					EV_SET(&change, events[i].ident, EVFILT_READ, EV_DELETE, 0, 0, NULL);
-					delClient(events[i].ident);
-					std::cout << "closed client: " << events[i].ident << std::endl;
-					close(events[i].ident);
 				}
 			}
 		}

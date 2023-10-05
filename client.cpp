@@ -1,6 +1,8 @@
 #include "client.hpp"
 #include "channel.hpp"
 #include <cstdlib>
+#include "content.hpp"
+#include <sstream>
 
 Client::Client(int clntSock) : _clntSock(clntSock), 
 							   _isCreated(false),
@@ -35,7 +37,33 @@ void	Client::exitChannel(const std::string channelName)
 			else
 				_joinChannels.erase(it);
 			return ;
+		} }
+}
+
+void	Client::recv(char *buf, int len, std::vector<Content>& contentList)
+{
+	std::string	str(buf, len);
+	std::string	line, cmd;
+	size_t	start = 0, pos;
+
+	_input += str;
+	while ((pos = _input.find("\r\n", start)) != std::string::npos)
+	{
+		line = _input.substr(start, pos - start);
+		start = pos + 2;
+		std::stringstream	tmp(line);
+		tmp >> line;
+		cmd = line;
+		if (!tmp.eof())
+		{
+			getline(tmp, line, static_cast<char>(EOF));
+			line.erase(0, 1);
 		}
+		else
+			line = "";
+		Content	content(cmd, line);
+		if (pos + 2 == _input.size() - 1)
+			break ;
 	}
 }
 
@@ -151,7 +179,7 @@ std::string	Client::getChNames()
 	return (chnames);
 }
 
-std::string	Client::getClntTime()
+const std::string&	Client::getClntTime() const
 {
 	return (_clntTime);
 }
@@ -171,7 +199,7 @@ int	Client::getSock() const
 	return (_clntSock);
 }
 
-long long	Client::getClntTimeLong()
+long long	Client::getClntTimeLong() const
 {
 	return (_clntTimeLong);
 }
